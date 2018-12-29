@@ -45,6 +45,7 @@ typedef struct vector_generic_structure
  *			unsigned char
  *			long
  *			unsigned int
+			etc.
  * @comparator - pointer to function which will be used to compare data.
  * @assigner - pointer to function which will be used to assign data.
  * @finalizer - pointer to function which will be used to finalize object.
