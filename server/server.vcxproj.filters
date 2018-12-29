@@ -10,6 +10,15 @@
     <Filter Include="include\containers">
       <UniqueIdentifier>{55aaa788-47c4-4523-acea-2d426560d973}</UniqueIdentifier>
     </Filter>
+    <Filter Include="include\db">
+      <UniqueIdentifier>{a20502b1-c39b-48ea-b785-9065cc62d357}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\containers">
+      <UniqueIdentifier>{f5906a20-f74d-4a03-98e0-d838481dd43c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\db">
+      <UniqueIdentifier>{b05a1997-5e6a-43d3-83c3-2fb2e0cdbc16}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\containers\vector.h">
@@ -30,5 +39,43 @@
     <ClInclude Include="include\containers\hash_table.h">
       <Filter>include\containers</Filter>
     </ClInclude>
+    <ClInclude Include="include\containers\container_helpers.h">
+      <Filter>include\containers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\db\db.h">
+      <Filter>include\db</Filter>
+    </ClInclude>
+    <ClInclude Include="include\server.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\error.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\containers\concurrent_queue.h">
+      <Filter>include\containers</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\containers\container_helpers.c">
+      <Filter>src\containers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\containers\vector.c">
+      <Filter>src\containers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\containers\list.c">
+      <Filter>src\containers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\containers\stack.c">
+      <Filter>src\containers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\containers\queue.c">
+      <Filter>src\containers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\containers\concurrent_queue.c">
+      <Filter>src\containers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\containers\rb_tree.c">
+      <Filter>src\containers</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

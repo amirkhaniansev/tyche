@@ -19,12 +19,26 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\containers\concurrent_queue.h" />
+    <ClInclude Include="include\containers\container_helpers.h" />
     <ClInclude Include="include\containers\hash_table.h" />
     <ClInclude Include="include\containers\list.h" />
     <ClInclude Include="include\containers\queue.h" />
     <ClInclude Include="include\containers\rb_tree.h" />
     <ClInclude Include="include\containers\stack.h" />
     <ClInclude Include="include\containers\vector.h" />
+    <ClInclude Include="include\db\db.h" />
+    <ClInclude Include="include\error.h" />
+    <ClInclude Include="include\server.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\containers\concurrent_queue.c" />
+    <ClCompile Include="src\containers\container_helpers.c" />
+    <ClCompile Include="src\containers\list.c" />
+    <ClCompile Include="src\containers\queue.c" />
+    <ClCompile Include="src\containers\rb_tree.c" />
+    <ClCompile Include="src\containers\stack.c" />
+    <ClCompile Include="src\containers\vector.c" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
