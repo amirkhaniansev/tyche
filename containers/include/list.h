@@ -65,7 +65,7 @@ list* list_create(unsigned int data_size,
 		int(*comparator)(const void*, const void*),
 		int(*assigner)(const void*, const void*),
 		int(*finalizer)(const void*),
-		void*(copy_func)(const void*));
+		void*(*copy_func)(const void*));
 
 /**
  * list_front - gets the first element of list
