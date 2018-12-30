@@ -80,7 +80,7 @@ int stack_push(stack* stack, void* data);
  * @stack - stack
  * @data - data that will be popped from stack,.
  */
-int queue_pop(queue* queue, void* data);
+int stack_pop(queue* queue, void* data);
 
 /**
  * stack_is_empty - checks if the given stack is empty
