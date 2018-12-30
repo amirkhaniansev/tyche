@@ -202,13 +202,13 @@ list_iterator list_end(list* list);
 
 /**
  * list_move_next - moves iterator to the next element
- * @list_iterator - list iterator
+ * @iterator - list iterator
  */
 int list_move_next(list_iterator iterator);
 
 /**
  * list_move_prev - moves iterator to the previous element
- * @ist_iterator - list iterator
+ * @iterator - list iterator
  */
 int list_move_prev(list_iterator iterator);
 
