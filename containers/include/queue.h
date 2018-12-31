@@ -88,7 +88,7 @@ int queue_push(queue* queue, void* data);
  * @queue - queue
  * @data - data that will be popped.
  */
-int queue_pop(queue* queue, void* data);
+int queue_pop(queue* queue);
 
 /**
  * queue_is_empty - checks if the given queue is empty

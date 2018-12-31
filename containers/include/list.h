@@ -113,7 +113,7 @@ int list_push_front(list* list, void* data);
  * @list - list
  * @data - data that will be removed from the front of list
  */
-int list_pop_front(list* list, void* data);
+int list_pop_front(list* list);
 
 /**
  * list_push_back - inserts new element to the head of list
