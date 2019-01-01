@@ -3,6 +3,8 @@
  * Header file of vector.
  * Copyright (C) 2018  Sevak Amirkhanian
  * Email: amirkhanyan.sevak@gmail.com
+ * Copyright (C) 2018  David Petrosyan
+ * Email: david.petrosyan11100@gmail.com
  * For full notice please see https://github.com/amirkhaniansev/tyche/tree/master/LICENSE.
  */
 
@@ -20,7 +22,6 @@ typedef struct vector_generic_structure
 	unsigned int _size;
 	unsigned int _data_size;
 	bool _is_primitive_type;
-
 	void** _base;
 
 	int   (*_comparator)(const void*, const void*);
@@ -53,27 +54,29 @@ typedef struct vector_generic_structure
  * 
  * Must be called with valid arguments, otherwise the result will be NULL.
  */
-vector* create_vector(unsigned int initial_size,
+vector* vector_create(unsigned int initial_size,
 	unsigned int data_size,
 	bool is_primitive_type,
+	int * error_code,
 	int(*comparator)(const void*, const void*),
 	int(*assigner)(const void*, const void*),
 	int(*finalizer)(const void*),
-	void*(copy_func)(const void*));
+	void*(*copy_func)(const void*)
+);
 
 /** 
  * front - gets the first element of vector
  * @vector - vector
  * May be called with non-null argument
  */
-void* front(vector* vector);
+void* vector_front(vector* vector);
 
 /**
  * back - gets the last element of vector
  * @vector - vector
  * May be called with non-null argument
  */
-void* back(vector* vector);
+void* vector_back(vector* vector);
 
 /**
  * at - gets the element with the specified index.
@@ -84,14 +87,14 @@ void* back(vector* vector);
  * May be called with valid arguments.
  * Return value can be NULL if index is out of range or vector is null.
  */
-void* at(vector* vector, unsigned int index);
+void* vector_at(vector* vector, unsigned int index);
 
 /**
  * capacity - gets the allocated capacity of vector
  * @vector - vector
  * May be called with non-null argument
  */
-unsigned int capacity(vector* vector);
+unsigned int vector_capacity(vector* vector);
 
 /** 
  * assign - assignes right vector to the left vector
@@ -101,7 +104,7 @@ unsigned int capacity(vector* vector);
  * 
  * May be called with valid arguments.
  */
-int assign(vector* left, vector* right);
+int vector_assign(vector* left, vector* right);
 
 /**
  * insert - inserts new item to vector
@@ -110,7 +113,7 @@ int assign(vector* left, vector* right);
  * @data - data
  * @position - position where new item must be inserted
  */
-int insert(vector* vector, unsigned int position, void* data);
+int vector_insert(vector* vector, unsigned int position, void* data);
 
 /** 
  * erase - erases data from the specified position
@@ -118,7 +121,7 @@ int insert(vector* vector, unsigned int position, void* data);
  * @vector - vector
  * @position - position
  */
-int erase(vector* vector, unsigned int position);
+int vector_erase(vector* vector, unsigned int position);
 
 /** 
  * push_back - inserts new element to the head of vector
@@ -126,30 +129,30 @@ int erase(vector* vector, unsigned int position);
  * @vector - vector
  * @data - data
  */
-int push_back(vector* vector, void* data);
+int vector_push_back(vector* vector, void* data);
 
 /**
  * pop_back - deletes the last element of vector
  * @vector - vector
  */
-int pop_back(vector* vector);
+int vector_pop_back(vector* vector);
 
 /**
  * clear - clears vector
  * @vector - vector
  */
-int clear(vector* vector);
+int vector_clear(vector* vector);
 
 /**
  * destroy_vector - destroys vector
  * @vector - vector
  */
-int destroy_vector(vector* vector);
+int vector_destroy_vector(vector* vector);
 
 /** 
  * is_empty - checks if the given vector is empty
  * @vector - vector
  */
-bool is_empty(vector* vector);
+bool vector_is_empty(vector* vector);
 
 #endif
