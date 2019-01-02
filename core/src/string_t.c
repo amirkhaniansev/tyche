@@ -31,10 +31,11 @@ static inline void populate_string(const string_t* string,
 		unsigned int len,
 		unsigned int start_index)
 {
-	unsigned int i = start_index;
 
-	for(; i < len; i++)
-		string->_buffer[i] = c_string[i];
+	unsigned int i = start_index, j = 0;
+
+	while(i < len)
+		string->_buffer[i++] = c_string[j++];
 	
 	string->_buffer[i] = '\0';
 }
