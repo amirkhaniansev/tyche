@@ -118,6 +118,18 @@ static inline bool string_t_ends_with(const string_t* string,
 	return true;
 }
 
+static inline void string_t_destroy_internal(string_t* string, bool is_on_stack)
+{
+	if(string == NULL)
+		return;
+
+	if(string->_buffer != NULL)
+		free(string->_buffer);
+	
+	if(!is_on_stack)
+		free(string);
+}
+
 /**
  * string_t_init - initializes already created string. 
  * 			This function is for scenarios when you want to create string
@@ -506,7 +518,7 @@ bool string_t_equal_c(const string_t* left, const string_t* right)
  * Returns 	STRING_IS_NULL			if string is null
  * 			STRING_SYMBOL_NOT_FOUND	if symbol is not found
  */
-unsigned int string_t_index_of(const string_t* string, const char symbol)
+int string_t_index_of(const string_t* string, const char symbol)
 {
 	if(string == NULL)
 		return STRING_IS_NULL;
@@ -533,7 +545,7 @@ unsigned int string_t_index_of(const string_t* string, const char symbol)
  * 			STRING_BASE_IS_NULL					if buffer is null
  *			STRING_INDEX_OF_CHAR_COUNT_ERROR 	if amount of char arguments is not positive
  */
-unsigned int string_t_index_of_any(const string_t* string,unsigned int amount,...)
+int string_t_index_of_any(const string_t* string,unsigned int amount,...)
 {
 	if(string == NULL)
 		return STRING_IS_NULL;
@@ -567,4 +579,27 @@ unsigned int string_t_index_of_any(const string_t* string,unsigned int amount,..
 		return i;
 
 	return STRING_SYMBOL_NOT_FOUND;			
+}
+
+
+/**
+ * string_t_destroy - destroys string_t object
+ * @string - string
+ * 
+ * Returns error code.
+ */
+void string_t_destroy(string_t* string)
+{
+	string_t_destroy_internal(string, false);
+}
+
+/** 
+ * string_t_destroy_static - destroys string_t object allocated on stack
+ * @string - string
+ * 
+ * Returns error code.
+ */
+void string_t_destroy_s(string_t* string)
+{
+	string_t_destroy_internal(string, true);
 }

@@ -12,7 +12,7 @@
 #include <stdbool.h>
 
 #define STRING_IS_NULL 						0x200
-#define STRING_OUT_OF_RANGE 				0x201
+#define STRING_OUT_OF_RANGE					0x201
 #define STRING_BASE_IS_NULL 				0x202
 #define STRING_CMP_LEFT_IS_NULL 			0x203
 #define STRING_CMP_RIGHT_IS_NULL			0x204
@@ -20,6 +20,7 @@
 #define STRING_IS_ALREADY_INITIALIZED		0x206
 #define STRING_SYMBOL_NOT_FOUND				0x207
 #define STRING_INDEX_OF_CHAR_COUNT_ERROR	0x208
+#define STRING_IS_ALREADY_DESTROYED			0x209
 
 /** structure for ASCII strings **/
 typedef struct string_structure
@@ -225,7 +226,7 @@ bool string_t_equal_c(const string_t* left, const string_t* right);
  * Returns 	STRING_IS_NULL			if string is null
  * 			STRING_SYMBOL_NOT_FOUND	if symbol is not found
  */
-unsigned int string_t_index_of(const string_t* string, const char symbol);
+int string_t_index_of(const string_t* string, const char symbol);
 
 /**
  * string_t_index_of_any - returns the index of the first occurrence of the given
@@ -237,6 +238,22 @@ unsigned int string_t_index_of(const string_t* string, const char symbol);
  * Returns 	STRING_IS_NULL			if string is null
  * 			STRING_SYMBOL_NOT_FOUND	if none of symbols is found
  */
-unsigned int string_t_index_of_any(const string_t* string,unsigned int amount,...);
+int string_t_index_of_any(const string_t* string,unsigned int amount,...);
+
+/**
+ * string_t_destroy - destroys string_t object
+ * @string - string
+ * 
+ * Returns error code.
+ */
+void string_t_destroy(string_t* string);
+
+/** 
+ * string_t_destroy_static - destroys string_t object allocated on stack
+ * @string - string
+ * 
+ * Returns error code.
+ */
+void string_t_destroy_s(string_t* string);
 
 #endif
