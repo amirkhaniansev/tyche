@@ -10,8 +10,14 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdarg.h>
+#include <math.h>
 
 #include "../include/string_t.h"
+
+static inline int sgn(int num)
+{
+	return (num > 0) - (num < 0);
+}
 
 static inline unsigned int get_power_of_2(const unsigned int num)
 {
@@ -243,7 +249,7 @@ int string_t_compare(const string_t* left,const string_t* right)
 	if(right == NULL)
 		return STRING_CMP_RIGHT_IS_NULL;
 	
-	return strcmp(left->_buffer, right->_buffer);
+	return sgn(strcmp(left->_buffer, right->_buffer));
 }
 
 /**
@@ -267,7 +273,7 @@ int string_t_compare_c_string(const string_t* string, const char* c_string)
 	if(c_string == NULL)
 		return STRING_CMP_RIGHT_IS_NULL;
 
-	return strcmp(string->_buffer, c_string);	
+	return sgn(strcmp(string->_buffer, c_string));	
 }
 
 /**
