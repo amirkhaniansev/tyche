@@ -242,7 +242,7 @@ string_t* string_t_concat(string_t* left, string_t* right)
 	string_t* result = string_t_allocate(result_len, get_power_of_2(result_len));
 
 	populate_string(result, left->_buffer, left->_length, 0);
-	populate_string(result, right->_buffer, right->_length, left->_length);
+	populate_string(result, right->_buffer, result->_length, left->_length);
 
 	return result;
 }
