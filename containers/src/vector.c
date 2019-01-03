@@ -9,9 +9,13 @@
 #include "vector.h"
 
 static int power_of_two(int x) {
-	int i;
-	for (i = 2; i < x; i *= 2){}
+	int i = 2;
+	for (; i < x; i *= 2){}
 	return i;
+}
+static safe_free(void * pointer) {
+	free(pointer);
+	pointer = NULL;
 }
 
 /** 
@@ -241,18 +245,18 @@ int vector_insert(vector * vector, unsigned int position, void * data)
 	*/
 	if (vector->_count == vector->_size) {
 		if (vector->_size < 2)vector->_size = 2;
-
-		void **base_temp = malloc(2 * vector->_size * vector->_data_size);
+		
+		void **base_temp = malloc(2 * vector->_size * sizeof(void*));
 		if (base_temp == NULL)
 			return VECTOR_BASE_ALLOCATION_ERROR_IN_INSERT;
-		
-		for (unsigned int i = 0; i < vector->_count; i++)
+		for (unsigned int i = 0; i < vector->_size; i++)
 			base_temp[i] = vector->_base[i];
-
-		free(vector->_base);
-		vector->_base = base_temp;
+		
 		vector->_size *= 2;
-		base_temp = NULL;
+		
+		safe_free(vector->_base);
+		vector->_base = base_temp;
+		base_temp = NULL;			
 	}
 
 	void* pre_temp, *next_temp;
@@ -358,10 +362,9 @@ int vector_clear(vector * vector)
 
 	if (!vector->_is_primitive_type)
 		for (unsigned int i = 0; i < vector->_size; i++)
-			free(vector->_base[i]);
+			vector->_finalizer(vector->_base[i]);
 
-	free(vector->_base);
-	vector->_base = NULL;
+	safe_free(vector->_base);
 	vector->_count = 0;
 	vector->_size = 0;
 
@@ -376,15 +379,10 @@ int vector_destroy(vector * vector)
 {
 	if (vector == NULL)
 		return 0;
+
+	vector_clear(vector);
 	
-	if (!vector->_is_primitive_type)
-		for (unsigned int i = 0; i < vector->_size; i++)
-			free(vector->_base[i]);
-	
-	free(vector->_base);
-	vector->_base = NULL;
-	free(vector);
-	vector = NULL;
+	safe_free(vector);
 	return 0;
 }
 
