@@ -25,9 +25,9 @@ typedef struct queue_generic_structure
 	void* _storage;
 
 	int   (*_comparator)(const void*, const void*);
-	int   (*_assigner) (const void*, const void*);
-	int   (*_finalizer)(const void*);
-	void* (*_copy_func)(const void*);
+	int   (*_assigner) (void*, void*);
+	int   (*_finalizer)(void*);
+	void* (*_copy_func)(void*);
 } queue;
 
 /**
@@ -56,9 +56,9 @@ typedef struct queue_generic_structure
 queue* queue_create(unsigned int data_size,
 		bool is_primitive_type,
 		int(*comparator)(const void*, const void*),
-		int(*assigner)(const void*, const void*),
-		int(*finalizer)(const void*),
-		void*(copy_func)(const void*));
+		int(*assigner)(void*, void*),
+		int(*finalizer)(void*),
+		void*(copy_func)(void*));
 
 /**
  * queue_front - gets the first element of queue
