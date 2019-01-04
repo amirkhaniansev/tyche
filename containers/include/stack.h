@@ -11,6 +11,12 @@
 
 #include <stdbool.h>
 
+#define STACK_SUCCESS		0x0
+#define STACK_IS_NULL		0x300
+#define STACK_DATA_IS_NULL	0x301
+#define STACK_PUSH_ERROR	0x302
+#define STACK_POP_ERROR		0x303
+
 /**
  * Structure for stack interface.
  * Stack should use vector for internal storage.
@@ -24,10 +30,16 @@ typedef struct stack_generic_structure
 	void* _storage;
 
 	int   (*_comparator)(const void*, const void*);
-	int   (*_assigner) (const void*, const void*);
-	int   (*_finalizer)(const void*);
-	void* (*_copy_func)(const void*);
+	int   (*_assigner) (void*, void*);
+	int   (*_finalizer)(void*);
+	void* (*_copy_func)(void*);
 } stack;
+
+/**
+ * stack_create - creates stack for primitive type
+ * Return value is non-null if everything is ok
+ */
+stack* stack_create_p();
 
 /**
  * stack_create - creates stack
@@ -56,9 +68,9 @@ stack* stack_create(unsigned int initial_size,
 		unsigned int data_size,
 		bool is_primitive_type,
 		int(*comparator)(const void*, const void*),
-		int(*assigner)(const void*, const void*),
-		int(*finalizer)(const void*),
-		void*(copy_func)(const void*));
+		int(*assigner)(void*, void*),
+		int(*finalizer)(void*),
+		void*(copy_func)(void*));
 
 /**
  * stack_top - gets the top element of stack without popping it.

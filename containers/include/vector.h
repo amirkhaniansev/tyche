@@ -47,9 +47,9 @@ typedef struct vector_generic_structure
 	void** _base;
 
 	int   (*_comparator)(const void*, const void*);
-	int   (*_assigner) (const void*, const void*);
-	int   (*_finalizer)(const void*);
-	void* (*_copy_func)(const void*);
+	int   (*_assigner) (void*, void*);
+	int   (*_finalizer)(void*);
+	void* (*_copy_func)(void*);
 } vector;
 
 /** 
@@ -90,9 +90,9 @@ vector* vector_create(unsigned int initial_size,
 	bool is_primitive_type,
 	int * error_code,
 	int(*comparator)(const void*, const void*),
-	int(*assigner)(const void*, const void*),
-	int(*finalizer)(const void*),
-	void*(*copy_func)(const void*)
+	int(*assigner)(void*, void*),
+	int(*finalizer)(void*),
+	void*(*copy_func)(void*)
 );
 
 /** 
