@@ -6,14 +6,14 @@
 * For full notice please see https://github.com/amirkhaniansev/tyche/tree/master/LICENSE.
 */
 
-#include "vector.h"
+#include "../include/vector.h"
 
 static int power_of_two(int x) {
 	int i = 2;
 	for (; i < x; i *= 2){}
 	return i;
 }
-static safe_free(void * pointer) {
+static void safe_free(void * pointer) {
 	free(pointer);
 	pointer = NULL;
 }
@@ -57,9 +57,9 @@ vector* vector_create(
 	bool is_primitive_type,
 	int * error_code,
 	int(*comparator)(const void*, const void*),
-	int(*assigner)(const void*, const void*),
-	int(*finalizer)(const void*),
-	void*(*copy_func)(const void*)) 
+	int(*assigner)(void*, void*),
+	int(*finalizer)(void*),
+	void*(*copy_func)(void*))
 {
 	vector* _vector = NULL;
 	*error_code = SUCCESSFULLY_COMPLETED;
@@ -318,9 +318,7 @@ int vector_push_back(vector * vector, void * data)
 	else if (vector->_base == NULL)
 		return VECTOR_IS_CLEAR;
 	
-	vector_insert(vector, vector->_count, data);
-
-	return 0;
+	return vector_insert(vector, vector->_count, data);
 }
 
 /**
