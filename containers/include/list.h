@@ -9,20 +9,20 @@
  /**
  * error codes start from 0x116
  */
-#define SUCCESSFULLY_COMPLETED 0
-#define LIST_DATA_SIZE_NEGATIVE 0x116
-#define LIST_COMPARATOR_IS_NULL 0x117
-#define LIST_ASSIGNER_IS_NULL 0x118
-#define LIST_FINALIZER_IS_NULL 0x119
-#define LIST_ALLOCATION_ERROR 0x120
-#define LIST_IS_NULL 0x121
-#define LIST_IS_EMPTY 0x122
-#define LIST_NODE_ALLOCATION_ERROR 0x123
-#define LIST_ASSIGN_RIGHT_IS_NULL 0x124
-#define INVALID_DATA 0x125
-#define POSITION_OUT_OF_RANGE 0x126
-#define POSITION_NODE_IS_NULL 0x127
-#define ITERATOR_IS_NULL 0x128
+#define SUCCESSFULLY_COMPLETED 		0
+#define LIST_DATA_SIZE_NEGATIVE 	0x116
+#define LIST_COMPARATOR_IS_NULL 	0x117
+#define LIST_ASSIGNER_IS_NULL 		0x118
+#define LIST_FINALIZER_IS_NULL 		0x119
+#define LIST_ALLOCATION_ERROR 		0x120
+#define LIST_IS_NULL 				0x121
+#define LIST_IS_EMPTY 				0x122
+#define LIST_NODE_ALLOCATION_ERROR 	0x123
+#define LIST_ASSIGN_RIGHT_IS_NULL 	0x124
+#define INVALID_DATA 				0x125
+#define POSITION_OUT_OF_RANGE 		0x126
+#define POSITION_NODE_IS_NULL 		0x127
+#define ITERATOR_IS_NULL 			0x128
 
 #ifndef __LIST_H__
 #define __LIST_H__
@@ -49,9 +49,9 @@ typedef struct list_generic_structure
 	list_node* _last;
 
 	int   (*_comparator)(const void*, const void*);
-	int   (*_assigner) (const void*, const void*);
-	int   (*_finalizer)(const void*);
-	void* (*_copy_func)(const void*);
+	int   (*_assigner) (void*,void*);
+	int   (*_finalizer)(void*);
+	void* (*_copy_func)(void*);
 } list;
 
 typedef list_node* list_iterator;
@@ -80,11 +80,11 @@ typedef list_node* list_iterator;
  * Must be called with valid arguments, otherwise the result will be NULL.
  * 
  * Errors						
- * LIST_DATA_SIZE_NEGATIVE(0x116)	 					if datasize argument negative
- * LIST_COMPARATOR_IS_NULL(0x117)			 			if comparator function is NULL
- * LIST_ASSIGNER_IS_NULL(0x118)							if assigner function is NULL 
- * LIST_FINALIZER_IS_NULL(0x119)						if finalizer function is NULL
- * LIST_ALLOCATION_ERROR(0x120)							if allocation cannot be realized
+ * LIST_DATA_SIZE_NEGATIVE	(0x116)	 					if datasize argument negative
+ * LIST_COMPARATOR_IS_NULL	(0x117)			 			if comparator function is NULL
+ * LIST_ASSIGNER_IS_NULL	(0x118)						if assigner function is NULL 
+ * LIST_FINALIZER_IS_NULL	(0x119)						if finalizer function is NULL
+ * LIST_ALLOCATION_ERROR	(0x120)						if allocation cannot be realized
  */
 list* list_create(unsigned int data_size,
 		bool is_primitive_type,
@@ -132,8 +132,9 @@ int list_assign(list* left, list* right);
  * @data - data that will be added to the front of list
  *
  * Errors
- * LIST_IS_NULL(0x121)									if list is NULL			
- * LIST_NODE_ALLOCATION_ERROR(0x123)					if list's node allocation cannot be realized
+ * LIST_IS_NULL					(0x121)					if list is NULL			
+ * LIST_NODE_ALLOCATION_ERROR	(0x123)					if list's node allocation cannot be realized
+ * INVALID_DATA					(0x125)					if data is NULL
  */
 int list_push_front(list* list, void* data);
 
@@ -143,9 +144,9 @@ int list_push_front(list* list, void* data);
  * @list - list
  * @data - data that will be removed from the front of list
  *
- *Errors
- *LIST_IS_NULL(0x121)									if list is NULL		
- *LIST_IS_EMPTY(0x122)									if list is empty		
+ * Errors
+ * LIST_IS_NULL	(0x121)									if list is NULL		
+ * LIST_IS_EMPTY(0x122)									if list is empty		
  */
 int list_pop_front(list* list);
 
@@ -154,12 +155,21 @@ int list_pop_front(list* list);
  *
  * @list - list
  * @data - data
+ *
+ * Errors
+ * LIST_IS_NULL					(0x121)					if list is NULL			
+ * LIST_NODE_ALLOCATION_ERROR	(0x123)					if list's node allocation cannot be realized
+ * INVALID_DATA					(0x125)					if data is NULL
  */
 int list_push_back(list* list, void* data);
 
 /**
  * list_pop_back - deletes the last element of list
  * @vector - vector
+ *
+ * Errors
+ * LIST_IS_NULL	(0x121)									if list is NULL		
+ * LIST_IS_EMPTY(0x122)									if list is empty	
  */
 int list_pop_back(list* list);
 
@@ -169,6 +179,12 @@ int list_pop_back(list* list);
  * @list - list
  * @position - iterator representing the node after which the
  * 				new element will be added.
+ *
+ * Errors
+ * LIST_IS_NULL					(0x121)					if list is NULL			
+ * LIST_NODE_ALLOCATION_ERROR	(0x123)					if list's node allocation cannot be realized
+ * INVALID_DATA					(0x125)					if data is NULL
+ * POSITION_NODE_IS_NULL		(0x127)					if given position iterator is NULL
  */
 int list_insert_it(list* list, list_iterator position, void*data);
 
@@ -178,6 +194,12 @@ int list_insert_it(list* list, list_iterator position, void*data);
  * @list - list
  * @position - index
  * @data - data
+ *
+ * Errors
+ * LIST_IS_NULL					(0x121)					if list is NULL			
+ * LIST_NODE_ALLOCATION_ERROR	(0x123)					if list's node allocation cannot be realized
+ * INVALID_DATA					(0x125)					if data is NULL
+ * POSITION_OUT_OF_RANGE		(0x126)					if given position is greater than _count
  */
 int list_insert_po(list* list, unsigned int position, void* data);
 
@@ -185,6 +207,10 @@ int list_insert_po(list* list, unsigned int position, void* data);
  * list_sort - sorts the list
  *
  * @list - list
+ *
+ * Errors
+ * LIST_IS_NULL	(0x121)									if list is NULL		
+ * LIST_IS_EMPTY(0x122)									if list is empty	
  */
 int list_sort(list* list);
 
@@ -193,6 +219,11 @@ int list_sort(list* list);
  *
  * @list - list
  * @position - iterator representing the node which will be deleted.
+ *
+ * Errors
+ * LIST_IS_NULL				(0x121)						if list is NULL		
+ * LIST_IS_EMPTY			(0x122)						if list is empty	
+ * POSITION_NODE_IS_NULL	(0x127)						if position iterator is NULL
  */
 int list_erase_it(list* list, list_iterator position);
 
@@ -201,12 +232,20 @@ int list_erase_it(list* list, list_iterator position);
  *
  * @list - list
  * @position - index of element
+ *
+ * Errors
+ * LIST_IS_NULL					(0x121)					if list is NULL			
+ * LIST_IS_EMPTY				(0x122)					if list is empty	
+ * POSITION_OUT_OF_RANGE		(0x126)					if given position is greater than _count
  */
 int list_erase_po(list* list,unsigned int position);
 
 /**
  * list_clear - clears list
  * @list - list
+ *
+ * Errors
+ * LIST_IS_NULL					(0x121)					if list is NULL			
  */
 int list_clear(list* list);
 

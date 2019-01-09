@@ -1,4 +1,3 @@
-#include "list.h"
 /*
 * GNU General Public License Version 3.0, 29 June 2007
 * Header file of list.
@@ -7,43 +6,45 @@
 * For full notice please see https://github.com/amirkhaniansev/tyche/tree/master/LICENSE.
 */
 
+#include "list.h"
+
 /**
-* list_create - creates list
-*
-* @data_size - data size
-* @is_primitive_type - boolean value indicating whether
-*			list holds data of primitive type.
-*		Primitive types are considered:
-*			int
-*			short int
-*			double
-*			float
-*			char
-*			unsigned char
-*			long
-*			unsigned int
-etc.
-* @comparator - pointer to function which will be used to compare data.
-* @assigner - pointer to function which will be used to assign data.
-* @finalizer - pointer to function which will be used to finalize object.
-* @copy_func - pointer to function which will be used to copy data.
-*
-* Must be called with valid arguments, otherwise the result will be NULL.
-*
-* Errors
-* LIST_DATA_SIZE_NEGATIVE(0x116)	 					if datasize argument negative
-* LIST_COMPARATOR_IS_NULL(0x117)			 			if comparator function is NULL
-* LIST_ASSIGNER_IS_NULL(0x118)							if assigner function is NULL
-* LIST_FINALIZER_IS_NULL(0x119)						if finalizer function is NULL
-* LIST_ALLOCATION_ERROR(0x120)							if allocation cannot be realized
-*/
+ * list_create - creates list
+ *
+ * @data_size - data size
+ * @is_primitive_type - boolean value indicating whether
+ *			list holds data of primitive type.
+ *		Primitive types are considered:
+ *			int
+ *			short int
+ *			double
+ *			float
+ *			char
+ *			unsigned char
+ *			long
+ *			unsigned int
+			etc.
+ * @comparator - pointer to function which will be used to compare data.
+ * @assigner - pointer to function which will be used to assign data.
+ * @finalizer - pointer to function which will be used to finalize object.
+ * @copy_func - pointer to function which will be used to copy data.
+ *
+ * Must be called with valid arguments, otherwise the result will be NULL.
+ * 
+ * Errors						
+ * LIST_DATA_SIZE_NEGATIVE	(0x116)	 					if datasize argument negative
+ * LIST_COMPARATOR_IS_NULL	(0x117)			 			if comparator function is NULL
+ * LIST_ASSIGNER_IS_NULL	(0x118)						if assigner function is NULL 
+ * LIST_FINALIZER_IS_NULL	(0x119)						if finalizer function is NULL
+ * LIST_ALLOCATION_ERROR	(0x120)						if allocation cannot be realized
+ */
 list * list_create(
 	unsigned int data_size,
 	bool is_primitive_type, 
 	int(*comparator)(const void *, const void *),
-	int(*assigner)(const void *, const void *), 
-	int(*finalizer)(const void *), 
-	void *(*copy_func)(const void *))
+	int(*assigner)(void *,void *), 
+	int(*finalizer)(void *), 
+	void *(*copy_func)(void *))
 {
 	if (data_size < 0)
 		return LIST_DATA_SIZE_NEGATIVE;
@@ -117,10 +118,19 @@ void * list_at(list * list, unsigned int position)
 	return finder->_data;
 }
 
+/**
+ * list_assign - assigns right list to the left list
+ *
+ * @left - left list
+ * @right - right list
+ *
+ * May be called with valid arguments.
+ */
 int list_assign(list * left, list * right)
 {
 	if (right == NULL) {
-		return LIST_ASSIGN_RIGHT_IS_NULL;
+		left = NULL;
+		return 0;
 	}
 	else if (list_is_empty(right)) {
 		left->_top = left->_last = NULL;
@@ -140,8 +150,7 @@ int list_assign(list * left, list * right)
 
 	list_iterator right_temp_node = right->_top;
 
-	left->_top = left->_top = NULL;
-	int error;
+	left->_top = left->_last = NULL;
 
 	while (right_temp_node != NULL) {
 		error = list_push_back(left, right_temp_node->_data);
@@ -152,16 +161,18 @@ int list_assign(list * left, list * right)
 
 	return 0;
 }
+
 /**
-* list_push_front - pushes new element to the front of list
-*
-* @list - list
-* @data - data that will be added to the front of list
-*
-* Errors
-* LIST_IS_NULL(0x121)									if list is NULL
-* LIST_NODE_ALLOCATION_ERROR(0x123)						if list's node allocation cannot be realized
-*/
+ * list_push_front - pushes new element to the front of list
+ *
+ * @list - list
+ * @data - data that will be added to the front of list
+ *
+ * Errors
+ * LIST_IS_NULL					(0x121)					if list is NULL			
+ * LIST_NODE_ALLOCATION_ERROR	(0x123)					if list's node allocation cannot be realized
+ * INVALID_DATA					(0x125)					if data is NULL
+ */
 int list_push_front(list * list, void * data)
 {
 	if (list == NULL)
@@ -186,16 +197,17 @@ int list_push_front(list * list, void * data)
 
 	return 0;
 }
+
 /**
-* list_pop_front - pops new element from the front of list
-*
-* @list - list
-* @data - data that will be removed from the front of list
-*
-*Errors
-*LIST_IS_NULL(0x121)									if list is NULL
-*LIST_IS_EMPTY(0x122)									if list is empty
-*/
+ * list_pop_front - pops new element from the front of list
+ *
+ * @list - list
+ * @data - data that will be removed from the front of list
+ *
+ * Errors
+ * LIST_IS_NULL	(0x121)									if list is NULL		
+ * LIST_IS_EMPTY(0x122)									if list is empty		
+ */
 int list_pop_front(list * list)
 {
 	if (list == NULL) {
@@ -219,12 +231,27 @@ int list_pop_front(list * list)
 	list_iterator replace_temp;
 	replace_temp = list->_top->_next;
 	replace_temp->_prev = NULL;
+	
+	if (!list->_is_primitive_type)
+			list->_finalizer(list->_top);
 	free(list->_top);
+	
 	list->_top = replace_temp;
 	list->_count--;
 	return 0;
 }
 
+/**
+ * list_push_back - inserts new element to the head of list
+ *
+ * @list - list
+ * @data - data
+ *
+ * Errors
+ * LIST_IS_NULL					(0x121)					if list is NULL			
+ * LIST_NODE_ALLOCATION_ERROR	(0x123)					if list's node allocation cannot be realized
+ * INVALID_DATA					(0x125)					if data is NULL
+ */
 int list_push_back(list * list, void * data)
 {
 	if (list == NULL)
@@ -248,6 +275,14 @@ int list_push_back(list * list, void * data)
 	return 0;
 }
 
+/**
+ * list_pop_back - deletes the last element of list
+ * @vector - vector
+ *
+ * Errors
+ * LIST_IS_NULL	(0x121)									if list is NULL		
+ * LIST_IS_EMPTY(0x122)									if list is empty	
+ */
 int list_pop_back(list * list)
 {
 	if (list == NULL) {
@@ -267,13 +302,32 @@ int list_pop_back(list * list)
 		return 0;
 	}
 	
-	list->_last->_prev->_next = NULL;
+	list_iterator new_last_node = list->_last->_prev;
+	new_last_node->_next = NULL;
+	
+	if (!list->_is_primitive_type)
+			list->_finalizer(list->_last);
 	free(list->_last);
+	
+	list->last = new_last_node;	
 	list->_count--;
 
 	return 0;
 }
 
+/**
+ * list_insert_it - inserts new item to the list after specified iterator
+ *
+ * @list - list
+ * @position - iterator representing the node after which the
+ * 				new element will be added.
+ *
+ * Errors
+ * LIST_IS_NULL					(0x121)					if list is NULL			
+ * LIST_NODE_ALLOCATION_ERROR	(0x123)					if list's node allocation cannot be realized
+ * INVALID_DATA					(0x125)					if data is NULL
+ * POSITION_NODE_IS_NULL		(0x127)					if given position iterator is NULL
+ */
 int list_insert_it(list * list, list_iterator position, void * data)
 {
 	if (list == NULL)
@@ -301,6 +355,19 @@ int list_insert_it(list * list, list_iterator position, void * data)
 	return 0;
 }
 
+/**
+ * list_insert_po - inserts new item to the list at the specified index
+ *
+ * @list - list
+ * @position - index
+ * @data - data
+ *
+ * Errors
+ * LIST_IS_NULL					(0x121)					if list is NULL			
+ * LIST_NODE_ALLOCATION_ERROR	(0x123)					if list's node allocation cannot be realized
+ * INVALID_DATA					(0x125)					if data is NULL
+ * POSITION_OUT_OF_RANGE		(0x126)					if given position is greater than _count
+ */
 int list_insert_po(list * list, unsigned int position, void * data)
 {
 	if (list == NULL) 
@@ -327,6 +394,15 @@ int list_insert_po(list * list, unsigned int position, void * data)
 	return 0;
 }
 
+/**
+ * list_sort - sorts the list
+ *
+ * @list - list
+ *
+ * Errors
+ * LIST_IS_NULL	(0x121)									if list is NULL		
+ * LIST_IS_EMPTY(0x122)									if list is empty	
+ */
 int list_sort(list * List)
 {
 	if (List == NULL)
@@ -334,15 +410,23 @@ int list_sort(list * List)
 	if (list_is_empty(List))
 		return LIST_IS_EMPTY;
 	
-	list* new_list = malloc(sizeof(list));
-	if (new_list == NULL)
-		return LIST_ALLOCATION_ERROR;
 	/*
 	must be
 	*/
 	return 0;
 }
 
+/**
+ * erase_it - deletes the item with the given position
+ *
+ * @list - list
+ * @position - iterator representing the node which will be deleted.
+ *
+ * Errors
+ * LIST_IS_NULL				(0x121)						if list is NULL		
+ * LIST_IS_EMPTY			(0x122)						if list is empty	
+ * POSITION_NODE_IS_NULL	(0x127)						if position iterator is NULL
+ */
 int list_erase_it(list * list, list_iterator position)
 {
 	if (list == NULL)
@@ -365,6 +449,9 @@ int list_erase_it(list * list, list_iterator position)
 	
 	find_node->_next->_prev = find_node->_prev;
 	find_node->_prev->_next = find_node->_next;
+	
+	if (!list->_is_primitive_type)
+			list->_finalizer(find_node->_data);
 	free(find_node);
 	
 	list->_count--;
@@ -372,6 +459,17 @@ int list_erase_it(list * list, list_iterator position)
 	return 0;
 }
 
+/**
+ * list_erase_po - deletes the item with the given index
+ *
+ * @list - list
+ * @position - index of element
+ *
+ * Errors
+ * LIST_IS_NULL					(0x121)					if list is NULL			
+ * LIST_IS_EMPTY				(0x122)					if list is empty	
+ * POSITION_OUT_OF_RANGE		(0x126)					if given position is greater than _count
+ */
 int list_erase_po(list * list, unsigned int position)
 {
 	if (list == NULL)
@@ -391,6 +489,9 @@ int list_erase_po(list * list, unsigned int position)
 
 	erase_node->_next->_prev = erase_node->_prev;
 	erase_node->_prev->_next = erase_node->_next;
+	
+	if (!list->_is_primitive_type)
+			list->_finalizer(erase_node->_data);
 	free(erase_node);
 	
 	list->_count--;
@@ -398,6 +499,13 @@ int list_erase_po(list * list, unsigned int position)
 	return 0;
 }
 
+/**
+ * list_clear - clears list
+ * @list - list
+ *
+ * Errors
+ * LIST_IS_NULL					(0x121)					if list is NULL			
+ */
 int list_clear(list * list)
 {
 	if (list == NULL)
@@ -421,6 +529,10 @@ int list_clear(list * list)
 	return 0;
 }
 
+/**
+ * list_is_empty - checks if the given list is empty
+ * @list - list
+ */
 int list_destroy(list * list)
 {
 	if (list == NULL)
@@ -434,6 +546,10 @@ int list_destroy(list * list)
 	return 0;
 }
 
+/**
+ * list_is_empty - checks if the given list is empty
+ * @list - list
+ */
 bool list_is_empty(list * list)
 {
 	if (list->_top == NULL || list->_count < 1)
@@ -442,6 +558,10 @@ bool list_is_empty(list * list)
 		return false;
 }
 
+/**
+ * list_begin - gets the beginning iterator of list
+ * @list - list
+ */
 list_iterator list_begin(list * list)
 {
 	if (list == NULL)
@@ -449,6 +569,10 @@ list_iterator list_begin(list * list)
 	return list->_top;
 }
 
+/**
+ * list_end - gets the iterator indicating the end of the list
+ * @list - list
+ */
 list_iterator list_end(list * list)
 {
 	if (list == NULL)
@@ -456,6 +580,10 @@ list_iterator list_end(list * list)
 	return list->_last;
 }
 
+/**
+ * list_move_next - moves iterator to the next element
+ * @iterator - list iterator
+ */
 int list_move_next(list_iterator iterator)
 {
 	if (iterator = NULL)
@@ -466,6 +594,10 @@ int list_move_next(list_iterator iterator)
 	return 0;
 }
 
+/**
+ * list_move_prev - moves iterator to the previous element
+ * @iterator - list iterator
+ */
 int list_move_prev(list_iterator iterator)
 {
 	if (iterator = NULL)
