@@ -43,13 +43,13 @@ static void safe_free(void * pointer) {
  * Must be called with valid arguments, otherwise the result will be NULL.
  * 
  * Errors
- * SUCCESSFULLY_COMPLETED(0x0) 							if function completed successfully(no error)
- * VECTOR_ALLOCATION_ERROR(0x101)	 					if allocation cannot be realized
- * VECTOR_DATASIZE_NEGATIVE(0x106)			 			if datasize argument negative
- * VECTOR_COMPARATOR_ERROR_IN_CONSTRUCTOR(0x102)		if comparator function is NULL
- * VECTOR_ASSIGNER_ERROR_IN_CONSTRUCTOR(0x103)			if assigner function is NULL 
- * VECTOR_FINALIZER_ERROR_IN_CONSTRUCTOR(0x104)			if finalizer function is NULL
- * VECTOR_BASE_ALLOCATION_ERROR_IN_CONSTRUCTOR(0x105)	if vector's _base allocation cannot be realized
+ * SUCCESSFULLY_COMPLETED						(0x0)	if function completed successfully(no error)
+ * VECTOR_ALLOCATION_ERROR						(0x101)	if allocation cannot be realized
+ * VECTOR_DATASIZE_NEGATIVE						(0x106)	if datasize argument negative
+ * VECTOR_COMPARATOR_ERROR_IN_CONSTRUCTOR		(0x102)	if comparator function is NULL
+ * VECTOR_ASSIGNER_ERROR_IN_CONSTRUCTOR			(0x103)	if assigner function is NULL 
+ * VECTOR_FINALIZER_ERROR_IN_CONSTRUCTOR		(0x104)	if finalizer function is NULL
+ * VECTOR_BASE_ALLOCATION_ERROR_IN_CONSTRUCTOR	(0x105)	if vector's _base allocation cannot be realized
  */
 vector* vector_create(
 	unsigned int initial_size,
