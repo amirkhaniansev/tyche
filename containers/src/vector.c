@@ -230,16 +230,19 @@ int vector_assign(vector * left, vector * right)
  * VECTOR_IS_CLEAR(0x115)	 						if vector's base is NULL
  * VECTOR_HIGH_POSSITION_IN_INSERT(0x111)			if given position argument is bigger than vector's count
  * VECTOR_BASE_ALLOCATION_ERROR_IN_INSERT(0x110)	if vector's _base allocation cannot be realized
+ * INVALID_DATA(0x100)								if given data argument is NULL
 */
 int vector_insert(vector * vector, unsigned int position, void * data)
 {
 	if (vector == NULL)
 		return VECTOR_IS_NULL;
-	else if (vector->_base == NULL)
+	if (vector->_base == NULL)
 		return VECTOR_IS_CLEAR;
-	else if (position > vector->_count)
+	if (position > vector->_count)
 		return VECTOR_HIGH_POSSITION_IN_INSERT;
-
+	if (data == NULL)
+		return INVALID_DATA;
+	
 	/**
 	* If vector is full, we will allocate two times more memory and then will rewrite vector's data.
 	*/
@@ -294,6 +297,10 @@ int vector_erase(vector * vector, unsigned int position)
 	else if (vector->_count <= position)
 		return VECTOR_ERASE_POSITION_OUT_OF_RANGE;
 	
+	if(!vector->_is_primitive_type)
+		vector->finalizer(vector->_base[position]);
+	safe_free(vector->_base[position]);
+	
 	for (unsigned int i = position; i < vector->_count - 1; i++)
 		vector->_base[i] = vector->_base[i + 1];
 	
@@ -310,13 +317,16 @@ int vector_erase(vector * vector, unsigned int position)
  * Errors
  * VECTOR_IS_NULL(0x114) 							if vector is NULL
  * VECTOR_IS_CLEAR(0x115)	 						if vector's base is NULL
+ * INVALID_DATA(0x100)								if given data argument is NULL
  */
 int vector_push_back(vector * vector, void * data)
 {
 	if (vector == NULL)
 		return VECTOR_IS_NULL;
-	else if (vector->_base == NULL)
+	if (vector->_base == NULL)
 		return VECTOR_IS_CLEAR;
+	if (data == NULL)
+		return INVALID_DATA;
 	
 	return vector_insert(vector, vector->_count, data);
 }
