@@ -168,12 +168,6 @@ int string_t_init(string_t* string)
 {
 	if(string == NULL)
 		return STRING_IS_NULL;
-	
-	if(string_t_is_initialized(string))
-		return STRING_IS_ALREADY_INITIALIZED;
-	
-	if(string->_buffer != NULL)
-		free(string->_buffer);
 
 	string->_length = 0;
 	string->_capacity = 2;
