@@ -298,7 +298,7 @@ int vector_erase(vector * vector, unsigned int position)
 		return VECTOR_ERASE_POSITION_OUT_OF_RANGE;
 	
 	if(!vector->_is_primitive_type)
-		vector->finalizer(vector->_base[position]);
+		vector->_finalizer(vector->_base[position]);
 	safe_free(vector->_base[position]);
 	
 	for (unsigned int i = position; i < vector->_count - 1; i++)
