@@ -47,4 +47,6 @@ int main(int argc, char* argv[])
 	big_char();
 	big_structure();
 	big_unsigned_long_long();
+
+	return 0;
 }
