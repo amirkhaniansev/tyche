@@ -46,7 +46,7 @@ typedef void* malloc_ptr;
 			ptr = stack_top(storage);\
 			free(ptr);\
 			stack_pop(storage);\
-			}\
-		} while(0)
+		}\
+	} while(0)
 
 #endif
