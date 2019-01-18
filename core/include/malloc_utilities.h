@@ -48,6 +48,7 @@ typedef void* malloc_ptr;
 			stack_pop(storage);\
 		}\
 		stack_destroy(storage);\
+		return(return_value);\
 	} while(0)
 
 #endif
