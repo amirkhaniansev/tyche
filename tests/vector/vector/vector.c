@@ -6,14 +6,14 @@
 * For full notice please see https://github.com/amirkhaniansev/tyche/tree/master/LICENSE.
 */
 
-#include "../include/vector.h"
+#include "vector.h"
 
 static int power_of_two(int x) {
 	int i = 2;
 	for (; i < x; i *= 2){}
 	return i;
 }
-static void safe_free(void * pointer) {
+static safe_free(void * pointer) {
 	free(pointer);
 	pointer = NULL;
 }
@@ -43,13 +43,13 @@ static void safe_free(void * pointer) {
  * Must be called with valid arguments, otherwise the result will be NULL.
  * 
  * Errors
- * SUCCESSFULLY_COMPLETED						(0x0)	if function completed successfully(no error)
- * VECTOR_ALLOCATION_ERROR						(0x101)	if allocation cannot be realized
- * VECTOR_DATASIZE_NEGATIVE						(0x106)	if datasize argument negative
- * VECTOR_COMPARATOR_ERROR_IN_CONSTRUCTOR		(0x102)	if comparator function is NULL
- * VECTOR_ASSIGNER_ERROR_IN_CONSTRUCTOR			(0x103)	if assigner function is NULL 
- * VECTOR_FINALIZER_ERROR_IN_CONSTRUCTOR		(0x104)	if finalizer function is NULL
- * VECTOR_BASE_ALLOCATION_ERROR_IN_CONSTRUCTOR	(0x105)	if vector's _base allocation cannot be realized
+ * SUCCESSFULLY_COMPLETED(0x0) 							if function completed successfully(no error)
+ * VECTOR_ALLOCATION_ERROR(0x101)	 					if allocation cannot be realized
+ * VECTOR_DATASIZE_NEGATIVE(0x106)			 			if datasize argument negative
+ * VECTOR_COMPARATOR_ERROR_IN_CONSTRUCTOR(0x102)		if comparator function is NULL
+ * VECTOR_ASSIGNER_ERROR_IN_CONSTRUCTOR(0x103)			if assigner function is NULL 
+ * VECTOR_FINALIZER_ERROR_IN_CONSTRUCTOR(0x104)			if finalizer function is NULL
+ * VECTOR_BASE_ALLOCATION_ERROR_IN_CONSTRUCTOR(0x105)	if vector's _base allocation cannot be realized
  */
 vector* vector_create(
 	unsigned int initial_size,
@@ -57,9 +57,9 @@ vector* vector_create(
 	bool is_primitive_type,
 	int * error_code,
 	int(*comparator)(const void*, const void*),
-	int(*assigner)(void*, void*),
-	int(*finalizer)(void*),
-	void*(*copy_func)(void*))
+	int(*assigner)(const void*, const void*),
+	int(*finalizer)(const void*),
+	void*(*copy_func)(const void*)) 
 {
 	vector* _vector = NULL;
 	*error_code = SUCCESSFULLY_COMPLETED;
@@ -230,19 +230,16 @@ int vector_assign(vector * left, vector * right)
  * VECTOR_IS_CLEAR(0x115)	 						if vector's base is NULL
  * VECTOR_HIGH_POSSITION_IN_INSERT(0x111)			if given position argument is bigger than vector's count
  * VECTOR_BASE_ALLOCATION_ERROR_IN_INSERT(0x110)	if vector's _base allocation cannot be realized
- * INVALID_DATA(0x100)								if given data argument is NULL
 */
 int vector_insert(vector * vector, unsigned int position, void * data)
 {
 	if (vector == NULL)
 		return VECTOR_IS_NULL;
-	if (vector->_base == NULL)
+	else if (vector->_base == NULL)
 		return VECTOR_IS_CLEAR;
-	if (position > vector->_count)
+	else if (position > vector->_count)
 		return VECTOR_HIGH_POSSITION_IN_INSERT;
-	if (data == NULL)
-		return INVALID_DATA;
-	
+
 	/**
 	* If vector is full, we will allocate two times more memory and then will rewrite vector's data.
 	*/
@@ -297,10 +294,6 @@ int vector_erase(vector * vector, unsigned int position)
 	else if (vector->_count <= position)
 		return VECTOR_ERASE_POSITION_OUT_OF_RANGE;
 	
-	if(!vector->_is_primitive_type)
-		vector->_finalizer(vector->_base[position]);
-	safe_free(vector->_base[position]);
-	
 	for (unsigned int i = position; i < vector->_count - 1; i++)
 		vector->_base[i] = vector->_base[i + 1];
 	
@@ -317,18 +310,17 @@ int vector_erase(vector * vector, unsigned int position)
  * Errors
  * VECTOR_IS_NULL(0x114) 							if vector is NULL
  * VECTOR_IS_CLEAR(0x115)	 						if vector's base is NULL
- * INVALID_DATA(0x100)								if given data argument is NULL
  */
 int vector_push_back(vector * vector, void * data)
 {
 	if (vector == NULL)
 		return VECTOR_IS_NULL;
-	if (vector->_base == NULL)
+	else if (vector->_base == NULL)
 		return VECTOR_IS_CLEAR;
-	if (data == NULL)
-		return INVALID_DATA;
 	
-	return vector_insert(vector, vector->_count, data);
+	vector_insert(vector, vector->_count, data);
+
+	return 0;
 }
 
 /**

@@ -13,7 +13,6 @@
 
 #include <stdbool.h>
 #include <stdlib.h>
-#include "containers_errors.h"
  
  /**
  * exit codes start from 0x100

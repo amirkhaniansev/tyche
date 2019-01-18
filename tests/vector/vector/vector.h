@@ -34,7 +34,6 @@
 #define VECTOR_ERASE_POSITION_OUT_OF_RANGE 0x113
 #define VECTOR_IS_NULL 0x114
 #define VECTOR_IS_CLEAR 0x115
-#define INVALID_DATA 0x100
 
 /**
  * structure for vector interface
@@ -48,9 +47,9 @@ typedef struct vector_generic_structure
 	void** _base;
 
 	int   (*_comparator)(const void*, const void*);
-	int   (*_assigner) (void*, void*);
-	int   (*_finalizer)(void*);
-	void* (*_copy_func)(void*);
+	int   (*_assigner) (const void*, const void*);
+	int   (*_finalizer)(const void*);
+	void* (*_copy_func)(const void*);
 } vector;
 
 /** 
@@ -91,9 +90,9 @@ vector* vector_create(unsigned int initial_size,
 	bool is_primitive_type,
 	int * error_code,
 	int(*comparator)(const void*, const void*),
-	int(*assigner)(void*, void*),
-	int(*finalizer)(void*),
-	void*(*copy_func)(void*)
+	int(*assigner)(const void*, const void*),
+	int(*finalizer)(const void*),
+	void*(*copy_func)(const void*)
 );
 
 /** 
@@ -171,7 +170,6 @@ int vector_insert(vector* vector, unsigned int position, void* data);
  * VECTOR_IS_NULL(0x114) 							if vector is NULL
  * VECTOR_IS_CLEAR(0x115)	 						if vector's base is NULL
  * VECTOR_ERASE_POSITION_OUT_OF_RANGE(0x113)		if given position argument is bigger than vector's count
- * INVALID_DATA(0x100)								if given data argument is NULL
  */
 int vector_erase(vector* vector, unsigned int position);
 
@@ -195,7 +193,6 @@ int vector_push_back(vector* vector, void* data);
  * VECTOR_IS_NULL(0x114) 							if vector is NULL
  * VECTOR_IS_CLEAR(0x115)	 						if vector's base is NULL
  * VECTOR_IS_EMPTY(0x112)							if vector's count equal to 0 
- * INVALID_DATA(0x100)								if given data argument is NULL
  */
 int vector_pop_back(vector* vector);
 
