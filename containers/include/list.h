@@ -49,9 +49,9 @@ typedef struct list_generic_structure
 	list_node* _last;
 
 	int   (*_comparator)(const void*, const void*);
-	int   (*_assigner) (void*, void*);
-	int   (*_finalizer)(void*);
-  void* (*_copy_func)(void*);
+	int   (*_assigner)	(void*, void*);
+	int   (*_finalizer)	(void*);
+	void* (*_copy_func)	(void*);
 } list;
 
 typedef list_node* list_iterator;
@@ -78,6 +78,13 @@ typedef list_node* list_iterator;
  * @copy_func - pointer to function which will be used to copy data.
  *
  * Must be called with valid arguments, otherwise the result will be NULL.
+ * 
+ * Errors
+ * LIST_DATA_SIZE_NEGATIVE	(0x116)	 	if datasize argument negative
+ * LIST_COMPARATOR_IS_NULL	(0x117)		if comparator function is NULL
+ * LIST_ASSIGNER_IS_NULL	(0x118)		if assigner function is NULL
+ * LIST_FINALIZER_IS_NULL	(0x119)		if finalizer function is NULL
+ * LIST_ALLOCATION_ERROR	(0x120)		if allocation cannot be realized
  */
 list* list_create(unsigned int data_size,
 		bool is_primitive_type,
