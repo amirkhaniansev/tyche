@@ -471,7 +471,7 @@ int list_erase_po(list * list, unsigned int position)
 		return list_clear(list);
 	if (position == 0)
 		return list_pop_front(list);
-	if (position == list->_count)
+	if (position == list->_count - 1)
 		return list_pop_back(list);
 
 	list_iterator erase_node = list_at_it(list, position);
