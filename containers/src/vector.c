@@ -8,14 +8,18 @@
 
 #include "../include/vector.h"
 
+#define __iterate__(i, n, block)\
+	for(unsigned int i = 0; i < n; i++)\
+		block
+
 static int power_of_two(int x) {
 	int i = 2;
-	for (; i < x; i *= 2){}
+	for (; i < x; i *= 2) {}
 	return i;
 }
-static void safe_free(void * pointer) {
-	free(pointer);
-	pointer = NULL;
+static void safe_free(void** pointer) {
+	free(*pointer);
+	*pointer = NULL;
 }
 
 /** 
@@ -150,7 +154,10 @@ void * vector_back(vector * vector)
 */
 void * vector_at(vector * vector, unsigned int index)
 {
-	if (vector == NULL || vector->_base == NULL || vector->_count < 1 || index > vector->_count - 1) 
+	if (vector == NULL || 
+		vector->_base == NULL || 
+		vector->_count < 1 || 
+		index > vector->_count - 1) 
 		return NULL;
 	return vector->_base[index];
 }
@@ -172,50 +179,6 @@ unsigned int vector_capacity(vector * vector)
 		return VECTOR_IS_CLEAR;
 	else 
 		return vector->_size;
-}
-
-/** 
- * assign - assignes right vector to the left vector
- * 
- * @left - left vector
- * @right - right vector
- * 
- * May be called with valid arguments.
- *
- * Errors
- * VECTOR_ASSIGN_RIGHT_IS_NULL(0x108) 				if vector that have to assign is NULL
- * VECTOR_BASE_ALLOCATION_ERROR_IN_ASSIGN(0x109)	if vector's _base allocation cannot be realized
- */
-int vector_assign(vector * left, vector * right)
-{
-	if (right == NULL){
-		return VECTOR_ASSIGN_RIGHT_IS_NULL;
-	}
-	else if (right->_base == NULL) {
-		left->_base = NULL;
-		left->_count = left->_size = 0;
-		return 0;
-	}
-	
-	int error = vector_destroy(left);
-	if (error != 0)return error;
-
-	left->_count = right->_count;
-	left->_size = right->_size;
-	left->_data_size = right->_data_size;
-	left->_is_primitive_type = right->_is_primitive_type;
-	left->_comparator = right->_comparator;
-	left->_assigner = right->_assigner;
-	left->_finalizer = right->_finalizer;
-
-	left->_base = malloc(left->_size * sizeof(void*));
-	if (left->_base == NULL)
-		return VECTOR_BASE_ALLOCATION_ERROR_IN_ASSIGN;
-	
-	for (unsigned int i = 0; i < left->_count; i++)
-		left->_assigner(vector_at(left, i), vector_at(right, i));
-	
-	return 0;
 }
 
 /**
@@ -247,7 +210,8 @@ int vector_insert(vector * vector, unsigned int position, void * data)
 	* If vector is full, we will allocate two times more memory and then will rewrite vector's data.
 	*/
 	if (vector->_count == vector->_size) {
-		if (vector->_size < 2)vector->_size = 2;
+		if (vector->_size < 2)
+			vector->_size = 2;
 		
 		void **base_temp = malloc(2 * vector->_size * sizeof(void*));
 		if (base_temp == NULL)
@@ -256,8 +220,8 @@ int vector_insert(vector * vector, unsigned int position, void * data)
 			base_temp[i] = vector->_base[i];
 		
 		vector->_size *= 2;
-		
-		safe_free(vector->_base);
+
+		safe_free(&vector->_base);
 		vector->_base = base_temp;
 		base_temp = NULL;			
 	}
@@ -297,9 +261,9 @@ int vector_erase(vector * vector, unsigned int position)
 	else if (vector->_count <= position)
 		return VECTOR_ERASE_POSITION_OUT_OF_RANGE;
 	
-	if(!vector->_is_primitive_type)
-		vector->_finalizer(vector->_base[position]);
-	safe_free(vector->_base[position]);
+	if (vector->_is_primitive_type)
+		safe_free(&vector->_base[position]);
+	else vector->_finalizer(vector->_base[position]);
 	
 	for (unsigned int i = position; i < vector->_count - 1; i++)
 		vector->_base[i] = vector->_base[i + 1];
@@ -349,6 +313,10 @@ int vector_pop_back(vector * vector)
 	else if (vector->_count < 1)
 		return VECTOR_IS_EMPTY;
 
+	if (vector->_is_primitive_type)
+		safe_free(&vector->_base[vector->_count - 1]);
+	else vector->_finalizer(vector->_base[vector->_count - 1]);
+
 	vector->_count--;
 	return 0;
 }
@@ -368,9 +336,9 @@ int vector_clear(vector * vector)
 	else if (vector->_base == NULL)
 		return VECTOR_IS_CLEAR;
 
-	if (!vector->_is_primitive_type)
-		for (unsigned int i = 0; i < vector->_size; i++)
-			vector->_finalizer(vector->_base[i]);
+	if (vector->_is_primitive_type)
+		__iterate__(i, vector->_count, safe_free(&vector->_base[i]));
+	else __iterate__(i, vector->_count, vector->_finalizer(vector->_base[i]));
 
 	safe_free(vector->_base);
 	vector->_count = 0;
@@ -388,8 +356,7 @@ int vector_destroy(vector * vector)
 	if (vector == NULL)
 		return 0;
 
-	vector_clear(vector);
-	
+	vector_clear(vector);	
 	safe_free(vector);
 	return 0;
 }
@@ -404,5 +371,3 @@ bool vector_is_empty(vector * vector)
 		return true;
 	else  return false;
 }
-
-

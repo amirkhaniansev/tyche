@@ -18,23 +18,24 @@
  /**
  * exit codes start from 0x100
  */
-#define SUCCESSFULLY_COMPLETED 0
-#define VECTOR_ALLOCATION_ERROR 0x101
-#define VECTOR_COMPARATOR_ERROR_IN_CONSTRUCTOR 0x102
-#define VECTOR_ASSIGNER_ERROR_IN_CONSTRUCTOR 0x103
-#define VECTOR_FINALIZER_ERROR_IN_CONSTRUCTOR 0x104
-#define VECTOR_BASE_ALLOCATION_ERROR_IN_CONSTRUCTOR 0x105
-#define VECTOR_DATASIZE_NEGATIVE 0x106
-#define VECTOR_ASSIGNER_IS_NULL 0x107
-#define VECTOR_ASSIGN_RIGHT_IS_NULL 0x108
-#define VECTOR_BASE_ALLOCATION_ERROR_IN_ASSIGN 0x109
-#define VECTOR_BASE_ALLOCATION_ERROR_IN_INSERT 0x110
-#define VECTOR_HIGH_POSSITION_IN_INSERT 0x111
-#define VECTOR_IS_EMPTY 0x112
-#define VECTOR_ERASE_POSITION_OUT_OF_RANGE 0x113
-#define VECTOR_IS_NULL 0x114
-#define VECTOR_IS_CLEAR 0x115
-#define INVALID_DATA 0x100
+#define SUCCESSFULLY_COMPLETED							0x0
+#define VECTOR_ALLOCATION_ERROR							0x101
+#define VECTOR_COMPARATOR_ERROR_IN_CONSTRUCTOR			0x102
+#define VECTOR_ASSIGNER_ERROR_IN_CONSTRUCTOR			0x103
+#define VECTOR_FINALIZER_ERROR_IN_CONSTRUCTOR			0x104
+#define VECTOR_BASE_ALLOCATION_ERROR_IN_CONSTRUCTOR     0x105
+#define VECTOR_DATASIZE_NEGATIVE						0x106
+#define VECTOR_ASSIGNER_IS_NULL							0x107
+#define VECTOR_ASSIGN_RIGHT_IS_NULL						0x108
+#define VECTOR_BASE_ALLOCATION_ERROR_IN_ASSIGN			0x109
+#define VECTOR_BASE_ALLOCATION_ERROR_IN_INSERT			0x110
+#define VECTOR_HIGH_POSSITION_IN_INSERT					0x111
+#define VECTOR_IS_EMPTY									0x112
+#define VECTOR_ERASE_POSITION_OUT_OF_RANGE				0x113
+#define VECTOR_IS_NULL									0x114
+#define VECTOR_IS_CLEAR									0x115
+#define INVALID_DATA									0x100
+#define VECTOR_PTR_IS_NULL								0x116
 
 /**
  * structure for vector interface
@@ -131,20 +132,6 @@ void* vector_at(vector* vector, unsigned int index);
  * VECTOR_IS_CLEAR(0x115)	 						if vector's base is NULL
  */
 unsigned int vector_capacity(vector* vector);
-
-/** 
- * assign - assignes right vector to the left vector
- * 
- * @left - left vector
- * @right - right vector
- * 
- * May be called with valid arguments.
- *
- * Errors
- * VECTOR_ASSIGN_RIGHT_IS_NULL(0x108) 				if vector that have to assign is NULL
- * VECTOR_BASE_ALLOCATION_ERROR_IN_ASSIGN(0x109)	if vector's _base allocation cannot be realized
- */
-int vector_assign(vector* left, vector* right);
 
 /**
  * insert - inserts new item to vector
