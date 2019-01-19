@@ -6,10 +6,16 @@
 * For full notice please see https://github.com/amirkhaniansev/tyche/tree/master/LICENSE.
 */
 
+#ifndef __LIST_H__
+#define __LIST_H__
+
+#include <stdbool.h>
+#include <stdlib.h>
+
 /**
 * error codes start from 0x116
 */
-#define SUCCESSFULLY_COMPLETED 		0
+#define SUCCESSFULLY_COMPLETED 		0x0
 #define LIST_DATA_SIZE_NEGATIVE 	0x116
 #define LIST_COMPARATOR_IS_NULL 	0x117
 #define LIST_ASSIGNER_IS_NULL 		0x118
@@ -23,12 +29,6 @@
 #define POSITION_OUT_OF_RANGE 		0x126
 #define POSITION_NODE_IS_NULL 		0x127
 #define ITERATOR_IS_NULL 			0x128
-
-#ifndef __LIST_H__
-#define __LIST_H__
-
-#include <stdbool.h>
-#include <stdlib.h>
 
 /* structures for linked list node */
 typedef struct list_node_
@@ -86,7 +86,9 @@ typedef list_node* list_iterator;
  * LIST_FINALIZER_IS_NULL	(0x119)		if finalizer function is NULL
  * LIST_ALLOCATION_ERROR	(0x120)		if allocation cannot be realized
  */
-list* list_create(unsigned int data_size,
+list* list_create(
+		unsigned int* error_code,
+		unsigned int data_size,
 		bool is_primitive_type,
 		int(*comparator)(const void*, const void*),
 		int(*assigner)(void*, void*),
@@ -116,13 +118,12 @@ void* list_back(list* list);
 void* list_at(list* list, unsigned int position);
 
 /**
-* list_assign - assigns right list to the list and return that list 
-*
-* @right - right list
-*
-* May be called with valid argument.
+* list_at_it - gets the iterator of the give position
+* 
+* @list - list
+* @position - position
 */
-list* list_assign(list* right);
+list_iterator list_at_it(list* list, unsigned int position);
 
 /**
 * list_push_front - pushes new element to the front of list
@@ -201,17 +202,6 @@ int list_insert_it(list* list, list_iterator position, void*data);
 * POSITION_OUT_OF_RANGE		(0x126)					if given position is greater than _count
 */
 int list_insert_po(list* list, unsigned int position, void* data);
-
-/**
-* list_sort - sorts the list
-*
-* @list - list
-*
-* Errors
-* LIST_IS_NULL	(0x121)									if list is NULL
-* LIST_IS_EMPTY(0x122)									if list is empty
-*/
-int list_sort(list* list);
 
 /**
 * erase_it - deletes the item with the given position

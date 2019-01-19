@@ -6,7 +6,14 @@
 * For full notice please see https://github.com/amirkhaniansev/tyche/tree/master/LICENSE.
 */
 
-#include "list.h"
+#include <stdlib.h>
+#include "../include/list.h"
+
+static void safe_free(void** ptr)
+{
+	free(*ptr);
+	*ptr = NULL;
+}
 
 /**
 * list_create - creates list
@@ -38,8 +45,8 @@ etc.
 * LIST_FINALIZER_IS_NULL	(0x119)						if finalizer function is NULL
 * LIST_ALLOCATION_ERROR	(0x120)						if allocation cannot be realized
 */
-list * list_create(
-	unsigned int error_code,
+list* list_create(
+	unsigned int* error_code,
 	unsigned int data_size,
 	bool is_primitive_type,
 	int(*comparator)(const void *, const void *),
@@ -48,25 +55,25 @@ list * list_create(
 	void *(*copy_func)(void *))
 {
 	if (data_size < 0){
-		error_code = LIST_DATA_SIZE_NEGATIVE;
+		*error_code = LIST_DATA_SIZE_NEGATIVE;
 		return NULL;
 	}
 	if (comparator == NULL) {
-		error_code = LIST_COMPARATOR_IS_NULL;
+		*error_code = LIST_COMPARATOR_IS_NULL;
 		return NULL;
 	}
 	if (assigner == NULL) {
-		error_code = LIST_ASSIGNER_IS_NULL;
+		*error_code = LIST_ASSIGNER_IS_NULL;
 		return NULL;
 	}		
 	if (finalizer == NULL) {
-		error_code = LIST_FINALIZER_IS_NULL;
+		*error_code = LIST_FINALIZER_IS_NULL;
 		return NULL;
 	}
 
 	list* List = malloc(sizeof(list));
 	if (List == NULL) {
-		error_code = LIST_ALLOCATION_ERROR;
+		*error_code = LIST_ALLOCATION_ERROR;
 		return NULL;
 	}
 
@@ -77,6 +84,7 @@ list * list_create(
 
 	return List;
 }
+
 /**
 * list_front - gets the first element of list
 * @list - list
@@ -89,6 +97,7 @@ void * list_front(list * list)
 
 	return list->_top->_data;
 }
+
 /**
 * list_back - gets the last element of list
 * @list - list
@@ -101,13 +110,14 @@ void * list_back(list * list)
 
 	return list->_last->_data;
 }
+
 /**
-* list_at - gets the element with the specified position
+* list_at_it - gets the iterator of the give position
 *
 * @list - list
 * @position - position
 */
-void * list_at(list * list, unsigned int position)
+list_iterator list_at_it(list* list, unsigned int position)
 {
 	if (list == NULL || list_is_empty(list) || list->_count <= position)
 		return NULL;
@@ -130,42 +140,19 @@ void * list_at(list * list, unsigned int position)
 }
 
 /**
-* list_assign - assigns right list to the list and return that list
+* list_at - gets the element with the specified position
 *
-* @right - right list
-*
-* May be called with valid argument.
+* @list - list
+* @position - position
 */
-list* list_assign(list * right)
+void * list_at(list * list, unsigned int position)
 {
-	if (list_is_empty(right))
-		return NULL;
+	list_iterator it = list_at_it(list, position);
 	
-	list *List = malloc(sizeof(list));
-	if (List == NULL)
+	if (it == NULL)
 		return NULL;
 
-	List->_data_size = right->_data_size;
-	List->_is_primitive_type = right->_is_primitive_type;
-	List->_comparator = right->_comparator;
-	List->_assigner = right->_assigner;
-	List->_finalizer = right->_finalizer;
-	List->_count = 0;
-
-	list_iterator right_temp_node = right->_top;
-
-	List->_top = NULL;
-	List->_last = NULL;
-
-	int error;
-	while (right_temp_node != NULL) {
-		error = list_push_back(List, right_temp_node->_data);
-		if (error != 0)
-			return NULL;
-		right_temp_node = right_temp_node->_next;
-	}
-
-	return List;
+	return it->_data;
 }
 
 /**
@@ -218,21 +205,25 @@ int list_push_front(list * list, void * data)
 */
 int list_pop_front(list * list)
 {
-	if (list == NULL) {
+	if (list == NULL)
 		return LIST_IS_NULL;
-	}
-	if (list_is_empty(list)) {
+
+	if (list_is_empty(list))
 		return LIST_IS_EMPTY;
-	}
-	if (list->_count == 1) {
+
+	if (list->_count == 1) 
 		return list_clear(list);
-	}
+	
 	if (list->_count == 2) {
-		free(list->_top);
+		if (list->_is_primitive_type)
+			safe_free(&list->_top->_data);
+		else list->_finalizer(list->_top->_data);
+
+		safe_free(&list->_top);
 		list->_top = list->_last;
 		list->_top->_next = list->_top->_prev = NULL;
 		list->_count--;
-
+		
 		return 0;
 	}
 
@@ -240,9 +231,11 @@ int list_pop_front(list * list)
 	replace_temp = list->_top->_next;
 	replace_temp->_prev = NULL;
 
-	if (!list->_is_primitive_type)
-		list->_finalizer(list->_top);
-	free(list->_top);
+	if (list->_is_primitive_type)
+		safe_free(&list->_top->_data);
+	else list->_finalizer(list->_top->_data);
+	
+	safe_free(&list->_top);
 
 	list->_top = replace_temp;
 	list->_count--;
@@ -293,30 +286,36 @@ int list_push_back(list * list, void * data)
 */
 int list_pop_back(list * list)
 {
-	if (list == NULL) {
+	if (list == NULL)
 		return LIST_IS_NULL;
-	}
-	if (list_is_empty(list)) {
+
+	if (list_is_empty(list)) 
 		return LIST_IS_EMPTY;
-	}
-	if (list->_count == 1) {
+	
+	if (list->_count == 1) 
 		return list_clear(list);
-	}
+	
 	if (list->_count == 2) {
-		free(list->_last);
+		if (list->_is_primitive_type)
+			safe_free(&list->_last->_data);
+		else list->_finalizer(list->_last->_data);
+		
+		safe_free(&list->_last);	
 		list->_last = list->_top;
 		list->_top->_next = NULL;
 		list->_count--;
+
 		return 0;
 	}
 
 	list_iterator new_last_node = list->_last->_prev;
 	new_last_node->_next = NULL;
 
-	if (!list->_is_primitive_type)
-		list->_finalizer(list->_last);
-	free(list->_last);
+	if (list->_is_primitive_type)
+		safe_free(&list->_last->_data);
+	else list->_finalizer(list->_last->_data);
 
+	safe_free(&list->_last);
 	list->_last = new_last_node;
 	list->_count--;
 
@@ -390,7 +389,7 @@ int list_insert_po(list * list, unsigned int position, void * data)
 	if (position == list->_count)
 		return list_push_back(list, data);
 
-	list_iterator existing_node = list_at(list, position), new_node = malloc(sizeof(list_node));
+	list_iterator existing_node = list_at_it(list, position), new_node = malloc(sizeof(list_node));
 	if (new_node == NULL)
 		return LIST_NODE_ALLOCATION_ERROR;
 
@@ -402,28 +401,6 @@ int list_insert_po(list * list, unsigned int position, void * data)
 
 	list->_count++;
 
-	return 0;
-}
-
-/**
-* list_sort - sorts the list
-*
-* @list - list
-*
-* Errors
-* LIST_IS_NULL	(0x121)									if list is NULL
-* LIST_IS_EMPTY(0x122)									if list is empty
-*/
-int list_sort(list * List)
-{
-	if (List == NULL)
-		return LIST_IS_NULL;
-	if (list_is_empty(List))
-		return LIST_IS_EMPTY;
-
-	/*
-	must be
-	*/
 	return 0;
 }
 
@@ -461,9 +438,10 @@ int list_erase_it(list * list, list_iterator position)
 	find_node->_next->_prev = find_node->_prev;
 	find_node->_prev->_next = find_node->_next;
 
-	if (!list->_is_primitive_type)
-		list->_finalizer(find_node->_data);
-	free(find_node);
+	if (list->_is_primitive_type)
+		safe_free(&find_node->_data);
+	else list->_finalizer(find_node->_data);
+	safe_free(&find_node);
 
 	list->_count--;
 
@@ -496,14 +474,15 @@ int list_erase_po(list * list, unsigned int position)
 	if (position == list->_count)
 		return list_pop_back(list);
 
-	list_iterator erase_node = list_at(list, position);
+	list_iterator erase_node = list_at_it(list, position);
 
 	erase_node->_next->_prev = erase_node->_prev;
 	erase_node->_prev->_next = erase_node->_next;
 
-	if (!list->_is_primitive_type)
-		list->_finalizer(erase_node->_data);
-	free(erase_node);
+	if (list->_is_primitive_type)
+		safe_free(&erase_node->_data);
+	else list->_finalizer(erase_node->_data);
+	safe_free(&erase_node);
 
 	list->_count--;
 
@@ -529,9 +508,10 @@ int list_clear(list * list)
 	while (list->_top != NULL) {
 		delete_node = list->_top;
 		list->_top = list->_top->_next;
-		if (!list->_is_primitive_type)
-			list->_finalizer(delete_node->_data);
-		free(delete_node);
+		if (list->_is_primitive_type)
+			safe_free(&delete_node->_data);
+		else list->_finalizer(delete_node->_data);
+		safe_free(&delete_node);
 	}
 
 	list->_top = list->_last = NULL;
@@ -550,10 +530,7 @@ int list_destroy(list * list)
 		return 0;
 
 	list_clear(list);
-
-	free(list);
-	list = NULL;
-
+	safe_free(&list);
 	return 0;
 }
 
@@ -563,10 +540,7 @@ int list_destroy(list * list)
 */
 bool list_is_empty(list * list)
 {
-	if (list->_top == NULL || list->_count < 1)
-		return true;
-	else
-		return false;
+	return list == NULL || list->_top == NULL || list->_count < 1;
 }
 
 /**
