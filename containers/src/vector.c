@@ -221,7 +221,7 @@ int vector_insert(vector * vector, unsigned int position, void * data)
 		
 		vector->_size *= 2;
 
-		safe_free(&vector->_base);
+		free(vector->_base);
 		vector->_base = base_temp;
 		base_temp = NULL;			
 	}
@@ -340,9 +340,7 @@ int vector_clear(vector * vector)
 		__iterate__(i, vector->_count, safe_free(&vector->_base[i]));
 	else __iterate__(i, vector->_count, vector->_finalizer(vector->_base[i]));
 
-	safe_free(vector->_base);
 	vector->_count = 0;
-	vector->_size = 0;
 
 	return 0;
 }
@@ -356,8 +354,9 @@ int vector_destroy(vector * vector)
 	if (vector == NULL)
 		return 0;
 
-	vector_clear(vector);	
-	safe_free(vector);
+	vector_clear(vector);
+	free(vector->_base);
+	safe_free(&vector);
 	return 0;
 }
 
