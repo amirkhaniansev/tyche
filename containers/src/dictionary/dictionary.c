@@ -1,0 +1,259 @@
+/**
+ * GNU General Public License Version 3.0, 29 June 2007
+ * Source of dictionary API.
+ * Copyright (C) <2018>
+ *               Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
+ *                        <DavidPetr>       <david.petrosyan11100@gmail.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * Full notice : https://github.com/amirkhaniansev/tyche/tree/master/LICENSE
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+**/
+
+#include "../../include/dictionary.h"
+#include "dictionary_internal.h"
+
+struct dictionary {
+	int* _buckets;
+	int _count;
+	int _size;
+	int _version;
+	int _free_list;
+	int _free_count;
+	size_t _key_size;
+	size_t _value_size;
+	bool _km_alloc;
+	bool _vm_alloc;
+	entry_t* _entries;
+	keys_t _keys;
+	values_t _values;
+	key_comparator _key_cmp;
+	key_hasher _key_h;
+	key_finalizer _key_f;
+	value_finalizer _value_f;
+};
+
+int find_entry(dictionary_t* dictionary, void* key);
+
+int insert(dictionary_t* dictionary, void* key, void* value, bool add);
+
+void resize(dictionary_t* dictionary);
+
+void resize_s(dictionary_t* dictionary, int new_size, bool force_new_hash_codes);
+
+void free_entry_key(dictionary_t* dictionary, int index);
+
+void free_entry_value(dictionary_t* dictionary, int index);
+
+/**
+ * dictionary_create - creates key-value dictionary
+ *
+ * @capacity - capacity
+ * @data_size - size of value
+ * @key_size - size of key
+ * @key_manually_allocated - boolean value indicating whether the key is manually allocated
+ * @value_manually_allocated - boolean value indicating whether the value is manually allocated
+ * @key_cmp - comparator for key
+ * @key_h - hasher for key
+ * @key_f - finalizer for key
+ * @value_f - finalizer for value
+ *
+ * Returns dictionary object if everything is OK, otherwise NULL.
+ */
+dictionary_t* dictionary_create(
+	int capacity,
+	size_t data_size,
+	size_t key_size,
+	bool key_manually_allocated,
+	bool value_manually_allocated,
+	key_comparator key_cmp,
+	key_hasher key_h,
+	key_finalizer key_f,
+	value_finalizer value_f)
+{
+	if (data_size <= 0 || 
+		key_size <= 0 || 
+		capacity < 0 ||
+		key_cmp == NULL ||
+		key_h == NULL ||
+		(!key_manually_allocated && key_f == NULL) ||
+		(!value_manually_allocated && value_f == NULL))
+		return NULL;
+
+	dictionary_t* dictionary = malloc(sizeof(dictionary_t));
+	if (dictionary == NULL)
+		return NULL;
+	
+	int size = get_prime(capacity);
+	
+	dictionary->_buckets = malloc(size * sizeof(int));
+	if (dictionary->_buckets == NULL) {
+		free(dictionary);
+		return NULL;
+	}
+
+	dictionary->_entries = malloc(size * sizeof(entry_t));
+	if (dictionary->_entries == NULL) {
+		free(dictionary->_buckets);
+		free(dictionary);
+		return NULL;
+	}
+
+	dictionary->_size = size;
+	for (int i = 0; i < dictionary->_size; i++) {
+		dictionary->_buckets[i] = -1;
+		dictionary->_entries[i] = {
+			_hash_code = 0,
+			._next = 0,
+			._key = NULL,
+			._value = NULL
+		};
+	}
+
+	*dictionary = {
+		._count = 0,
+		._free_count = 0,
+		._free_list = -1,
+		._version = 0,
+		._key_cmp = key_cmp,
+		._key_f = key_f,
+		._value_f = value_f,
+		._key_h = key_h,
+		._key_size = key_size,
+		._value_size = data_size,
+		._vm_alloc = value_manually_allocated,
+		._km_alloc = key_manually_allocated,
+		._keys = NULL,
+		._valus = NULL
+	};
+
+	return dictionary;
+}
+
+/**
+ * dictionary_count - gets the count of dictionar
+ * @dictionary - dictionary
+ * Returns the count of dictionary if dictionary is not NULL, -1 otherwise.
+ */
+int dictionary_count(dictionary_t* dictionary)
+{
+	if (dictionary == NULL)
+		return -1;
+
+	return dictionary->_count - dictionary->_free_count;
+}
+
+/**
+ * dictionary_get - gets the value with the given key
+ * @dictionary - dictionary
+ * @key - key
+ * @Returns the value if the specified key exists, otherwise NULL.
+ */
+void* dictionary_get(dictionary_t* dictionary, void* key)
+{
+	int i = find_entry(dictionary, key);
+	if (i > 0)
+		return dictionary->_entries[i]._value;
+
+	return NULL;
+}
+
+/** dictinary_set - sets the value with the given key
+ * @dictionary - dictionary
+ * @key - key
+ * @data- data
+ */
+void dictionary_set(dictionary_t* dictionary, void* key, void* data)
+{
+	insert(dictionary, key, value, false);
+}
+
+/**
+ * dictionary_keys - gets the collection of dictionary keys
+ * @dictionary - dictionary
+ */
+keys_t dictionary_keys(dictionary_t* dictionary)
+{
+	if (dictionary == NULL)
+		return NULL;
+
+	return dictionary->_keys;
+}
+
+/**
+ * dictionary - gets the collection of dictionary values
+ * dictionary - dictionary
+ */
+values_t dictionary_values(dictionary_t* dictionary)
+{
+	if (dictionary == NULL)
+		return NULL;
+
+	return dictionary->_values;
+}
+
+/**
+ * dictionary_contains - checks whether the dictionary contains the key
+ * @dictionary - dictionary
+ * @key - key
+ */
+bool dictionary_contains(dictionary_t* dictionary, void* key)
+{
+	return find_entry(dictionary, key) >= 0;
+}
+
+/**
+ * dictionary_add - adds the given key and value to the dictionary if the
+ *				key does not exist
+ * @dictionary - dictionary
+ * @key - key
+ * @value - value
+ * Returns error code.
+ */
+int dictionary_add(dictionary_t* dictionary, void* key, void* data)
+{
+	return insert(dictionary, key, value, true);
+}
+
+int insert(dictionary_t* dictionary, void* key, void* value, bool add)
+{
+	if (dictionary == NULL)
+		return DICTIONARY_IS_NULL;
+	if (key == NULL)
+		return DICTIONARY_KEY_IS_NULL;
+	if (value == NULL)
+		return DICTIONARY_VALUE_IS_NULL;
+
+	int hash_code = dictionary->_key_h(key) & 0x7FFFFFF;
+	int target_bucket = hash_code % dictionary->_size;
+	int collision_count = 0;
+	int* bs = dictionary->_buckets;
+	entry_t* es = dictionary->_entries;
+
+	for (int i = bs[target_bucket]; i >= 0; i = es[i]._next) {
+		if (es[i]._hash_code == hash_code && dictionary->_key_cmp(es[i]._key, key)) {
+			if (add == true)
+				return DICTIONARY_ALREADY_EXISTS;				
+			if (dictionary->_vm_alloc)
+				free(es[i]._value);	
+			else dictionary->_value_size(es[i]._value);				
+			es[i]._value = value;
+			dictionary->_version++;
+			return DICTIONARY_SUCCESS;
+		}
+
+		collision_count++;
+	}
+
+
+}
