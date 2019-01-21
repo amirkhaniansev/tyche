@@ -125,6 +125,22 @@ static inline bool string_t_ends_with(const string_t* string,
 	return true;
 }
 
+static inline int string_t_resize(string_t* string)
+{
+	char* new_buffer = malloc(2 * string->_capacity * sizeof(char));
+
+	if(new_buffer == NULL)
+		return STRING_BASE_IS_NULL;
+
+	for(unsigned int i = 0; i < string->_length; i++)
+		new_buffer[i] = string->_buffer[i];
+
+	free(string->_buffer);
+	string->_buffer = new_buffer;
+	string->_capacity *= 2;
+	return 0;
+}
+
 static inline void string_t_destroy_internal(string_t* string, bool is_on_stack)
 {
 	if(string == NULL)
@@ -152,12 +168,6 @@ int string_t_init(string_t* string)
 {
 	if(string == NULL)
 		return STRING_IS_NULL;
-	
-	if(string_t_is_initialized(string))
-		return STRING_IS_ALREADY_INITIALIZED;
-	
-	if(string->_buffer != NULL)
-		free(string->_buffer);
 
 	string->_length = 0;
 	string->_capacity = 2;
@@ -588,6 +598,150 @@ int string_t_index_of_any(const string_t* string,unsigned int amount,...)
 	return STRING_SYMBOL_NOT_FOUND;			
 }
 
+/**
+ * string_t_append_char - appends character to given string
+ * @string - string
+ * @character - character
+ */
+int string_t_append_char(string_t* string, char character)
+{
+	if(string == NULL || string->_buffer == NULL)
+		return STRING_IS_NULL;
+	
+	if(string->_length == string->_capacity)
+		string_t_resize(string);
+	
+	string->_buffer[string->_length] = character;
+	string->_length++;
+	return 0;
+}
+
+/**
+ * string_t_append_chars - appends the append string to initial string
+ * @string - string
+ * @append_string - append string
+ */
+int string_t_append_chars(string_t* string, string_t* append_string)
+{
+	if(string == NULL || append_string == NULL)
+		return STRING_IS_NULL;
+
+	if(string->_buffer == NULL || append_string->_buffer == NULL)
+		return STRING_BASE_IS_NULL;
+
+	for(unsigned int i = 0; i < append_string->_length; i++)
+		if(string_t_append_char(string, append_string->_buffer[i]) != 0)
+			return STRING_APPEND_ERROR;
+	
+	return 0;
+}
+
+/**
+ * string_t_to_lower - makes characters of string lowercase
+ * @string - string
+ */
+int string_t_to_lower(string_t* string)
+{
+	if(string == NULL)
+		return STRING_IS_NULL;
+	if(string->_buffer == NULL)
+		return STRING_BASE_IS_NULL;
+
+	for(unsigned int i = 0; i < string->_length; i++)
+		if(string->_buffer[i] > 64 && string->_buffer[i] < 91)
+			string->_buffer[i] |= 32;
+	
+	return 0;
+}
+
+/**
+ * string_to_upper - makes characters of string uppercase
+ * @string - string
+ */
+int string_t_to_upper(string_t* string)
+{
+	if(string == NULL)
+		return STRING_IS_NULL;
+	if(string->_buffer == NULL)
+		return STRING_BASE_IS_NULL;
+
+	for(unsigned int i = 0; i < string->_length; i++)
+		if(string->_buffer[i] > 96 && string->_buffer[i] < 123)
+			string->_buffer[i] &= ~32;
+
+	return 0; 
+}
+
+/**
+ * string_t_is_substring - checks if the possible substring is actually a substring of
+ * 		the given string.
+ * 		Impelementation uses Knuth-Morris-Pratt algorithm.
+ * 		Complexity O(n + m) 
+ * 			where 	n = length of string
+ * 					m = length of possible substring
+ * @string - string
+ * @substring - possible substring
+ * Returns true if the possible substring is actually a substring of
+ * 		the given string
+ */
+bool string_t_is_substring(string_t* string, string_t* substring)
+{
+	if(string == NULL || substring == NULL || 
+	   string->_buffer == NULL || substring->_buffer == NULL)
+	   return false;
+
+	int* table = malloc(substring->_length * sizeof(int));	
+	if(table == NULL)
+		return false;
+
+	int pos = 1;
+	int current_ci = 0;
+	char* word = string->_buffer;
+	char* pattern = substring->_buffer;
+
+	table[0] = -1;
+
+	while(pos < string->_length) {
+		if(word[pos] == word[current_ci]) {
+			table[pos] = table[current_ci];
+		}
+		else {
+			table[pos] = current_ci;
+			current_ci = table[current_ci];
+			while(current_ci >= 0 && word[pos] != word[current_ci]) {
+				current_ci = table[current_ci];
+			}  
+		}
+		pos++;
+		current_ci++;
+	}
+
+	table[pos] = current_ci; 
+
+	int i = 0, j = 0;
+
+	while(j < string->_length) {
+		if(word[j] == pattern[i]) {
+			i++;
+			j++;
+			if(i == substring->_length) {
+				free(table);
+				return true;
+			}
+		}
+		else {
+			i = table[i];
+			if(i < 0) {
+				i++;
+				j++;
+			}
+		}
+	}
+
+	free(table);
+
+	return false;
+}
 
 /**
  * string_t_destroy - destroys string_t object

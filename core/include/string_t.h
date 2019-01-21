@@ -21,6 +21,8 @@
 #define STRING_SYMBOL_NOT_FOUND				0x207
 #define STRING_INDEX_OF_CHAR_COUNT_ERROR	0x208
 #define STRING_IS_ALREADY_DESTROYED			0x209
+#define STRING_INVALID_SPLIT_CHARACTER		0x210
+#define STRING_APPEND_ERROR					0x211
 
 /** structure for ASCII strings **/
 typedef struct string_structure
@@ -239,6 +241,58 @@ int string_t_index_of(const string_t* string, const char symbol);
  * 			STRING_SYMBOL_NOT_FOUND	if none of symbols is found
  */
 int string_t_index_of_any(const string_t* string,unsigned int amount,...);
+
+/**
+ * string_t_append_char - appends character to given string
+ * @string - string
+ * @character - character
+ */
+int string_t_append_char(string_t* string, char character);
+
+/**
+ * string_t_append_chars - appends the append string to initial string
+ * @string - string
+ * @append_string - append string
+ */
+int string_t_append_chars(string_t* string, string_t* append_string);
+
+/**
+ * string_t_to_lower - makes characters of string lowercase
+ * @string - string
+ */
+int string_t_to_lower(string_t* string);
+
+/**
+ * string_to_upper - makes characters of string uppercase
+ * @string - string
+ */
+int string_t_to_upper(string_t* string);
+
+/**
+ * string_t_assign - assignes the right string to the left one
+ * @left - left string
+ * @right - right string
+ * Returns 0 if everything is OK, error code otherwise
+ */
+int string_t_assign(string_t* left, string_t* right);
+
+/**
+ * string_t_is_substring - checks if the possible substring is actually a substring of
+ * 		the given string
+ * @string - string
+ * @substring - possible substring
+ * Returns true if the possible substring is actually a substring of
+ * 		the given string
+ */
+bool string_t_is_substring(string_t* string, string_t* substring);
+
+/**
+ * string_t_split - splits the given string
+ * @string - string
+ * @split_character - split character
+ * Returns array of strings.
+ */
+string_t** string_t_split(const string_t* string, char split_character);
 
 /**
  * string_t_destroy - destroys string_t object
