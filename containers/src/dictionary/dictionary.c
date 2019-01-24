@@ -35,8 +35,8 @@ struct dictionary {
 	bool _km_alloc;
 	bool _vm_alloc;
 	entry_t* _entries;
-	keys_t _keys;
-	values_t _values;
+	keys_t* _keys;
+	values_t* _values;
 	key_comparator _key_cmp;
 	key_hasher _key_h;
 	key_finalizer _key_f;
@@ -54,6 +54,7 @@ void resize_s(dictionary_t* dictionary, int new_size, bool force_new_hash_codes)
 void free_entry_key(dictionary_t* dictionary, int index);
 
 void free_entry_value(dictionary_t* dictionary, int index);
+
 
 /**
  * dictionary_create - creates key-value dictionary
@@ -112,15 +113,15 @@ dictionary_t* dictionary_create(
 	dictionary->_size = size;
 	for (int i = 0; i < dictionary->_size; i++) {
 		dictionary->_buckets[i] = -1;
-		dictionary->_entries[i] = {
-			_hash_code = 0,
+		dictionary->_entries[i] = (entry_t){
+			._hash_code = 0,
 			._next = 0,
 			._key = NULL,
 			._value = NULL
 		};
 	}
 
-	*dictionary = {
+	*dictionary = (dictionary_t) {
 		._count = 0,
 		._free_count = 0,
 		._free_list = -1,
@@ -134,14 +135,14 @@ dictionary_t* dictionary_create(
 		._vm_alloc = value_manually_allocated,
 		._km_alloc = key_manually_allocated,
 		._keys = NULL,
-		._valus = NULL
+		._values = NULL
 	};
 
 	return dictionary;
 }
 
 /**
- * dictionary_count - gets the count of dictionar
+ * dictionary_count - gets the count of dictionary
  * @dictionary - dictionary
  * Returns the count of dictionary if dictionary is not NULL, -1 otherwise.
  */
@@ -175,14 +176,14 @@ void* dictionary_get(dictionary_t* dictionary, void* key)
  */
 void dictionary_set(dictionary_t* dictionary, void* key, void* data)
 {
-	insert(dictionary, key, value, false);
+	insert(dictionary, key, data, false);
 }
 
 /**
  * dictionary_keys - gets the collection of dictionary keys
  * @dictionary - dictionary
  */
-keys_t dictionary_keys(dictionary_t* dictionary)
+keys_t* dictionary_keys(dictionary_t* dictionary)
 {
 	if (dictionary == NULL)
 		return NULL;
@@ -194,7 +195,7 @@ keys_t dictionary_keys(dictionary_t* dictionary)
  * dictionary - gets the collection of dictionary values
  * dictionary - dictionary
  */
-values_t dictionary_values(dictionary_t* dictionary)
+values_t* dictionary_values(dictionary_t* dictionary)
 {
 	if (dictionary == NULL)
 		return NULL;
@@ -222,7 +223,7 @@ bool dictionary_contains(dictionary_t* dictionary, void* key)
  */
 int dictionary_add(dictionary_t* dictionary, void* key, void* data)
 {
-	return insert(dictionary, key, value, true);
+	return insert(dictionary, key, data, true);
 }
 
 int insert(dictionary_t* dictionary, void* key, void* value, bool add)
@@ -246,9 +247,6 @@ int insert(dictionary_t* dictionary, void* key, void* value, bool add)
 				return DICTIONARY_ALREADY_EXISTS;				
 			if (dictionary->_vm_alloc)
 				free(es[i]._value);	
-			else dictionary->_value_size(es[i]._value);				
-			es[i]._value = value;
-			dictionary->_version++;
 			return DICTIONARY_SUCCESS;
 		}
 

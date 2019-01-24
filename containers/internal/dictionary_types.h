@@ -32,6 +32,6 @@ typedef struct values values_t;
 typedef bool(*key_comparator)(const void*, const void*);
 typedef int(*key_hasher)(const void*);
 typedef void(*key_finalizer)(void*);
-typedef void(*value_finalizer(void*);
+typedef void(*value_finalizer)(void*);
 
 #endif

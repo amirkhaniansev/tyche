@@ -9,11 +9,11 @@
 #include <stdlib.h>
 #include "../include/list.h"
 
-static void safe_free(void** ptr)
-{
-	free(*ptr);
-	*ptr = NULL;
-}
+#define safe_free(ptr)\
+	do {\
+		free(ptr);\
+		ptr = NULL;\
+	} while(0)
 
 /**
 * list_create - creates list
@@ -216,10 +216,10 @@ int list_pop_front(list * list)
 	
 	if (list->_count == 2) {
 		if (list->_is_primitive_type)
-			safe_free(&list->_top->_data);
+			safe_free(list->_top->_data);
 		else list->_finalizer(list->_top->_data);
 
-		safe_free(&list->_top);
+		safe_free(list->_top);
 		list->_top = list->_last;
 		list->_top->_next = list->_top->_prev = NULL;
 		list->_count--;
@@ -232,10 +232,10 @@ int list_pop_front(list * list)
 	replace_temp->_prev = NULL;
 
 	if (list->_is_primitive_type)
-		safe_free(&list->_top->_data);
+		safe_free(list->_top->_data);
 	else list->_finalizer(list->_top->_data);
 	
-	safe_free(&list->_top);
+	safe_free(list->_top);
 
 	list->_top = replace_temp;
 	list->_count--;
@@ -297,10 +297,10 @@ int list_pop_back(list * list)
 	
 	if (list->_count == 2) {
 		if (list->_is_primitive_type)
-			safe_free(&list->_last->_data);
+			safe_free(list->_last->_data);
 		else list->_finalizer(list->_last->_data);
 		
-		safe_free(&list->_last);	
+		safe_free(list->_last);
 		list->_last = list->_top;
 		list->_top->_next = NULL;
 		list->_count--;
@@ -312,10 +312,10 @@ int list_pop_back(list * list)
 	new_last_node->_next = NULL;
 
 	if (list->_is_primitive_type)
-		safe_free(&list->_last->_data);
+		safe_free(list->_last->_data);
 	else list->_finalizer(list->_last->_data);
 
-	safe_free(&list->_last);
+	safe_free(list->_last);
 	list->_last = new_last_node;
 	list->_count--;
 
@@ -439,9 +439,9 @@ int list_erase_it(list * list, list_iterator position)
 	find_node->_prev->_next = find_node->_next;
 
 	if (list->_is_primitive_type)
-		safe_free(&find_node->_data);
+		safe_free(find_node->_data);
 	else list->_finalizer(find_node->_data);
-	safe_free(&find_node);
+	safe_free(find_node);
 
 	list->_count--;
 
@@ -480,9 +480,9 @@ int list_erase_po(list * list, unsigned int position)
 	erase_node->_prev->_next = erase_node->_next;
 
 	if (list->_is_primitive_type)
-		safe_free(&erase_node->_data);
+		safe_free(erase_node->_data);
 	else list->_finalizer(erase_node->_data);
-	safe_free(&erase_node);
+	safe_free(erase_node);
 
 	list->_count--;
 
@@ -509,9 +509,9 @@ int list_clear(list * list)
 		delete_node = list->_top;
 		list->_top = list->_top->_next;
 		if (list->_is_primitive_type)
-			safe_free(&delete_node->_data);
+			safe_free(delete_node->_data);
 		else list->_finalizer(delete_node->_data);
-		safe_free(&delete_node);
+		safe_free(delete_node);
 	}
 
 	list->_top = list->_last = NULL;
@@ -530,7 +530,7 @@ int list_destroy(list * list)
 		return 0;
 
 	list_clear(list);
-	safe_free(&list);
+	safe_free(list);
 	return 0;
 }
 
@@ -571,7 +571,7 @@ list_iterator list_end(list * list)
 */
 int list_move_next(list_iterator iterator)
 {
-	if (iterator = NULL)
+	if (iterator == NULL)
 		return ITERATOR_IS_NULL;
 
 	iterator = iterator->_next;
@@ -585,7 +585,7 @@ int list_move_next(list_iterator iterator)
 */
 int list_move_prev(list_iterator iterator)
 {
-	if (iterator = NULL)
+	if (iterator == NULL)
 		return ITERATOR_IS_NULL;
 
 	iterator = iterator->_prev;

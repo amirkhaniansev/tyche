@@ -62,7 +62,7 @@ dictionary_t* dictionary_create(
 	value_finalizer value_f);
 
 /** 
- * dictionary_count - gets the count of dictionar
+ * dictionary_count - gets the count of dictionary
  * @dictionary - dictionary
  * Returns the count of dictionary
  */
@@ -87,13 +87,13 @@ void dictionary_set(dictionary_t* dictionary, void* key, void* data);
  * dictionary_keys - gets the collection of dictionary keys
  * @dictionary - dictionary
  */
-keys_t dictionary_keys(dictionary_t* dictionary);
+keys_t* dictionary_keys(dictionary_t* dictionary);
 
 /**
  * dictionary - gets the collection of dictionary values
  * dictionary - dictionary
  */
-values_t dictionary_values(dictionary_t* dictionary);
+values_t* dictionary_values(dictionary_t* dictionary);
 
 /** 
  * dictionary_add - adds the given key and value to the dictionary if the
