@@ -186,6 +186,8 @@ keys_t dictionary_keys(dictionary_t* dictionary)
 	}
 
 	keys._keys = malloc(dictionary_count(dictionary) * sizeof(void*));
+	if(keys._keys == NULL)
+		return keys;
 
 	for(int i = 0; i < dictionary->_count; i++)
 		if(dictionary->_entries[i]._hash_code >= 0)
@@ -208,6 +210,8 @@ values_t dictionary_values(dictionary_t* dictionary)
 	}
 
 	values._values = malloc(dictionary_count(dictionary) * sizeof(void*));
+	if(values._values == NULL)
+		return values;
 
 	for(int i = 0; i < dictionary->_count; i++)
 		if(dictionary->_entries[i]._hash_code >= 0)
