@@ -35,8 +35,6 @@ struct dictionary {
 	bool _km_alloc;
 	bool _vm_alloc;
 	entry_t* _entries;
-	keys_t* _keys;
-	values_t* _values;
 	key_comparator _key_cmp;
 	key_hasher _key_h;
 	key_finalizer _key_f;
@@ -51,10 +49,7 @@ void resize(dictionary_t* dictionary);
 
 void resize_s(dictionary_t* dictionary, int new_size, bool force_new_hash_codes);
 
-void free_entry_key(dictionary_t* dictionary, int index);
-
-void free_entry_value(dictionary_t* dictionary, int index);
-
+void free_entries(dictionary_t* dictionary);
 
 /**
  * dictionary_create - creates key-value dictionary
@@ -133,9 +128,7 @@ dictionary_t* dictionary_create(
 		._key_size = key_size,
 		._value_size = data_size,
 		._vm_alloc = value_manually_allocated,
-		._km_alloc = key_manually_allocated,
-		._keys = NULL,
-		._values = NULL
+		._km_alloc = key_manually_allocated
 	};
 
 	return dictionary;
@@ -183,24 +176,44 @@ void dictionary_set(dictionary_t* dictionary, void* key, void* data)
  * dictionary_keys - gets the collection of dictionary keys
  * @dictionary - dictionary
  */
-keys_t* dictionary_keys(dictionary_t* dictionary)
+keys_t dictionary_keys(dictionary_t* dictionary)
 {
-	if (dictionary == NULL)
-		return NULL;
+	keys_t keys;
 
-	return dictionary->_keys;
+	if(dictionary == NULL) {
+		keys._keys = NULL;
+		return keys;
+	}
+
+	keys._keys = malloc(dictionary_count(dictionary) * sizeof(void*));
+
+	for(int i = 0; i < dictionary->_count; i++)
+		if(dictionary->_entries[i]._hash_code >= 0)
+			keys._keys[i] = dictionary->_entries[i]._key;
+
+	return keys;
 }
 
 /**
  * dictionary - gets the collection of dictionary values
  * dictionary - dictionary
  */
-values_t* dictionary_values(dictionary_t* dictionary)
+values_t dictionary_values(dictionary_t* dictionary)
 {
-	if (dictionary == NULL)
-		return NULL;
+	values_t values;
 
-	return dictionary->_values;
+	if(dictionary == NULL) {
+		values._values = NULL;
+		return values;
+	}
+
+	values._values = malloc(dictionary_count(dictionary) * sizeof(void*));
+
+	for(int i = 0; i < dictionary->_count; i++)
+		if(dictionary->_entries[i]._hash_code >= 0)
+			values._values[i] = dictionary->_entries[i]._value;
+
+	return values;
 }
 
 /**
@@ -226,6 +239,87 @@ int dictionary_add(dictionary_t* dictionary, void* key, void* data)
 	return insert(dictionary, key, data, true);
 }
 
+/**
+ * dictionary_remove - removes the value with the given key from dictionary if it exists
+ * @dictionary - dictionary
+ * @key - key
+ * Returns true if remove operation is successful, otherwise NULL.
+ */
+bool dictionary_remove(dictionary_t* dictionary, void* key)
+{
+	if(dictionary == NULL || dictionary->_buckets == NULL || key == NULL)
+		return false;
+
+	int hash_code = (dictionary->_key_h(key)) & 0x7FFFFFFF;
+	int bucket = hash_code % dictionary->_size;
+	int last = -1;
+	int* bs = dictionary->_buckets;
+	entry_t* es = dictionary->_entries;
+
+	for(int i = bs[bucket]; i >= 0; last = i, i = es[i]._next) {
+		if(es[i]._hash_code == hash_code && dictionary->_key_cmp(es[i]._key, key)) {
+			if(last < 0)
+				bs[bucket] = es[i]._next;
+			else es[last]._next = es[i]._next;
+
+			es[i]._hash_code = -1;
+			es[i]._next = dictionary->_free_list;
+			free_entry_key(dictionary, es[i]);
+			free_entry_value(dictionary, es[i]);
+			dictionary->_free_list = i;
+			dictionary->_free_count++;
+			dictionary->_version++;
+
+			return true;
+		}
+	}
+
+	return false;
+}
+
+/**
+ * dictionary_clear - clears the dictionary
+ * @dictionary - dictionary
+ */
+void dictionary_clear(dictionary_t* dictionary)
+{
+	if(dictionary == NULL || dictionary->_count == 0)
+		return;
+
+	for(int i = 0; i < dictionary->_size; i++)
+		dictionary->_buckets[i] = -1;
+
+	for(int i = 0; i < dictionary->_count; i++) {
+		dictionary->_entries[i]._hash_code = 0;
+		dictionary->_entries[i]._next = 0;
+		free_entry_key(dictionary, dictionary->_entries[i]);
+		free_entry_value(dictionary, dictionary->_entries[i]);
+	}
+
+	dictionary->_free_list = -1;
+	dictionary->_count = 0;
+	dictionary->_free_count = 0;
+	dictionary->_version++;
+}
+
+/**
+ * dictionary_destroy - destroys dictionary
+ * @dictionary to be destroyed.
+ * Returns error code.
+ */
+int dictionary_destroy(dictionary_t* dictionary)
+{
+	if(dictionary == NULL)
+		return DICTIONARY_IS_NULL;
+
+	dictionary_clear(dictionary);
+	free(dictionary->_buckets);
+	free(dictionary->_entries);
+	free(dictionary);
+
+	return DICTIONARY_SUCCESS;
+}
+
 int insert(dictionary_t* dictionary, void* key, void* value, bool add)
 {
 	if (dictionary == NULL)
@@ -235,23 +329,125 @@ int insert(dictionary_t* dictionary, void* key, void* value, bool add)
 	if (value == NULL)
 		return DICTIONARY_VALUE_IS_NULL;
 
+	if(dictionary->_buckets == NULL) {
+		int size = get_prime(0);
+		dictionary->_size = size;
+
+		dictionary->_buckets = malloc(size * sizeof(int));	
+		if(dictionary->_buckets == NULL)
+			return DICTIONARY_ALLOCATION_ERROR;
+		for(int i = 0; i < size; i++)
+			dictionary->_buckets[i] = -1;
+		
+		free_entries(dictionary);
+		dictionary->_entries = malloc(size * sizeof(entry_t));
+		if(dictionary->_entries == NULL) {
+			free(dictionary->_buckets);
+			return DICTIONARY_ALLOCATION_ERROR;
+		}
+
+		dictionary->_free_list = -1;
+	}
+
 	int hash_code = dictionary->_key_h(key) & 0x7FFFFFF;
 	int target_bucket = hash_code % dictionary->_size;
-	int collision_count = 0;
 	int* bs = dictionary->_buckets;
 	entry_t* es = dictionary->_entries;
 
 	for (int i = bs[target_bucket]; i >= 0; i = es[i]._next) {
 		if (es[i]._hash_code == hash_code && dictionary->_key_cmp(es[i]._key, key)) {
 			if (add == true)
-				return DICTIONARY_ALREADY_EXISTS;				
-			if (dictionary->_vm_alloc)
-				free(es[i]._value);	
+				return DICTIONARY_ALREADY_EXISTS;
+			
+			free_entry_value(dictionary, es[i]);
+			
+			es[i]._value = value;
+			dictionary->_version++;	
 			return DICTIONARY_SUCCESS;
 		}
-
-		collision_count++;
 	}
 
+	int index = 0;
+	if(dictionary->_free_count > 0) {
+		index = dictionary->_free_list;
+		dictionary->_free_list = es[index]._next;
+		dictionary->_free_count--;
+	}
+	else {
+		if(dictionary->_count == dictionary->_size) {
+			resize(dictionary);
+			target_bucket = hash_code % dictionary->_size;
+		}
+		index = dictionary->_count;
+		dictionary->_count++;
+	}
 
+	es[index] = (entry_t) {
+		._hash_code = hash_code,
+		._next = dictionary->_buckets[target_bucket],
+		._key = key,
+		._value = value
+	};
+	dictionary->_buckets[target_bucket] = index;
+	dictionary->_version++;
+
+	return DICTIONARY_SUCCESS;
+}
+
+int find_entry(dictionary_t* dictionary, void* key)
+{
+	if(dictionary == NULL || dictionary->_buckets == NULL || key == NULL)
+		return -1;
+
+	int hash_code = dictionary->_key_h(key) & 0x7FFFFFFF;
+	int* bs = dictionary->_buckets;
+	entry_t* es = dictionary->_entries;
+
+	for(int i = bs[hash_code % dictionary->_size]; i >=0; i = es[i]._next)
+		if(es[i]._hash_code == hash_code && dictionary->_key_cmp(es[i]._key, key))
+			return i;
+
+	return -1;
+}
+
+void resize_s(dictionary_t* dictionary, int new_size, bool force_new_hash_codes)
+{
+	int* new_buckets = malloc(new_size * sizeof(int));
+	for(int i = 0; i < new_size; i++)
+		new_buckets[i] = -1;
+
+	entry_t* new_entries = malloc(new_size * sizeof(entry_t));
+	for(int i = 0; i < dictionary->_count; i++)
+		new_entries[i] = dictionary->_entries[i];
+
+	int hash = 0;
+	if(force_new_hash_codes) {
+		for(int i = 0; i < dictionary->_count; i++) {
+			if(new_entries[i]._hash_code != -1) {
+				hash = dictionary->_key_h(new_entries[i]._key);
+				new_entries[i]._hash_code = hash & 0x7FFFFFFF;
+			}
+		}
+	}
+
+	int bucket = 0;
+	for(int i = 0; i < dictionary->_count; i++) {
+		if(new_entries[i]._hash_code >= 0) {
+			bucket = new_entries[i]._hash_code % new_size;
+			new_entries[i]._next = new_buckets[bucket];
+			new_buckets[bucket] = 1;
+		}
+	}
+
+	free(dictionary->_buckets);
+	free(dictionary->_entries);
+
+	dictionary->_size = new_size;
+	dictionary->_buckets = new_buckets;
+	dictionary->_entries = new_entries;
+}
+
+void resize(dictionary_t* dictionary)
+{
+	resize_s(dictionary, expand_prime(dictionary->_count), false);
 }

@@ -29,15 +29,39 @@
 
 #include "../../internal/dictionary_types.h"
 
+#define free_entry_key(dictionary, entry)\
+	do {\
+		if(dictionary->_km_alloc)\
+			free(entry._key);\
+		else dictionary->_key_f(entry._key);\
+		entry._key = NULL;\
+	} while(0)
+
+#define free_entry_value(dictionary, entry) \
+	do {\
+		if(dictionary->_vm_alloc)\
+			free(entry._value);\
+		else dictionary->_value_f(entry._value);\
+		entry._value = NULL;\
+	} while(0)
+
 struct keys
 {
-	dictionary_t* _dictionary;
+	void** _keys;
 };
 
 struct values
 {
-	dictionary_t* _dictionary;
+	void** _values;
 };
+
+typedef struct entry_ {
+	int _hash_code;
+	int _next;
+	void* _key;
+	void* _value;
+} entry_t;
+
 
 static int has_prime = 101;
 static int primes_count = 72;
@@ -87,26 +111,4 @@ int expand_prime(int old_size)
 	return get_prime(new_size);
 }
 
-/** dictionary entry type */
-typedef struct entry_ {
-	int _hash_code;
-	int _next;
-	void* _key;
-	void* _value;
-} entry_t;
-
-#define entry_malloc(var, hash, next, key, value)\
-	entry_t* var = malloc(sizeof(entry_t));\
-	var->_hash_code = hash;\
-	var->_next = next;\
-	var->_key = key;\
-	var->_value = value
-
-#define entry_free(var) \
-	do {\
-		if(var != NULL)\
-			free(var);\
-	}\
-	while(0)
-
-#endif  
+#endif

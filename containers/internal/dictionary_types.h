@@ -33,5 +33,6 @@ typedef bool(*key_comparator)(const void*, const void*);
 typedef int(*key_hasher)(const void*);
 typedef void(*key_finalizer)(void*);
 typedef void(*value_finalizer)(void*);
+typedef char*(*key_to_string_func)(const void*);
 
 #endif

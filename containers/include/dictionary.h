@@ -34,6 +34,7 @@
 #define DICTIONARY_KEY_IS_NULL		0x501
 #define DICTIONARY_VALUE_IS_NULL	0x502
 #define DICTIONARY_ALREADY_EXISTS	0x503
+#define DICTIONARY_ALLOCATION_ERROR	0x504
 
 /**
  * dictionary_create - creates key-value dictionary
@@ -87,13 +88,13 @@ void dictionary_set(dictionary_t* dictionary, void* key, void* data);
  * dictionary_keys - gets the collection of dictionary keys
  * @dictionary - dictionary
  */
-keys_t* dictionary_keys(dictionary_t* dictionary);
+keys_t dictionary_keys(dictionary_t* dictionary);
 
 /**
  * dictionary - gets the collection of dictionary values
  * dictionary - dictionary
  */
-values_t* dictionary_values(dictionary_t* dictionary);
+values_t dictionary_values(dictionary_t* dictionary);
 
 /** 
  * dictionary_add - adds the given key and value to the dictionary if the
