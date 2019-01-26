@@ -1,0 +1,8 @@
+﻿CREATE TABLE [dbo].[ChatRooms]
+(
+	[Id]		INT NOT NULL IDENTITY(1,1),
+	[Created]	DATETIME NOT NULL,
+	[IsGroup]	BIT NOT NULL DEFAULT(0)
+	
+	CONSTRAINT [PK_CREATED] PRIMARY KEY ([Id])
+)
