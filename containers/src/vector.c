@@ -12,15 +12,18 @@
 	for(unsigned int i = 0; i < n; i++)\
 		block
 
+#define safe_free(ptr)\
+	do { \
+		free((ptr));\
+		(ptr) = NULL;\
+	} while(0)
+
 static int power_of_two(int x) {
 	int i = 2;
 	for (; i < x; i *= 2) {}
 	return i;
 }
-static void safe_free(void** pointer) {
-	free(*pointer);
-	*pointer = NULL;
-}
+
 
 /** 
  * create_vector - creates vector
@@ -262,7 +265,7 @@ int vector_erase(vector * vector, unsigned int position)
 		return VECTOR_ERASE_POSITION_OUT_OF_RANGE;
 	
 	if (vector->_is_primitive_type)
-		safe_free(&vector->_base[position]);
+		safe_free(vector->_base[position]);
 	else vector->_finalizer(vector->_base[position]);
 	
 	for (unsigned int i = position; i < vector->_count - 1; i++)
@@ -314,7 +317,7 @@ int vector_pop_back(vector * vector)
 		return VECTOR_IS_EMPTY;
 
 	if (vector->_is_primitive_type)
-		safe_free(&vector->_base[vector->_count - 1]);
+		safe_free(vector->_base[vector->_count - 1]);
 	else vector->_finalizer(vector->_base[vector->_count - 1]);
 
 	vector->_count--;
@@ -337,7 +340,7 @@ int vector_clear(vector * vector)
 		return VECTOR_IS_CLEAR;
 
 	if (vector->_is_primitive_type)
-		__iterate__(i, vector->_count, safe_free(&vector->_base[i]));
+		__iterate__(i, vector->_count, safe_free(vector->_base[i]));
 	else __iterate__(i, vector->_count, vector->_finalizer(vector->_base[i]));
 
 	vector->_count = 0;
@@ -356,7 +359,7 @@ int vector_destroy(vector * vector)
 
 	vector_clear(vector);
 	free(vector->_base);
-	safe_free(&vector);
+	safe_free(vector);
 	return 0;
 }
 

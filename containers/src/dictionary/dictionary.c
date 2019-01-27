@@ -116,20 +116,18 @@ dictionary_t* dictionary_create(
 		};
 	}
 
-	*dictionary = (dictionary_t) {
-		._count = 0,
-		._free_count = 0,
-		._free_list = -1,
-		._version = 0,
-		._key_cmp = key_cmp,
-		._key_f = key_f,
-		._value_f = value_f,
-		._key_h = key_h,
-		._key_size = key_size,
-		._value_size = data_size,
-		._vm_alloc = value_manually_allocated,
-		._km_alloc = key_manually_allocated
-	};
+	dictionary->_count = 0;
+	dictionary->_free_count = 0;
+	dictionary->_free_list = -1;
+	dictionary->_version = 0;
+	dictionary->_key_cmp = key_cmp;
+	dictionary->_key_f = key_f;
+	dictionary->_value_f = value_f;
+	dictionary->_key_h = key_h;
+	dictionary->_key_size = key_size;
+	dictionary->_value_size = data_size;
+	dictionary->_vm_alloc = value_manually_allocated;
+	dictionary->_km_alloc = key_manually_allocated;
 
 	return dictionary;
 }
@@ -294,10 +292,12 @@ void dictionary_clear(dictionary_t* dictionary)
 		dictionary->_buckets[i] = -1;
 
 	for(int i = 0; i < dictionary->_count; i++) {
+		if(dictionary->_entries[i]._hash_code >= 0) {
+			free_entry_key(dictionary, dictionary->_entries[i]);
+			free_entry_value(dictionary, dictionary->_entries[i]);
+		}
 		dictionary->_entries[i]._hash_code = 0;
 		dictionary->_entries[i]._next = 0;
-		free_entry_key(dictionary, dictionary->_entries[i]);
-		free_entry_value(dictionary, dictionary->_entries[i]);
 	}
 
 	dictionary->_free_list = -1;
@@ -454,4 +454,17 @@ void resize_s(dictionary_t* dictionary, int new_size, bool force_new_hash_codes)
 void resize(dictionary_t* dictionary)
 {
 	resize_s(dictionary, expand_prime(dictionary->_count), false);
+}
+
+void free_entries(dictionary_t* dictionary)
+{
+	entry_t* es = dictionary->_entries;
+	for(int i = 0; i < dictionary->_size; i++) {
+		if(es[i]._hash_code >= 0) {
+			free_entry_key(dictionary, es[i]);
+			free_entry_value(dictionary, es[i]);
+		}
+	}
+
+	free(es);
 }
