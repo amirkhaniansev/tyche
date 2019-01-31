@@ -1,6 +1,6 @@
 /**
  * GNU General Public License Version 3.0, 29 June 2007
- * Header file for event.	 
+ * Header file for event.
  * Copyright (C) <2018>
  *               Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
  *                        <DavidPetr>       <david.petrosyan11100@gmail.com>
@@ -80,4 +80,4 @@ namespace core
 	}
 };
 
-#endif 
+#endif
