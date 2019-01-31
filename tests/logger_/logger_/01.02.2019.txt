@@ -1,0 +1,7 @@
+
+01:18:48
+ErrorType		2
+ExceptionMessage	Test loginfo1
+Message			Test Exception1
+Time			15:15:20
+

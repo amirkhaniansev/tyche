@@ -7,8 +7,8 @@
 */
 
 
-#ifndef __LOGGER_H
-#define __LOGGER_H
+#ifndef LOGGER_H
+#define LOGGER_H
 
 #include <iostream>
 #include <string>					
