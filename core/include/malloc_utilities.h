@@ -23,7 +23,7 @@
 #ifndef __MALLOC_UTILITIES_H__
 #define __MALLOC_UTILITIES_H__
 
-#include <stdlib.h>
+#include <cstdlib>
 #include "../../containers/include/stack.h"
 
 typedef void* malloc_ptr;
