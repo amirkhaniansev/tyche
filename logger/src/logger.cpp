@@ -5,7 +5,7 @@
 * Email: david.petrosyan11100@gmail.com
 * For full notice please see https://github.com/amirkhaniansev/tyche/tree/master/LICENSE.
 */
-#include "../include/logger.h"
+#include "../include/logger.hpp"
 
 std::string Date() {
 	time_t now = time(0);
@@ -65,11 +65,9 @@ std::string Time() {
 
 	return s;
 }
-void Logger::timerThreadFunction() {
+void Logger::passiveLogThreadFunction() {
 	while(true){
-		std::cout << "Thread is started\n";
-		std::this_thread::sleep_for(std::chrono::minutes(this->interval));
-		std::cout << "Thread wake up\n";
+		std::this_thread::sleep_for(std::chrono::minutes(this->interval));	
 		try {
 			this->cacheMutex.lock();
 			
@@ -82,7 +80,7 @@ void Logger::timerThreadFunction() {
 		}
 	}
 }
-Logger::Logger(std::string modulName,int interval) : timerThread(&Logger::timerThreadFunction, this)
+Logger::Logger(std::string modulName,int interval) : timerThread(&Logger::passiveLogThreadFunction, this)
 {
 	if (interval < 60)
 		interval = 60;
@@ -102,9 +100,10 @@ Logger::Logger(std::string modulName,int interval) : timerThread(&Logger::timerT
 }
 void Logger::Log(const LogInfo &l)
 {
+	std::this_thread::sleep_for(std::chrono::seconds(1));
 	std::pair<std::string, LogInfo> logpair(Time(), l);
 	this->logCache->insert(logpair);
-	if (this->logCache->size() > 10000) {
+	if (this->logCache->size() > 10000) {		
 		try {
 			this->cacheMutex.lock();
 
@@ -124,13 +123,14 @@ void Logger::writeInFile()
 	file.open(this->filePath, std::ios_base::app);
 	while(itr != this->logCache->end())
 	{		
-		file <<"\n"<< itr->first << "\n"
-			<< "ErrorType"<<"\t\t"<< itr->second.errorType << "\n"
-			<< "ExceptionMessage"<<"\t"<< itr->second.exceptionMessage << "\n"
-			<< "Message"<<"\t\t\t"<< itr->second.message << "\n"
-			<< "Time"<<"\t\t\t"<< itr->second.time << "\n" << std::endl;		
-		itr = this->logCache->erase(itr);
+		file<< itr->first<<"\t"
+			<<"ErrorType- "<< itr->second.errorType<<"\t"
+			<<"ExceptionMessage- "<< itr->second.exceptionMessage<<"\t\t"
+			<<"Message- "<< itr->second.message<<"\t"
+			<<"Time- "<< itr->second.time<< std::endl;		
+		itr++;
 	}
+	this->logCache->clear();
 	file.close();
 	
 }

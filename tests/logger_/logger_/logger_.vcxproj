@@ -110,7 +110,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="logger.h" />
+    <ClInclude Include="logger.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="logger.cpp" />

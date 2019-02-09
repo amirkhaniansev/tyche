@@ -7,8 +7,8 @@
 */
 
 
-#ifndef LOGGER_H
-#define LOGGER_H
+#ifndef LOGGER_HPP
+#define LOGGER_HPP
 
 #include <iostream>
 #include <string>					
@@ -20,7 +20,7 @@
 #include <chrono>        
 
 enum ErrorType {
-	SUCCESSS = 0x0,
+	SUCCESS = 0x0,
 	FATAL = 0x1,
 	DEFAULT = 0x2,
 	FAIL = 0x3
@@ -41,7 +41,7 @@ public:
 	~Logger();
 	void Log(const LogInfo&);
 	void writeInFile();
-	void timerThreadFunction();
+	void passiveLogThreadFunction();
 private:	
 	
 	std::unordered_map<std::string, LogInfo> *logCache;
