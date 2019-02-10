@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[upsVerifyUser]
+﻿CREATE PROCEDURE [dbo].[uspVerifyUser]
 	@userId		INT,
 	@code		NVARCHAR(32)
 AS	
