@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<operations
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="scheme.xsd">
+  <operation name="CreateUser">
+    <spName>uspCreateUser</spName>
+    <parameters>
+      
+    </parameters>
+    <returnDataType>NoReturnValue</returnDataType>
+  </operation>
+</operations>
