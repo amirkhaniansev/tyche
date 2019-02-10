@@ -1,7 +1,7 @@
 ﻿CREATE TABLE [dbo].[MessagesSeenUsers]
 (
-	[MessageId] INT NOT NULL,
-	[UserId]	INT NOT NULL
+	[MessageId] BIGINT	NOT NULL,
+	[UserId]	INT		NOT NULL
 
 	CONSTRAINT [FK_MESSAGE_SEEN_MESSAGE_ID] FOREIGN KEY ([MessageId]) REFERENCES [Messages]([Id])
 		ON DELETE CASCADE,
