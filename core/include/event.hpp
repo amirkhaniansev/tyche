@@ -2,8 +2,8 @@
  * GNU General Public License Version 3.0, 29 June 2007
  * Header file for event.
  * Copyright (C) <2018>
- *               Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
- *                        <DavidPetr>       <david.petrosyan11100@gmail.com>
+ *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
+ *               <DavidPetr>       <david.petrosyan11100@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
