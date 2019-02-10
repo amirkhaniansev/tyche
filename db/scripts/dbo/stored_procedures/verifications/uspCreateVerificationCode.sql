@@ -7,7 +7,7 @@ AS
 		INSERT INTO [Verifications] VALUES (
 			@userId,
 			@code,
-			getdate(),
+			GETDATE(),
 			@validOffset)
 		RETURN 0
 	END

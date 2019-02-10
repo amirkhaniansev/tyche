@@ -13,7 +13,7 @@ AS
 				DECLARE @validOffSet INT
 				SELECT @created = Created, @validOffset = ValidOffset FROM [Verifications]
 					WHERE UserId = @userId AND Code = @code
-				IF @created + @validOffset > getdate()
+				IF @created + @validOffset > GETDATE()
 					RETURN 1
 				DELETE FROM [Verifications] WHERE UserId = @userId AND Code = @code
 				UPDATE [Users] SET IsVerified = 1 WHERE Id = @userId
