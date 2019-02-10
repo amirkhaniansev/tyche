@@ -60,6 +60,10 @@
     <Folder Include="dbo" />
     <Folder Include="dbo\tables" />
     <Folder Include="dbo\stored_procedures" />
+    <Folder Include="dbo\stored_procedures\users" />
+    <Folder Include="dbo\stored_procedures\verifications" />
+    <Folder Include="dbo\stored_procedures\chatrooms" />
+    <Folder Include="dbo\stored_procedures\notifications" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\tables\ChatRoomMembers.sql" />
@@ -69,5 +73,10 @@
     <Build Include="dbo\tables\Notifications.sql" />
     <Build Include="dbo\tables\Users.sql" />
     <Build Include="dbo\tables\Verifications.sql" />
+    <Build Include="dbo\stored_procedures\users\uspCreateUser.sql" />
+    <Build Include="dbo\stored_procedures\users\upsVerifyUser.sql" />
+    <Build Include="dbo\stored_procedures\verifications\uspCreateVerificationCode.sql" />
+    <Build Include="dbo\stored_procedures\chatrooms\uspCreateChatRoom.sql" />
+    <Build Include="dbo\stored_procedures\notifications\uspCreateNotification.sql" />
   </ItemGroup>
 </Project>
