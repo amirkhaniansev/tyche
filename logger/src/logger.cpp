@@ -7,6 +7,42 @@
 */
 #include "../include/logger.hpp"
 
+
+void addSecond(std::string &time)
+{
+	int h = (time[0]-'0') * 10 + (time[1]-'0');
+	int m = (time[3]-'0') * 10 + (time[4]-'0');
+	int s = (time[6]-'0') * 10 + (time[7]-'0');
+	if (s == 59)
+	{
+		if (m == 59)
+		{
+
+			if (h == 23)
+				h = 0;
+			else
+				h++;
+
+			m = 0;
+			s = 0;
+		}
+		else
+		{
+			m++;
+			s = 0;
+		}
+	}
+	else
+	{
+		s++;
+	}
+	time[0] = h / 10 + '0';
+	time[1] = h % 10 + '0';
+	time[3] = m / 10 + '0';
+	time[4] = m % 10 + '0';
+	time[6] = s / 10 + '0';
+	time[7] = s % 10 + '0';
+}
 std::string Date() {
 	time_t now = time(0);
 	tm g;
@@ -95,26 +131,40 @@ Logger::Logger(std::string modulName,int interval) : timerThread(&Logger::passiv
 
 	std::ifstream f(this->filePath);
 	if (!f.good())
-		std::ofstream file(this->filePath,std::ofstream::app);
+		std::ofstream file(this->filePath, std::ofstream::app);
 
 }
 void Logger::Log(const LogInfo &l)
-{
-	std::this_thread::sleep_for(std::chrono::seconds(1));
-	std::pair<std::string, LogInfo> logpair(Time(), l);
+{	
+	static std::string last_log_time = Time();
+	std::string current_time = Time();
+
+	if (current_time == "23:59:59")
+	{
+		writeInFile();
+		current_time = "00:00:00";
+	}
+	else {
+		while (last_log_time >= current_time) 
+			addSecond(current_time);
+	}
+	last_log_time = current_time;
+	
+	std::pair<std::string, LogInfo> logpair(current_time, l);
+	
 	this->logCache->insert(logpair);
 	if (this->logCache->size() > 10000) {		
 		try {
 			this->cacheMutex.lock();
-
+			
 			writeInFile();
-
+			
 			this->cacheMutex.unlock();
 		}
 		catch (std::exception &e) {
 			this->cacheMutex.unlock();
 		}
-	}
+	}	
 }
 void Logger::writeInFile()
 {

@@ -42,14 +42,15 @@ public:
 	void Log(const LogInfo&);
 	void writeInFile();
 	void passiveLogThreadFunction();
-private:	
-	
+private:		
 	std::unordered_map<std::string, LogInfo> *logCache;
 	std::mutex cacheMutex;
-	std::thread timerThread;
+	std::thread timerThread;	
 	std::string filePath;
 	std::string modulName;
 	int interval;
 };
 
+std::string Date();
+std::string Time();
 #endif
