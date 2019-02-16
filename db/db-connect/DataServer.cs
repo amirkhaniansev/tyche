@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using AccessCore.Repository;
 using Newtonsoft.Json;
+using System.Linq;
 
 namespace DbConnect
 {
@@ -40,6 +41,11 @@ namespace DbConnect
         /// IP endpoint of server
         /// </summary>
         private readonly IPEndPoint iPEndPoint;
+
+        /// <summary>
+        /// Operations
+        /// </summary>
+        private readonly Dictionary<DbOperationType, Type> operations; 
 
         /// <summary>
         /// Tasks of data server.
@@ -155,12 +161,47 @@ namespace DbConnect
             this.iPEndPoint = new IPEndPoint(address, port);
             this.server = new TcpListener(address, port);
             this.tasks = new HashSet<Task>();
+            this.operations = new Dictionary<DbOperationType, Type>();
         }
 
         #endregion constructors
 
         #region public methods
-        
+
+        /// <summary>
+        /// Adds data operation
+        /// </summary>
+        /// <typeparam name="TInput">Type of input</typeparam>
+        /// <param name="dbOperationType">Database operation type</param>
+        /// /// <exception cref="ArgumentException">
+        /// Throws if database operation type is already added.
+        /// </exception>
+        /// <returns>data server</returns>
+        public DataServer AddDataOperation<TInput>(DbOperationType dbOperationType)
+        {
+            return this.AddDataOperation(dbOperationType, typeof(TInput));
+        }
+
+        /// <summary>
+        /// Adds data operation
+        /// </summary>
+        /// <param name="dbOperationType">Database operation type</param>
+        /// <param name="type">Type of input</param>
+        /// <exception cref="ArgumentException">
+        /// Throws if database operation type is already added.
+        /// </exception>
+        /// <returns>data server</returns>
+        public DataServer AddDataOperation(DbOperationType dbOperationType, Type type)
+        {
+            if(this.operations.ContainsKey(dbOperationType))
+            {
+                throw new ArgumentException("Database Operation Type.");
+            }
+
+            this.operations.Add(dbOperationType, type);
+            return this;
+        }
+
         /// <summary>
         /// Starts Data server.
         /// </summary>
@@ -211,16 +252,84 @@ namespace DbConnect
                 using (var stream = client.GetStream())
                 {
                     // getting frame size to know how much we must read
-                    var frameSizebuffer = new byte[4];
-                    var read = await stream.ReadAsync(frameSizebuffer, 0, 4);
-                    var frameSize = BitConverter.ToInt32(frameSizebuffer, 0);
+                    var buffer = new byte[4];
+                    var read = 0;
 
-                    var buffer = new byte[frameSize];
-                    var readBytes = await stream.ReadAsync(buffer, 0, frameSize);
-                    var json = Encoding.Unicode.GetString(buffer);
-                    
+                    read = await stream.ReadAsync(buffer, 0, 4);
+                    var frameSize = BitConverter.ToInt32(buffer, 0);
+
+                    read = await stream.ReadAsync(buffer, 0, 4);
+                    var dbOperationType = (DbOperationType)BitConverter.ToInt32(buffer, 0);
+
+                    if(!this.operations.ContainsKey(dbOperationType))
+                    {
+                        await this.SendErrorResponse(
+                            stream,
+                            Messages.NoSuchOperation,
+                            ResponseCode.NoSuchOperation);
+                        return;
+                    }
+
+                    // reading input
+                    buffer = new byte[frameSize];
+                    read = await stream.ReadAsync(buffer, 0, frameSize);
+
+                    var inputJson = Encoding.Unicode.GetString(buffer);
+                    var type = this.operations[dbOperationType];
+                    var input = JsonConvert.DeserializeObject(inputJson, type);
+
                 }
             }
+        }
+
+        /// <summary>
+        /// Sends error response
+        /// </summary>
+        /// <param name="stream">client stream</param>
+        /// <param name="message">message</param>
+        /// <param name="responseCode">response code</param>
+        /// <returns></returns>
+        private async Task SendErrorResponse(
+            NetworkStream stream,
+            string message = Messages.NoSuchOperation,
+            ResponseCode responseCode = ResponseCode.UnknownError)
+        {
+            await this.SendResponse(stream, message, true, default(object), responseCode);
+        }
+
+        /// <summary>
+        /// Sends response to the client.
+        /// </summary>
+        /// <typeparam name="T">Type of response entity.</typeparam>
+        /// <param name="stream">client stream</param>
+        /// <param name="message">Response message</param>
+        /// <param name="responseCode">Response code</param>
+        /// <param name="isError">boolean value indicating whether the reponse is error.</param>
+        /// <param name="data">data</param>
+        /// <returns>task</returns>
+        private async Task SendResponse<T>(
+            NetworkStream stream,
+            string message = Messages.NoSuchOperation,
+            bool isError = true,
+            T data = default(T), 
+            ResponseCode responseCode = ResponseCode.UnknownError)
+        {
+            var response = new Response<T>
+            {
+                Message = message,
+                IsError = isError,
+                ResponseCode = responseCode,
+                Data = data
+            };
+
+            var json = JsonConvert.SerializeObject(response);
+            var lengthBytes = BitConverter.GetBytes(json.Length * 2);
+            var contentBytes = Encoding.Unicode.GetBytes(json);
+            var buffer = lengthBytes
+                .Concat(contentBytes)
+                .ToArray();
+
+            await stream.WriteAsync(buffer, 0, buffer.Length);
         }
 
         #endregion
