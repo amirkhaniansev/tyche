@@ -8,7 +8,7 @@ namespace DbConnect
     /// <summary>
     /// Class for holding global information
     /// </summary>
-    public static class Globals
+    public static class Server
     {
         /// <summary>
         /// Gets or sets Tyche Config
@@ -39,6 +39,18 @@ namespace DbConnect
             XmlMapInfo = new XmlMapInfo("Config/map.xml");
             MsSqlSpExecuter = new MsSqlSpExecuter(TycheConfig.ConnectionString);
             DataManager = new DataManager(MsSqlSpExecuter, XmlMapInfo);
+        }
+
+        /// <summary>
+        /// Starts server
+        /// </summary>
+        public static void Start()
+        {
+            var server = new DataServer(
+                Server.DataManager,
+                Server.TycheConfig.Host,
+                Server.TycheConfig.Port);
+            server.Run();
         }
     }
 }

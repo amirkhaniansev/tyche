@@ -119,6 +119,20 @@ namespace DbConnect
         #region constructors
 
         /// <summary>
+        /// Constructs new instance of <see cref="DataServer"/>
+        /// </summary>
+        /// <param name="dm">Data Manager</param>
+        /// <param name="address">address</param>
+        /// <param name="port">port</param>
+        /// /// <exception cref="ArgumentNullException">
+        /// Throws if any of paramaters is not correct.
+        /// </exception>
+        public DataServer(DataManager dm, string address, string port)
+            : this(dm, IPAddress.Parse(address), int.Parse(port))
+        {
+        }
+
+        /// <summary>
         /// Creates new instance of <see cref="DataManager"/>
         /// </summary>
         /// <param name="dm">Data manager</param>

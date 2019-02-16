@@ -3,7 +3,7 @@
     /// <summary>
     /// Enum for response codes
     /// </summary>
-    internal enum ResponseCodes
+    internal enum ResponseCode
     {
         Success         = 0x0,
         UnknownError    = 0x1,

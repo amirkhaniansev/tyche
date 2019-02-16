@@ -11,7 +11,8 @@
         /// <param name="args">command line arguments</param>
         static void Main(string[] args)
         {
-            Globals.Initialize();
+            Server.Initialize();
+            Server.Start();
         }
     }
 }
