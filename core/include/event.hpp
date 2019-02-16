@@ -1,7 +1,7 @@
 /**
  * GNU General Public License Version 3.0, 29 June 2007
- * Header file for event.
- * Copyright (C) <2018>
+ * event
+ * Copyright (C) <2019>
  *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
  *               <DavidPetr>       <david.petrosyan11100@gmail.com>
  *
@@ -18,6 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
+
 
 #ifndef __EVENT_HPP__
 #define __EVENT_HPP__
