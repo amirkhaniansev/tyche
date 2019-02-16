@@ -21,51 +21,59 @@ namespace licensegen
                 return;
             }
 
-            if (!File.Exists("․/" + args[1]))
+            if (!File.Exists(args[1]))
             {
                 Console.WriteLine("License file does not exist.");
                 return;
             }
 
+            var i = 0;
+            var j = 0;
             var repoPath = args[0];
             var licensePath = args[1];
-            var extensions = args.Skip(2);
             var filePaths = new List<string>();
+            var extensionFiles = default(string[]);
             var text = string.Empty;
             var fileName = string.Empty;
             var licenseText = string.Empty;
             var license = File.ReadAllText(licensePath);
-            var i = 0;
-            var j = 0;
+            var extensions = args
+                .Skip(2)
+                .Select(e => e.Contains("*") ? e : "*" + e);
 
             foreach (var extension in extensions)
             {
-                filePaths.AddRange(Directory.GetFiles(repoPath, extension, SearchOption.AllDirectories));
+                extensionFiles = Directory.GetFiles(repoPath, extension, SearchOption.AllDirectories);
+                filePaths.AddRange(extensionFiles);
             }
 
             foreach (var path in filePaths)
             {
                 text = File.ReadAllText(path);
 
-                for (i = 3, j = 0; i < text.Length - 3; i++)
+                if (text.StartsWith("/*"))
                 {
-                    if (text[i] == '*' && text[i + 1] == '*' && text[i + 2] == '/')
-                        break;
-                    j++;
-                }
+                    for (i = 2, j = 0; i < text.Length - 2; i++)
+                    {
+                        if (text[i] == '*' && text[i + 1] == '/')
+                            break;
+                        j++;
+                    }
 
-                text = text.Remove(0, j + 6);
+                    if (text.Length > 2)
+                    {
+                        text = text.Remove(0, j + 6);
+                    }
+                }
 
                 fileName = Path.GetFileNameWithoutExtension(path);
                 licenseText = string.Format(license, fileName);
-                text = licenseText + text;
+                text = licenseText + text + "\n\n";
                 File.WriteAllText(path, text);
                 Console.WriteLine("License is appended to {0}", path);
             }
 
-            Console.WriteLine(
-                "License appending is ended in repo : {0}",
-                repoPath);
+            Console.WriteLine("License appending is ended in repo : {0}", repoPath);
             Console.WriteLine("Press <Enter> to close");
             Console.ReadLine();
         }
