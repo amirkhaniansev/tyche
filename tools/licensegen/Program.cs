@@ -68,7 +68,7 @@ namespace licensegen
 
                 fileName = Path.GetFileNameWithoutExtension(path);
                 licenseText = string.Format(license, fileName);
-                text = licenseText + text + "\n\n";
+                text = licenseText + "\n\n" + text;
                 File.WriteAllText(path, text);
                 Console.WriteLine("License is appended to {0}", path);
             }
