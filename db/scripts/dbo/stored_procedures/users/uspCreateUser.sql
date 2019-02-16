@@ -19,6 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
+
 CREATE PROCEDURE [dbo].[uspCreateUser]
 	@firstName			NVARCHAR(20),
 	@lastName			NVARCHAR(50),

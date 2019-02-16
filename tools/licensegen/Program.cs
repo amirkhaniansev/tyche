@@ -81,10 +81,14 @@ namespace licensegen
                         j++;
                     }
 
-                    if (text.Length > 2)
+                    if (text.Length > j + 6)
                     {
                         text = text.Remove(0, j + 6);
                     }
+                }
+                else
+                {
+                    license += "\r\n";
                 }
 
                 fileName = Path.GetFileNameWithoutExtension(path);

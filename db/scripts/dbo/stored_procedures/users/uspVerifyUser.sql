@@ -19,6 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
+
 CREATE PROCEDURE [dbo].[uspVerifyUser]
 	@userId		INT,
 	@code		NVARCHAR(32)

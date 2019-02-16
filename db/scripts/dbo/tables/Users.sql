@@ -19,6 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
+
 CREATE TABLE [dbo].[Users]
 (
 	[Id]				INT				NOT NULL	IDENTITY(1,1) ,

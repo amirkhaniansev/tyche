@@ -19,6 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
+
 CREATE TABLE [dbo].[ChatRooms]
 (
 	[Id]			INT			IDENTITY(1,1)	NOT NULL ,
