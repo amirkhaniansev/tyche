@@ -74,9 +74,9 @@
     <Build Include="dbo\tables\Users.sql" />
     <Build Include="dbo\tables\Verifications.sql" />
     <Build Include="dbo\stored_procedures\users\uspCreateUser.sql" />
-    <Build Include="dbo\stored_procedures\users\upsVerifyUser.sql" />
     <Build Include="dbo\stored_procedures\verifications\uspCreateVerificationCode.sql" />
     <Build Include="dbo\stored_procedures\chatrooms\uspCreateChatRoom.sql" />
     <Build Include="dbo\stored_procedures\notifications\uspCreateNotification.sql" />
+    <Build Include="dbo\stored_procedures\users\uspVerifyUser.sql" />
   </ItemGroup>
 </Project>
