@@ -13,7 +13,7 @@ namespace DbConnect
     /// <summary>
     /// Class for serving data operations via TCP
     /// </summary>
-    internal class DataServer
+    public class DataServer
     {
         #region fields
 
@@ -229,7 +229,7 @@ namespace DbConnect
                 while (true)
                 {
                     client = this.server.AcceptTcpClient();
-
+                    this.RegisterTask(client);
                 }
             }
             catch(Exception ex)
@@ -254,6 +254,21 @@ namespace DbConnect
 
         #region private helper methods
         
+        /// <summary>
+        /// Registers task for serving new accepted client.
+        /// </summary>
+        /// <param name="client">TCP client to be served.</param>
+        private void RegisterTask(TcpClient client)
+        {
+            var task = new Task(async () => await this.ServeClient(client));
+            task.ContinueWith(t => this.tasks.Remove(t));
+
+            this.tasks.Add(task);
+
+            task.Start();
+
+        }
+
         /// <summary>
         /// Serves client
         /// </summary>
@@ -292,6 +307,8 @@ namespace DbConnect
                     var type = this.operations[dbOperationType];
                     var input = JsonConvert.DeserializeObject(inputJson, type);
 
+
+                    
                 }
             }
         }

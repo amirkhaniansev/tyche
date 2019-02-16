@@ -2,6 +2,7 @@
 using AccessCore.Repository;
 using AccessCore.Repository.MapInfos;
 using DbConnect.Config;
+using DbConnect.Models;
 
 namespace DbConnect
 {
@@ -29,6 +30,11 @@ namespace DbConnect
         /// Gets or sets sp executer
         /// </summary>
         public static MsSqlSpExecuter MsSqlSpExecuter { get; set; }
+        
+        /// <summary>
+        /// Gets or sets Server
+        /// </summary>
+        public static DataServer DataServer { get; set; }
 
         /// <summary>
         /// Initializes globals
@@ -42,15 +48,22 @@ namespace DbConnect
         }
 
         /// <summary>
+        /// Prepares the server for starting.
+        /// </summary>
+        public static void Prepare()
+        {
+            DataServer = DataServer
+                .AddDataOperation<ChatCreationDescriptor>(DbOperationType.CreateChatRooom)
+                .AddDataOperation<UserVerificationDescriptor>(DbOperationType.VerifyUser)
+                .AddDataOperation<VerificationCodeDescriptor>(DbOperationType.CreateVerificationCode);
+        }
+
+        /// <summary>
         /// Starts server
         /// </summary>
         public static void Start()
         {
-            var server = new DataServer(
-                Server.DataManager,
-                Server.TycheConfig.Host,
-                Server.TycheConfig.Port);
-            server.Run();
+            DataServer.Run();
         }
     }
 }

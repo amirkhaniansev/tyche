@@ -8,7 +8,7 @@ AS
 		IF NOT EXISTS (SELECT UserId FROM [ChatRoomMembers] WHERE 
 				UserId = @userId AND ChatRoomId = @chatRoomId)
 			RETURN 1
-		INSERT INTO [NOTIFICATIONS] VALUES(
+		INSERT INTO [Notifications] VALUES(
 			@type,
 			@userId,
 			@info,

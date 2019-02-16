@@ -12,6 +12,7 @@
         static void Main(string[] args)
         {
             Server.Initialize();
+            Server.Prepare();
             Server.Start();
         }
     }
