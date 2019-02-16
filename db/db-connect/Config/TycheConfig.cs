@@ -29,9 +29,10 @@ namespace DbConnect.Config
         public TycheConfig(string path)
         {
             var xml = XDocument.Load(path);
-            this.Host = xml.Element("host").Attribute("value").Value;
-            this.Port = xml.Element("port").Attribute("value").Value;
-            this.ConnectionString = xml.Element("conn").Attribute("value").Value;
+            var root = xml.Element("configuration");
+            this.Host = root.Element("host").Attribute("value").Value;
+            this.Port = root.Element("port").Attribute("value").Value;
+            this.ConnectionString = root.Element("conn").Attribute("value").Value;
         }
     }
 }

@@ -64,6 +64,7 @@
     <Folder Include="dbo\stored_procedures\verifications" />
     <Folder Include="dbo\stored_procedures\chatrooms" />
     <Folder Include="dbo\stored_procedures\notifications" />
+    <Folder Include="dbo\stored_procedures\Messages" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\tables\ChatRoomMembers.sql" />

@@ -41,7 +41,7 @@ namespace DbConnect
         /// </summary>
         public static void Initialize()
         {
-            TycheConfig = new TycheConfig("Config/config.xml");
+            TycheConfig = new TycheConfig("./Config/config.xml");
             XmlMapInfo = new XmlMapInfo("Config/map.xml");
             MsSqlSpExecuter = new MsSqlSpExecuter(TycheConfig.ConnectionString);
             DataManager = new DataManager(MsSqlSpExecuter, XmlMapInfo);
@@ -52,7 +52,7 @@ namespace DbConnect
         /// </summary>
         public static void Prepare()
         {
-            DataServer = DataServer
+            DataServer = new DataServer(DataManager, TycheConfig.Host, TycheConfig.Port)
                 .AddDataOperation<ChatCreationDescriptor>(DbOperationType.CreateChatRooom)
                 .AddDataOperation<UserVerificationDescriptor>(DbOperationType.VerifyUser)
                 .AddDataOperation<VerificationCodeDescriptor>(DbOperationType.CreateVerificationCode);

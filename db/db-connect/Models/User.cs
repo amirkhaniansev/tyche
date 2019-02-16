@@ -3,7 +3,7 @@
     /// <summary>
     /// Model for user
     /// </summary>
-    public class User
+    public class User 
     {
         /// <summary>
         /// Gets or sets Id

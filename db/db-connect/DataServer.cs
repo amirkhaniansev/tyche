@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Net;
+using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using AccessCore.Repository;
 using Newtonsoft.Json;
-using System.Linq;
+using DbConnect.BL;
+using DbConnect.Models;
 
 namespace DbConnect
 {
@@ -23,30 +25,20 @@ namespace DbConnect
         private readonly DataManager dm;
 
         /// <summary>
+        /// Users Business logic
+        /// </summary>
+        private readonly UsersBL usersBl;
+
+        /// <summary>
         /// TCP listener for server functionality
         /// </summary>
         private readonly TcpListener server;
 
         /// <summary>
-        /// Address of server
-        /// </summary>
-        private readonly IPAddress address;
-
-        /// <summary>
-        /// Port number of server
-        /// </summary>
-        private readonly int port;
-
-        /// <summary>
-        /// IP endpoint of server
-        /// </summary>
-        private readonly IPEndPoint iPEndPoint;
-
-        /// <summary>
         /// Operations
         /// </summary>
         private readonly Dictionary<DbOperationType, Type> operations; 
-
+        
         /// <summary>
         /// Tasks of data server.
         /// </summary>
@@ -58,15 +50,15 @@ namespace DbConnect
         private const int defaultMaxTraffic = 0x400000;
 
         /// <summary>
-        /// Boolean value indicating whether the server is running.
-        /// </summary>
-        private bool isRunning;
-
-        /// <summary>
         /// Maximum allowed data that can be recieved.
         /// </summary>
         private int maxAllowedDataToBeRecieved;
-        
+
+        /// <summary>
+        /// Boolean value indicating whether stop is needed.
+        /// </summary>
+        private bool isStopNeeded;
+             
         #endregion
 
         #region properties
@@ -74,22 +66,22 @@ namespace DbConnect
         /// <summary>
         /// Gets IP address
         /// </summary>
-        public IPAddress IPAddress => this.address;
+        public IPAddress IPAddress { get; }
 
         /// <summary>
         /// Gets port to which server is listening
         /// </summary>
-        public int Port => this.port;
+        public int Port { get; }
 
         /// <summary>
         /// Gets IP endpoint
         /// </summary>
-        public IPEndPoint IPEndPoint => this.iPEndPoint;
+        public IPEndPoint IPEndPoint { get; }
 
         /// <summary>
         /// Gets the boolean value which indicates whether the data server is running.
         /// </summary>
-        public bool IsRunning => this.isRunning;
+        public bool IsRunning { get; private set; }
 
         /// <summary>
         /// Gets or sets max allowed traffic
@@ -169,13 +161,14 @@ namespace DbConnect
             }
 
             this.dm = dm;
-            this.address = address;
-            this.port = port;
+            this.IPAddress = address;
+            this.Port = port;
             this.maxAllowedDataToBeRecieved = DataServer.defaultMaxTraffic;
-            this.iPEndPoint = new IPEndPoint(address, port);
+            this.IPEndPoint = new IPEndPoint(address, port);
             this.server = new TcpListener(address, port);
             this.tasks = new HashSet<Task>();
             this.operations = new Dictionary<DbOperationType, Type>();
+            this.usersBl = new UsersBL(dm);
         }
 
         #endregion constructors
@@ -221,14 +214,17 @@ namespace DbConnect
         /// </summary>
         public void Run()
         {
-            this.isRunning = true;
-            var client = new TcpClient();
+            this.IsRunning = true;
+            this.server.Start();
 
             try
             {
-                while (true)
+                while (!this.isStopNeeded)
                 {
-                    client = this.server.AcceptTcpClient();
+                    // accepting clients
+                    var client = this.server.AcceptTcpClient();
+
+                    // registering task
                     this.RegisterTask(client);
                 }
             }
@@ -247,7 +243,9 @@ namespace DbConnect
         /// </summary>
         public void Stop()
         {
-            this.isRunning = false;
+            this.isStopNeeded = true;
+            Task.WaitAll(this.tasks.ToArray());
+            this.IsRunning = false;
         }
 
         #endregion
@@ -261,12 +259,9 @@ namespace DbConnect
         private void RegisterTask(TcpClient client)
         {
             var task = new Task(async () => await this.ServeClient(client));
-            task.ContinueWith(t => this.tasks.Remove(t));
-
+            this.tasks.RemoveWhere(t => t.IsCompleted);
             this.tasks.Add(task);
-
             task.Start();
-
         }
 
         /// <summary>
@@ -280,25 +275,21 @@ namespace DbConnect
             {
                 using (var stream = client.GetStream())
                 {
-                    // getting frame size to know how much we must read
                     var buffer = new byte[4];
                     var read = 0;
 
+                    // reading frame size
                     read = await stream.ReadAsync(buffer, 0, 4);
                     var frameSize = BitConverter.ToInt32(buffer, 0);
 
+                    // reading entity type
                     read = await stream.ReadAsync(buffer, 0, 4);
-                    var dbOperationType = (DbOperationType)BitConverter.ToInt32(buffer, 0);
+                    var entityType = (BlType)BitConverter.ToInt32(buffer, 0);
 
-                    if(!this.operations.ContainsKey(dbOperationType))
-                    {
-                        await this.SendErrorResponse(
-                            stream,
-                            Messages.NoSuchOperation,
-                            ResponseCode.NoSuchOperation);
-                        return;
-                    }
-
+                    // reading DB operation type
+                    read = await stream.ReadAsync(buffer, 0, 4);
+                    var dbOperationType = (DbOperationType)BitConverter.ToInt32(buffer, 0);                    
+                    
                     // reading input
                     buffer = new byte[frameSize];
                     read = await stream.ReadAsync(buffer, 0, frameSize);
@@ -307,10 +298,29 @@ namespace DbConnect
                     var type = this.operations[dbOperationType];
                     var input = JsonConvert.DeserializeObject(inputJson, type);
 
+                    var result = await this.usersBl.CreateUser(input as User);
 
-                    
+                    await this.SendSuccessReponse(stream, result);
                 }
             }
+        }
+
+        /// <summary>
+        /// Sends success response.
+        /// </summary>
+        /// <typeparam name="TData">Type of data.</typeparam>
+        /// <param name="stream">Network stream.</param>
+        /// <param name="data">Data</param>
+        /// <param name="responseCode">Response code.</param>
+        /// <param name="message">Message</param>
+        /// <returns>task</returns>
+        private async Task SendSuccessReponse<TData>(
+            NetworkStream stream,
+            TData data,
+            ResponseCode responseCode = ResponseCode.Success,
+            string message = Messages.Success)
+        {
+            await this.SendResponse(stream, message, false, data, responseCode);
         }
 
         /// <summary>

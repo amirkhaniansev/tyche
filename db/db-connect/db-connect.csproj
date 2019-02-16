@@ -10,4 +10,13 @@
     <PackageReference Include="AccessCore" Version="1.1.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Config\config.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\map.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

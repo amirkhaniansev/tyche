@@ -6,7 +6,30 @@
   <operation name="CreateUser">
     <spName>uspCreateUser</spName>
     <parameters>
-      
+      <parameter>
+        <parameterName>FirstName</parameterName>
+        <spParameterName>firstName</spParameterName>
+      </parameter> 
+      <parameter>
+        <parameterName>LastName</parameterName>
+        <spParameterName>lastName</spParameterName>
+      </parameter>
+      <parameter>
+        <parameterName>Username</parameterName>
+        <spParameterName>username</spParameterName>  
+      </parameter>
+      <parameter>
+        <parameterName>Email</parameterName>
+        <spParameterName>email</spParameterName>
+      </parameter>
+      <parameter>
+        <parameterName>ProfilePictureUrl</parameterName>
+        <spParameterName>profilePictureUrl</spParameterName>
+      </parameter>
+      <parameter>
+        <parameterName>PasswordHash</parameterName>
+        <spParameterName>passwordHash</spParameterName>
+      </parameter> 
     </parameters>
     <returnDataType>NoReturnValue</returnDataType>
   </operation>

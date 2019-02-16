@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <configuration>
-    <conn value=""/>
-    <host value=""/>
+    <conn value="Data Source=(local);Initial Catalog=UsersDB;Integrated Security=True"/>
+    <host value="127.0.0.1"/>
     <port value="5000"/>
 </configuration>
