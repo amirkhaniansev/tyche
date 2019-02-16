@@ -57,7 +57,8 @@ namespace licensegen
             var text = string.Empty;
             var fileName = string.Empty;
             var licenseText = string.Empty;
-            var license = File.ReadAllText(licensePath);
+            var tail = string.Empty;
+            var license = File.ReadAllText(licensePath);            
             var extensions = args
                 .Skip(2)
                 .Select(e => e.Contains("*") ? e : "*" + e);
@@ -85,15 +86,17 @@ namespace licensegen
                     {
                         text = text.Remove(0, j + 6);
                     }
+
+                    tail = string.Empty;
                 }
                 else
                 {
-                    license += "\r\n";
+                    tail = "\r\n";
                 }
 
                 fileName = Path.GetFileNameWithoutExtension(path);
                 licenseText = string.Format(license, fileName);
-                text = licenseText + "\r\n" + text;
+                text = licenseText + tail + "\r\n" + text;
                 File.WriteAllText(path, text);
                 Console.WriteLine("License is appended to {0}", path);
             }
