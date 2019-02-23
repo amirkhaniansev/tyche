@@ -21,7 +21,7 @@
 
 /***Type : Entity***/
 CREATE PROCEDURE [dbo].[uspGetChatroomById]
-	@id INT
+	@id	INT
 AS
 	BEGIN
 		SELECT * FROM [Chatrooms] WHERE [Id] = @id

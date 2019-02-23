@@ -21,7 +21,7 @@
 
 /***Type : Entity***/
 CREATE PROCEDURE [dbo].[uspGetUserById]
-	@userId INT
+	@userId	INT
 AS
 	BEGIN
 		SELECT * FROM [Users] WHERE [Id] = @userId

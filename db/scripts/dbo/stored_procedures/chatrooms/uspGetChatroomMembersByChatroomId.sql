@@ -21,7 +21,7 @@
 
 /***Type : Enumerable***/
 CREATE PROCEDURE [dbo].[uspGetChatroomMembersByChatroomId]
-	@chatroomId int
+	@chatroomId	INT
 AS
 	BEGIN
 		SELECT	u.[Id],

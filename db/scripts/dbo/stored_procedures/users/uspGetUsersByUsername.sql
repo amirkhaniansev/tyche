@@ -21,7 +21,7 @@
 
 /***Type : Enumerable***/
 CREATE PROCEDURE [dbo].[uspGetUsersByUsername]
-	@username VARCHAR(55)
+	@username	VARCHAR(55)
 AS
 	BEGIN
 		SELECT * FROM [Users] WHERE CHARINDEX(@username, [Username]) > 0
