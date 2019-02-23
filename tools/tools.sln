@@ -5,7 +5,9 @@ VisualStudioVersion = 15.0.28010.2026
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "mgen", "mgen\mgen.csproj", "{A3334E1C-2ED9-4B6E-99D8-529000B98B64}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "licensegen", "licensegen\licensegen.csproj", "{AFE6791A-CBAF-4236-9D79-44F9FC8F5077}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "licensegen", "licensegen\licensegen.csproj", "{AFE6791A-CBAF-4236-9D79-44F9FC8F5077}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mapgen", "mapgen\mapgen.csproj", "{8610EE48-6615-4DE6-9C92-43415B89C2C5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{AFE6791A-CBAF-4236-9D79-44F9FC8F5077}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AFE6791A-CBAF-4236-9D79-44F9FC8F5077}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AFE6791A-CBAF-4236-9D79-44F9FC8F5077}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8610EE48-6615-4DE6-9C92-43415B89C2C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8610EE48-6615-4DE6-9C92-43415B89C2C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8610EE48-6615-4DE6-9C92-43415B89C2C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8610EE48-6615-4DE6-9C92-43415B89C2C5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
