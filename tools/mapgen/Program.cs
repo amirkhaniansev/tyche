@@ -27,7 +27,7 @@ using System.Collections.Generic;
 
 /*
  * This tool is for fastening development process. 
- * It is not optimized or the best solution for such tasks.
+ * It is not optimized or the best solution for tasks like this.
  */
 
 namespace mapgen
