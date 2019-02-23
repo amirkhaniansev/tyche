@@ -32,8 +32,11 @@ namespace DbConnect
         /// <param name="args">command line arguments</param>
         static void Main(string[] args)
         {
-            Server.Initialize();
-            Server.Prepare();
+            Server.InitConfigs();
+            Server.InitDataManager();
+            Server.InitBusinessLogic();
+            Server.InitServerBuilder();
+            Server.Build();
             Server.Start();
         }
     }

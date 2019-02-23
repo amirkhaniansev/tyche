@@ -48,7 +48,7 @@ namespace DbConnect.BL
         public async Task<User> CreateUser(User user)
         {
             var result = await this.dm.OperateAsync<User, object>(
-                nameof(DbOperationType.CreateUser),
+                nameof(DbOperation.CreateUser),
                 user);
 
             var id = (int)result;

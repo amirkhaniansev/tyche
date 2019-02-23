@@ -26,10 +26,8 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using AccessCore.Repository;
 using Newtonsoft.Json;
 using DbConnect.BL;
-using DbConnect.Models;
 
 namespace DbConnect
 {
@@ -39,17 +37,7 @@ namespace DbConnect
     public class DataServer
     {
         #region fields
-
-        /// <summary>
-        /// Data manager for doing database operations
-        /// </summary>
-        private readonly DataManager dm;
-
-        /// <summary>
-        /// Users Business logic
-        /// </summary>
-        private readonly UsersBL usersBl;
-
+        
         /// <summary>
         /// TCP listener for server functionality
         /// </summary>
@@ -58,8 +46,13 @@ namespace DbConnect
         /// <summary>
         /// Operations
         /// </summary>
-        private readonly Dictionary<DbOperationType, Type> operations; 
+        private readonly Dictionary<DbOperation, Type> operations; 
         
+        /// <summary>
+        /// Handlers for database operations
+        /// </summary>
+        private readonly Dictionary<DbOperation, Func<object, Task<object>>> handlers;
+
         /// <summary>
         /// Tasks of data server.
         /// </summary>
@@ -132,104 +125,32 @@ namespace DbConnect
         #region constructors
 
         /// <summary>
-        /// Constructs new instance of <see cref="DataServer"/>
+        /// Creates new instance of <see cref="DataServer"/>
         /// </summary>
-        /// <param name="dm">Data Manager</param>
-        /// <param name="address">address</param>
-        /// <param name="port">port</param>
-        /// /// <exception cref="ArgumentNullException">
-        /// Throws if any of paramaters is not correct.
-        /// </exception>
-        public DataServer(DataManager dm, string address, string port)
-            : this(dm, IPAddress.Parse(address), int.Parse(port))
+        /// <param name="host">IP address of host</param>
+        /// <param name="port">Port</param>
+        /// <param name="operations">Operations</param>
+        /// <param name="handlers">Handlers</param>
+        internal DataServer(
+            string host,
+            string port,
+            Dictionary<DbOperation, Type> operations,
+            Dictionary<DbOperation, Func<object, Task<object>>> handlers)
         {
-        }
-
-        /// <summary>
-        /// Creates new instance of <see cref="DataManager"/>
-        /// </summary>
-        /// <param name="dm">Data manager</param>
-        /// <param name="iPEndPoint">IP endpoint</param>
-        public DataServer(DataManager dm, IPEndPoint iPEndPoint)
-            : this(dm, iPEndPoint.Address, iPEndPoint.Port)
-        {
-        }
-
-        /// <summary>
-        /// Creates new instance of <see cref="DataManager"/>
-        /// </summary>
-        /// <param name="dm">Data Manager</param>
-        /// <param name="address">IP address of server.</param>
-        /// <param name="port">Port of server.</param>
-        /// <exception cref="ArgumentNullException">
-        /// Throws if any of paramaters is not correct.
-        /// </exception>
-        public DataServer(DataManager dm, IPAddress address, int port)
-        {
-            if(dm == null)
-            {
-                throw new ArgumentNullException("Data Manager");
-            }
-
-            if(address == null)
-            {
-                throw new ArgumentNullException("IP Address");
-            }
-
-            if(port < 1000)
-            {
-                throw new ArgumentNullException("Port");
-            }
-
-            this.dm = dm;
-            this.IPAddress = address;
-            this.Port = port;
-            this.maxAllowedDataToBeRecieved = DataServer.defaultMaxTraffic;
-            this.IPEndPoint = new IPEndPoint(address, port);
-            this.server = new TcpListener(address, port);
+            this.IPAddress = IPAddress.Parse(host);
+            this.Port = int.Parse(port);
+            this.IPEndPoint = new IPEndPoint(this.IPAddress, this.Port);
+            this.server = new TcpListener(this.IPEndPoint);
             this.tasks = new HashSet<Task>();
-            this.operations = new Dictionary<DbOperationType, Type>();
-            this.usersBl = new UsersBL(dm);
+            this.operations = operations;
+            this.handlers = handlers;
+            this.maxAllowedDataToBeRecieved = defaultMaxTraffic;
         }
 
         #endregion constructors
 
         #region public methods
-
-        /// <summary>
-        /// Adds data operation
-        /// </summary>
-        /// <typeparam name="TInput">Type of input</typeparam>
-        /// <param name="dbOperationType">Database operation type</param>
-        /// /// <exception cref="ArgumentException">
-        /// Throws if database operation type is already added.
-        /// </exception>
-        /// <returns>data server</returns>
-        public DataServer AddDataOperation<TInput>(DbOperationType dbOperationType)
-        {
-            return this.AddDataOperation(dbOperationType, typeof(TInput));
-        }
-
-        /// <summary>
-        /// Adds data operation
-        /// </summary>
-        /// <param name="dbOperationType">Database operation type</param>
-        /// <param name="type">Type of input</param>
-        /// <exception cref="ArgumentException">
-        /// Throws if database operation type is already added.
-        /// </exception>
-        /// <returns>data server</returns>
-        public DataServer AddDataOperation(DbOperationType dbOperationType, Type type)
-        {
-            if(this.operations.ContainsKey(dbOperationType))
-            {
-                throw new ArgumentException("Database Operation Type.");
-            }
-
-            this.operations.Add(dbOperationType, type);
-            return this;
-        }
-
+        
         /// <summary>
         /// Starts Data server.
         /// </summary>
@@ -309,7 +230,7 @@ namespace DbConnect
 
                     // reading DB operation type
                     read = await stream.ReadAsync(buffer, 0, 4);
-                    var dbOperationType = (DbOperationType)BitConverter.ToInt32(buffer, 0);                    
+                    var dbOperationType = (DbOperation)BitConverter.ToInt32(buffer, 0);                    
                     
                     // reading input
                     buffer = new byte[frameSize];
@@ -318,10 +239,7 @@ namespace DbConnect
                     var inputJson = Encoding.Unicode.GetString(buffer);
                     var type = this.operations[dbOperationType];
                     var input = JsonConvert.DeserializeObject(inputJson, type);
-
-                    var result = await this.usersBl.CreateUser(input as User);
-
-                    await this.SendSuccessReponse(stream, result);
+                    
                 }
             }
         }

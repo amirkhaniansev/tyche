@@ -1,4 +1,4 @@
-/**
+﻿/**
  * GNU General Public License Version 3.0, 29 June 2007
  * Server
  * Copyright (C) <2019>
@@ -19,11 +19,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
+using System;
+using System.Threading.Tasks;
 using AccessCore.SpExecuters;
 using AccessCore.Repository;
 using AccessCore.Repository.MapInfos;
 using DbConnect.Config;
 using DbConnect.Models;
+using DbConnect.BL;
 
 namespace DbConnect
 {
@@ -35,12 +38,7 @@ namespace DbConnect
         /// <summary>
         /// Gets or sets Tyche Config
         /// </summary>
-        public static TycheConfig TycheConfig { get; set; } 
-
-        /// <summary>
-        /// Gets or sets Data Manager
-        /// </summary>
-        public static DataManager DataManager { get; set; }
+        public static TycheConfig TycheConfig { get; set; }
 
         /// <summary>
         /// Gets or sets Xml Map Information
@@ -51,19 +49,41 @@ namespace DbConnect
         /// Gets or sets sp executer
         /// </summary>
         public static MsSqlSpExecuter MsSqlSpExecuter { get; set; }
+
+        /// <summary>
+        /// Gets or sets Data Manager
+        /// </summary>
+        public static DataManager DataManager { get; set; }
         
+        /// <summary>
+        /// Gets or sets User BL
+        /// </summary>
+        public static UsersBL UsersBL { get; set; }
+
+        /// <summary>
+        /// Gets or sets Data Server builder
+        /// </summary>
+        public static DataServerBuilder DataServerBuilder { get; set; }
+
         /// <summary>
         /// Gets or sets Server
         /// </summary>
         public static DataServer DataServer { get; set; }
 
         /// <summary>
-        /// Initializes globals
+        /// Initializes configs
         /// </summary>
-        public static void Initialize()
+        public static void InitConfigs()
         {
             TycheConfig = new TycheConfig("./Config/config.xml");
             XmlMapInfo = new XmlMapInfo("Config/map.xml");
+        }
+
+        /// <summary>
+        /// Initializes Data manager
+        /// </summary>
+        public static void InitDataManager()
+        {
             MsSqlSpExecuter = new MsSqlSpExecuter(TycheConfig.ConnectionString);
             DataManager = new DataManager(MsSqlSpExecuter, XmlMapInfo);
         }
@@ -71,12 +91,30 @@ namespace DbConnect
         /// <summary>
         /// Prepares the server for starting.
         /// </summary>
-        public static void Prepare()
+        public static void InitServerBuilder()
         {
-            DataServer = new DataServer(DataManager, TycheConfig.Host, TycheConfig.Port)
-                .AddDataOperation<ChatCreationDescriptor>(DbOperationType.CreateChatRooom)
-                .AddDataOperation<UserVerificationDescriptor>(DbOperationType.VerifyUser)
-                .AddDataOperation<VerificationCodeDescriptor>(DbOperationType.CreateVerificationCode);
+            DataServerBuilder = new DataServerBuilder()
+                .AssignIp(TycheConfig.Host)
+                .AssignPort(TycheConfig.Port);
+
+            DataServerBuilder = DataServerBuilder
+                .AddOperation<User>(DbOperation.CreateUser);
+
+            DataServerBuilder = DataServerBuilder
+                .AddHandler(DbOperation.CreateUser, new Func<object, Task<object>>(UsersBL.CreateUser));
+        }
+
+        public static void InitBusinessLogic()
+        {
+            UsersBL = new UsersBL(Server.DataManager);
+        }
+
+        /// <summary>
+        /// Builds data server
+        /// </summary>
+        public static void Build()
+        {
+            DataServer = DataServerBuilder.Build();
         }
 
         /// <summary>

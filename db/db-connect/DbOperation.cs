@@ -24,7 +24,7 @@ namespace DbConnect
     /// <summary>
     /// Enum for database operation types
     /// </summary>
-    public enum DbOperationType : uint
+    public enum DbOperation : uint
     {
         CreateUser              = 0x0,
         CreateMessage           = 0x1,
