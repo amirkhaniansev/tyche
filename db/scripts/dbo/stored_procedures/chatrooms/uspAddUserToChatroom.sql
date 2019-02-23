@@ -1,6 +1,6 @@
 /**
  * GNU General Public License Version 3.0, 29 June 2007
- * uspVerifyUser
+ * uspAddUserToChatroom
  * Copyright (C) <2019>
  *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
  *               <DavidPetr>       <david.petrosyan11100@gmail.com>
@@ -19,31 +19,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-
-CREATE PROCEDURE [dbo].[uspVerifyUser]
-	@userId		INT,
-	@code		NVARCHAR(32)
-AS	
-	BEGIN		
-		DECLARE @isVerified BIT
-		SELECT @isVerified = IsVerified FROM [Users] WHERE Id = @userId
-		IF @isVerified = 1
-			RETURN 0
+CREATE PROCEDURE [dbo].[uspAddUserToChatroom]
+	@userId			INT,
+	@chatRoomId		INT
+AS
+	BEGIN
 		BEGIN TRY
-			BEGIN TRANSACTION VERIFY
-				DECLARE @created		DATETIME
-				DECLARE @validOffSet	INT
-				SELECT @created = Created, @validOffset = ValidOffset FROM [Verifications]
-					WHERE UserId = @userId AND Code = @code
-				IF @created + @validOffset > GETDATE()
-					RETURN 1
-				DELETE FROM [Verifications] WHERE UserId = @userId AND Code = @code
-				UPDATE [Users] SET IsVerified = 1 WHERE Id = @userId
-				RETURN 0
-			COMMIT TRANSACTION VERIFIY	
-		END TRY	
+			BEGIN TRANSACTION ADD_USER_TO_CHATROOM
+				INSERT INTO [ChatRoomMembers] VALUES (@chatRoomId, @userId)
+			COMMIT TRANSACTION ADD_USER_TO_CHATROOM
+			RETURN 0
+		END TRY
 		BEGIN CATCH
-			ROLLBACK TRANSACTION VERIFIY
-			RETURN 2
-		END CATCH		 
+			ROLLBACK TRANSACTION ADD_USER_TO_CHATROOM
+			RETURN 1
+		END CATCH
 	END

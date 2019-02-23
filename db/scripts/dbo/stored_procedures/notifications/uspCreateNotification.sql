@@ -22,19 +22,21 @@
 
 CREATE PROCEDURE [dbo].[uspCreateNotification]
 	@type		INT,
-	@userId		INT,
 	@info		NVARCHAR(MAX),
 	@chatRoomId	INT
 AS
 	BEGIN
-		IF NOT EXISTS (SELECT UserId FROM [ChatRoomMembers] WHERE 
-				UserId = @userId AND ChatRoomId = @chatRoomId)
+		BEGIN TRY
+			BEGIN TRANSACTION CREATE_NOTIFICATION
+				INSERT INTO [Notifications] VALUES (
+					@type,
+					@info,
+					@chatRoomId)
+			COMMIT TRANSACTION CREATE_NOTIFICATION
+			RETURN SCOPE_IDENTITY()
+		END TRY
+		BEGIN CATCH
+			ROLLBACK TRANSACTION CREATE_NOTIFICATION
 			RETURN 1
-		INSERT INTO [Notifications] VALUES(
-			@type,
-			@userId,
-			@info,
-			@chatRoomId,
-			0)
-		RETURN 0
+		END CATCH
 	END	
