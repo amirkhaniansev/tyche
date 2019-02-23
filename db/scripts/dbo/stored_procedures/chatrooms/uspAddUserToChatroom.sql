@@ -19,6 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
+/***Type : NoReturnValue***/
 CREATE PROCEDURE [dbo].[uspAddUserToChatroom]
 	@userId			INT,
 	@chatRoomId		INT

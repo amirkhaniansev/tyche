@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-
+/***Type : NoReturnValue***/
 CREATE PROCEDURE [dbo].[uspVerifyUser]
 	@userId		INT,
 	@code		NVARCHAR(32)

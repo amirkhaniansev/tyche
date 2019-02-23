@@ -19,6 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
+/***Type : Enumerable***/
 CREATE PROCEDURE [dbo].[uspGetMessagesByChatroomIdAndDate]
 	@chatroomId		INT,
 	@fromDate		DATETIME,

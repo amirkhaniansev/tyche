@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-
+/***Type : NoReturnValue***/
 CREATE PROCEDURE [dbo].[uspCreateUser]
 	@firstName			NVARCHAR(20),
 	@lastName			NVARCHAR(50),

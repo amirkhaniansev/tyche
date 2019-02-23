@@ -1,6 +1,6 @@
 /**
  * GNU General Public License Version 3.0, 29 June 2007
- * uspGetUserByUsername
+ * uspGetUsersByUsername
  * Copyright (C) <2019>
  *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
  *               <DavidPetr>       <david.petrosyan11100@gmail.com>
@@ -19,7 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-CREATE PROCEDURE [dbo].[uspGetUserByUsername]
+/***Type : Enumerable***/
+CREATE PROCEDURE [dbo].[uspGetUsersByUsername]
 	@username VARCHAR(55)
 AS
 	BEGIN
