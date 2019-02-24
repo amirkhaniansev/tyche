@@ -19,8 +19,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-using System;
-using System.Threading.Tasks;
 using AccessCore.SpExecuters;
 using AccessCore.Repository;
 using AccessCore.Repository.MapInfos;
@@ -101,7 +99,7 @@ namespace DbConnect
                 .AddOperation<User>(DbOperation.CreateUser);
 
             DataServerBuilder = DataServerBuilder
-                .AddHandler(DbOperation.CreateUser, new Func<object, Task<object>>(UsersBL.CreateUser));
+                .AddHandler(DbOperation.CreateUser, Helper.CostructHandler<User, User>(UsersBL.CreateUser));
         }
 
         public static void InitBusinessLogic()

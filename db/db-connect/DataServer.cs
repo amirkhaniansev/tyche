@@ -239,7 +239,11 @@ namespace DbConnect
                     var inputJson = Encoding.Unicode.GetString(buffer);
                     var type = this.operations[dbOperationType];
                     var input = JsonConvert.DeserializeObject(inputJson, type);
+
+                    var handler = this.handlers[dbOperationType];
+                    var dbReponse = await handler(input);
                     
+
                 }
             }
         }
@@ -302,6 +306,18 @@ namespace DbConnect
                 Data = data
             };
 
+            await this.SendResponse(stream, response);
+        }
+
+        /// <summary>
+        /// Sends Reponse
+        /// </summary>
+        /// <typeparam name="T">Type of response data.</typeparam>
+        /// <param name="networkStream">Network Stream</param>
+        /// <param name="response">Response</param>
+        /// <returns>awaitable task</returns>
+        private async Task SendResponse<T>(NetworkStream networkStream, Response<T> response)
+        {
             var json = JsonConvert.SerializeObject(response);
             var lengthBytes = BitConverter.GetBytes(json.Length * 2);
             var contentBytes = Encoding.Unicode.GetBytes(json);
@@ -309,7 +325,7 @@ namespace DbConnect
                 .Concat(contentBytes)
                 .ToArray();
 
-            await stream.WriteAsync(buffer, 0, buffer.Length);
+            await networkStream.WriteAsync(buffer, 0, buffer.Length);
         }
 
         #endregion
