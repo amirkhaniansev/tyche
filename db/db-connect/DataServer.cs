@@ -243,7 +243,19 @@ namespace DbConnect
                     var handler = this.handlers[dbOperationType];
                     var dbReponse = await handler(input);
                     
+                    if(dbReponse.ResponseCode != ResponseCode.Success)
+                    {
+                        await this.SendErrorResponse(
+                            stream,
+                            dbReponse.Content as string,
+                            dbReponse.ResponseCode);
+                        return;
+                    }
 
+                    await this.SendSuccessReponse(
+                        stream,
+                        dbReponse.Content,
+                        dbReponse.ResponseCode);
                 }
             }
         }
@@ -251,15 +263,14 @@ namespace DbConnect
         /// <summary>
         /// Sends success response.
         /// </summary>
-        /// <typeparam name="TData">Type of data.</typeparam>
         /// <param name="stream">Network stream.</param>
         /// <param name="data">Data</param>
         /// <param name="responseCode">Response code.</param>
         /// <param name="message">Message</param>
         /// <returns>task</returns>
-        private async Task SendSuccessReponse<TData>(
+        private async Task SendSuccessReponse(
             NetworkStream stream,
-            TData data,
+            object data,
             ResponseCode responseCode = ResponseCode.Success,
             string message = Messages.Success)
         {
@@ -284,18 +295,17 @@ namespace DbConnect
         /// <summary>
         /// Sends response to the client.
         /// </summary>
-        /// <typeparam name="T">Type of response entity.</typeparam>
         /// <param name="stream">client stream</param>
         /// <param name="message">Response message</param>
         /// <param name="responseCode">Response code</param>
         /// <param name="isError">boolean value indicating whether the reponse is error.</param>
         /// <param name="data">data</param>
         /// <returns>task</returns>
-        private async Task SendResponse<T>(
+        private async Task SendResponse(
             NetworkStream stream,
             string message = Messages.NoSuchOperation,
             bool isError = true,
-            T data = default(T), 
+            object data = null, 
             ResponseCode responseCode = ResponseCode.UnknownError)
         {
             var response = new Response
@@ -312,7 +322,6 @@ namespace DbConnect
         /// <summary>
         /// Sends Reponse
         /// </summary>
-        /// <typeparam name="T">Type of response data.</typeparam>
         /// <param name="networkStream">Network Stream</param>
         /// <param name="response">Response</param>
         /// <returns>awaitable task</returns>
