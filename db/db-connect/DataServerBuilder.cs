@@ -20,7 +20,7 @@ namespace DbConnect
         /// <summary>
         /// Handlers for database operations
         /// </summary>
-        private readonly Dictionary<DbOperation, Func<object, Task<object>>> handlers;
+        private readonly Dictionary<DbOperation, Func<object, Task<DbResponse>>> handlers;
 
         /// <summary>
         /// IP address
@@ -42,7 +42,7 @@ namespace DbConnect
         public DataServerBuilder()
         {
             this.operations = new Dictionary<DbOperation, Type>();
-            this.handlers = new Dictionary<DbOperation, Func<object, Task<object>>>();
+            this.handlers = new Dictionary<DbOperation, Func<object, Task<DbResponse>>>();
         }
 
         #endregion
@@ -92,7 +92,7 @@ namespace DbConnect
         /// <param name="dbOperation">Database operation</param>
         /// <param name="handler">Hadnler</param>
         /// <returns>data server builder</returns>
-        public DataServerBuilder AddHandler(DbOperation dbOperation, Func<object, Task<object>> handler)
+        public DataServerBuilder AddHandler(DbOperation dbOperation, Func<object, Task<DbResponse>> handler)
         {
             if (!this.operations.ContainsKey(dbOperation))
                 throw new InvalidOperationException("No such operation");

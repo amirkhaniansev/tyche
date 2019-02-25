@@ -51,7 +51,7 @@ namespace DbConnect
         /// <summary>
         /// Handlers for database operations
         /// </summary>
-        private readonly Dictionary<DbOperation, Func<object, Task<object>>> handlers;
+        private readonly Dictionary<DbOperation, Func<object, Task<DbResponse>>> handlers;
 
         /// <summary>
         /// Tasks of data server.
@@ -135,7 +135,7 @@ namespace DbConnect
             string host,
             string port,
             Dictionary<DbOperation, Type> operations,
-            Dictionary<DbOperation, Func<object, Task<object>>> handlers)
+            Dictionary<DbOperation, Func<object, Task<DbResponse>>> handlers)
         {
             this.IPAddress = IPAddress.Parse(host);
             this.Port = int.Parse(port);
@@ -298,7 +298,7 @@ namespace DbConnect
             T data = default(T), 
             ResponseCode responseCode = ResponseCode.UnknownError)
         {
-            var response = new Response<T>
+            var response = new Response
             {
                 Message = message,
                 IsError = isError,
@@ -316,7 +316,7 @@ namespace DbConnect
         /// <param name="networkStream">Network Stream</param>
         /// <param name="response">Response</param>
         /// <returns>awaitable task</returns>
-        private async Task SendResponse<T>(NetworkStream networkStream, Response<T> response)
+        private async Task SendResponse(NetworkStream networkStream, Response response)
         {
             var json = JsonConvert.SerializeObject(response);
             var lengthBytes = BitConverter.GetBytes(json.Length * 2);

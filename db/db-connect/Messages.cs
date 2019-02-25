@@ -28,6 +28,8 @@ namespace DbConnect
     {
         public const string NoSuchOperation = "Operation is not supported.";
         public const string UnknownError    = "Unknown error occured.";
-        public const string Success         = "Operation is successfully done."; 
+        public const string Success         = "Operation is successfully done.";
+        public const string UserExists      = "User already exists.";
+        public const string DbError         = "Database error.";
     }
 }

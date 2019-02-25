@@ -12,10 +12,9 @@ namespace DbConnect
         /// Constructs handler from BL function
         /// </summary>
         /// <typeparam name="TIn">Type of input.</typeparam>
-        /// <typeparam name="TOut">Type of output.</typeparam>
         /// <param name="blFunction">BL function.</param>
         /// <returns>Handler</returns>
-        internal static Func<object, Task<object>> CostructHandler<TIn, TOut>(Func<TIn, Task<TOut>> blFunction)
+        internal static Func<object, Task<DbResponse>> CostructHandler<TIn>(Func<TIn, Task<DbResponse>> blFunction)
             where TIn : class
         {
             return async input => await blFunction(input as TIn);

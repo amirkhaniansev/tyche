@@ -20,6 +20,7 @@
 **/
 
 
+using System;
 using System.Threading.Tasks;
 using AccessCore.Repository;
 using DbConnect.Models;
@@ -45,19 +46,31 @@ namespace DbConnect.BL
         /// </summary>
         /// <param name="user">user</param>
         /// <returns>created user if everything is ok, otherwise null.</returns>
-        public async Task<User> CreateUser(User user)
+        public async Task<DbResponse> CreateUser(User user)
         {
-            var result = await this.dm.OperateAsync<User, object>(
-                nameof(DbOperation.CreateUser),
-                user);
+            try
+            {
+                var result = await this.dm.OperateAsync<User, object>(
+                    nameof(DbOperation.CreateUser),
+                    user);
+               
+                var numericValue = (int)result;
+                if (numericValue == 1)
+                    return this.ConstructDbResponse(ResponseCode.UserExists, Messages.UserExists);
 
-            var id = (int)result;
+                if (numericValue == 2)
+                    return this.ConstructDbResponse(ResponseCode.DbError, Messages.DbError);
 
-            if (id < 10000)
-                return null;
-
-            user.Id = id;
-            return user;
+                user.Id = numericValue;
+                return this.ConstructDbResponse(ResponseCode.Success, user);
+            }
+            catch(Exception ex)
+            {
+                return this.ConstructDbResponse(
+                    ResponseCode.DbError,
+                    Messages.DbError,
+                    ex);
+            }
         }
     }
 }

@@ -24,11 +24,12 @@ namespace DbConnect
     /// <summary>
     /// Enum for response codes
     /// </summary>
-    internal enum ResponseCode
+    public enum ResponseCode
     {
         Success         = 0x0,
         UnknownError    = 0x1,
         NoSuchOperation = 0x2,
-
+        UserExists      = 0x3,
+        DbError         = 0x3
     } 
 }

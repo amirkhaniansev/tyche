@@ -21,8 +21,6 @@
 
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 using AccessCore.Repository;
 
 namespace DbConnect.BL
@@ -51,6 +49,26 @@ namespace DbConnect.BL
         {
             this.dm = dm;
             this.blType = blType;
+        }
+
+        /// <summary>
+        /// Constructs database response
+        /// </summary>
+        /// <param name="responseCode">Response code</param>
+        /// <param name="content">Content</param>
+        /// <param name="exception">Exception</param>
+        /// <returns>constructed database response</returns>
+        protected DbResponse ConstructDbResponse(
+            ResponseCode responseCode,
+            object content = null,
+            Exception exception = null)
+        {
+            return new DbResponse
+            {
+                ResponseCode = responseCode,
+                Content = content,
+                Exception = exception
+            };
         }
     }
 }

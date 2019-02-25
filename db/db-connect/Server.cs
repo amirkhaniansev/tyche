@@ -99,7 +99,7 @@ namespace DbConnect
                 .AddOperation<User>(DbOperation.CreateUser);
 
             DataServerBuilder = DataServerBuilder
-                .AddHandler(DbOperation.CreateUser, Helper.CostructHandler<User, User>(UsersBL.CreateUser));
+                .AddHandler(DbOperation.CreateUser, Helper.CostructHandler<User>(UsersBL.CreateUser));
         }
 
         public static void InitBusinessLogic()

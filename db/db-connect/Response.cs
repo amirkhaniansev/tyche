@@ -25,7 +25,7 @@ namespace DbConnect
     /// Class for response
     /// </summary>
     /// <typeparam name="T">Type of Data</typeparam>
-    internal class Response<T>
+    internal class Response
     {
         /// <summary>
         /// Gets or sets response code
@@ -46,6 +46,6 @@ namespace DbConnect
         /// <summary>
         /// Gets or sets data
         /// </summary>
-        public T Data { get; set; }
+        public object Data { get; set; }
     }
 }
