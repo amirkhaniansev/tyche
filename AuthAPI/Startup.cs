@@ -24,6 +24,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using DbConnectClient;
+using System.Net;
 
 namespace AuthAPI
 {
@@ -54,6 +56,10 @@ namespace AuthAPI
         {
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            App.DataClient = new DataClient(
+                IPAddress.Parse(Configuration["DbConnectHost"]),
+                int.Parse(Configuration["DbConnectPort"]));
         }
 
         /// <summary>

@@ -55,7 +55,7 @@ namespace DbConnectClient
         }
 
         /// <summary>
-        /// Sends response to data server asynchronously.
+        /// Sends request to data server asynchronously.
         /// </summary>
         /// <typeparam name="TInput">Type of input.</typeparam>
         /// <param name="request">Data Server Request.</param>

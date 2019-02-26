@@ -1,6 +1,6 @@
 /**
  * GNU General Public License Version 3.0, 29 June 2007
- * Program
+ * App
  * Copyright (C) <2019>
  *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
  *               <DavidPetr>       <david.petrosyan11100@gmail.com>
@@ -19,34 +19,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
+using DbConnectClient;
 
 namespace AuthAPI
 {
     /// <summary>
-    /// Main class of Auth API
+    /// Class for app
     /// </summary>
-    public class Program
+    public static class App
     {
         /// <summary>
-        /// Entry point for Auth API
+        /// Data client for Auth API
         /// </summary>
-        /// <param name="args">command line arguments</param>
-        public static void Main(string[] args)
-        {
-            Program.CreateWebHostBuilder(args)
-                   .Build()
-                   .Run();            
-        }
-
-        /// <summary>
-        /// Creates web host builder
-        /// </summary>
-        /// <param name="args">command line arguments</param>
-        /// <returns>builder</returns>
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                   .UseStartup<Startup>();        
+        public static DataClient DataClient { get; set; }
     }
 }
