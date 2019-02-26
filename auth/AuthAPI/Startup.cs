@@ -26,6 +26,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using DbConnectClient;
+using MailSevice;
 using PasswordHasherService;
 
 namespace AuthAPI
@@ -59,10 +60,14 @@ namespace AuthAPI
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             App.DataClient = new DataClient(
-                IPAddress.Parse(Configuration["DbConnectHost"]),
-                int.Parse(Configuration["DbConnectPort"]));
+                IPAddress.Parse(Configuration[Constants.DbConnectHost]),
+                int.Parse(Configuration[Constants.DbConnectPort]));
 
             App.PasswordHasher = new PasswordHasher();
+
+            App.Mailer = new Mailer(new NetworkCredential(
+                Configuration[Constants.EmailUsername],
+                Configuration[Constants.EmailPassword]));
         }
 
         /// <summary>
@@ -76,7 +81,6 @@ namespace AuthAPI
             {
                 app.UseDeveloperExceptionPage();
             }
-
             app.UseMvc();
         }
     }
