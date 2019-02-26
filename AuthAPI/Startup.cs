@@ -19,13 +19,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
+using System.Net;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using DbConnectClient;
-using System.Net;
+using PasswordHasherService;
 
 namespace AuthAPI
 {
@@ -60,6 +61,8 @@ namespace AuthAPI
             App.DataClient = new DataClient(
                 IPAddress.Parse(Configuration["DbConnectHost"]),
                 int.Parse(Configuration["DbConnectPort"]));
+
+            App.PasswordHasher = new PasswordHasher();
         }
 
         /// <summary>

@@ -20,6 +20,7 @@
 **/
 
 using DbConnectClient;
+using PasswordHasherService;
 
 namespace AuthAPI
 {
@@ -32,5 +33,10 @@ namespace AuthAPI
         /// Data client for Auth API
         /// </summary>
         public static DataClient DataClient { get; set; }
+
+        /// <summary>
+        /// Password hasher
+        /// </summary>
+        public static PasswordHasher PasswordHasher { get; set; }
     }
 }
