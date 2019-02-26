@@ -1,6 +1,6 @@
 /**
  * GNU General Public License Version 3.0, 29 June 2007
- * Program
+ * Response
  * Copyright (C) <2019>
  *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
  *               <DavidPetr>       <david.petrosyan11100@gmail.com>
@@ -19,27 +19,33 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-
-namespace AuthApi
+namespace DbConnectClient
 {
-    public class Program
+    /// <summary>
+    /// Class for response
+    /// </summary>
+    /// <typeparam name="T">Type of Data</typeparam>
+    public class Response
     {
-        public static void Main(string[] args)
-        {
-            CreateWebHostBuilder(args).Build().Run();
-        }
+        /// <summary>
+        /// Gets or sets response code
+        /// </summary>
+        public ResponseCode ResponseCode { get; set; }
+        
+        /// <summary>
+        /// Gets or sets boolean value which indicates whether
+        /// the response contains error.
+        /// </summary>
+        public bool IsError { get; set; }
 
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>();
+        /// <summary>
+        /// Gets or sets message.
+        /// </summary>
+        public string Message { get; set; }
+
+        /// <summary>
+        /// Gets or sets data
+        /// </summary>
+        public object Data { get; set; }
     }
 }

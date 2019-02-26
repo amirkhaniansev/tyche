@@ -223,11 +223,7 @@ namespace DbConnect
                     // reading frame size
                     read = await stream.ReadAsync(buffer, 0, 4);
                     var frameSize = BitConverter.ToInt32(buffer, 0);
-
-                    // reading entity type
-                    read = await stream.ReadAsync(buffer, 0, 4);
-                    var entityType = (BlType)BitConverter.ToInt32(buffer, 0);
-
+                    
                     // reading DB operation type
                     read = await stream.ReadAsync(buffer, 0, 4);
                     var dbOperationType = (DbOperation)BitConverter.ToInt32(buffer, 0);                    
