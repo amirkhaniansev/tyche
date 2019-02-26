@@ -28,6 +28,7 @@ using Microsoft.Extensions.DependencyInjection;
 using DbConnectClient;
 using MailSevice;
 using PasswordHasherService;
+using LoggerService;
 
 namespace AuthAPI
 {
@@ -68,6 +69,11 @@ namespace AuthAPI
             App.Mailer = new Mailer(new NetworkCredential(
                 Configuration[Constants.EmailUsername],
                 Configuration[Constants.EmailPassword]));
+
+            App.Logger = new Logger(
+                Constants.AuthAPI,
+                Constants.LogPath,
+                30);
         }
 
         /// <summary>

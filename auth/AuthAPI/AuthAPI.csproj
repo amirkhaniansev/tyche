@@ -16,7 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DbConnectClient\DbConnectClient.csproj" />
-    <ProjectReference Include="..\Logger\Logger.csproj" />
+    <ProjectReference Include="..\LoggerService\LoggerService.csproj" />
     <ProjectReference Include="..\MailService\MailService.csproj" />
     <ProjectReference Include="..\PasswordHasherService\PasswordHasherService.csproj" />
     <ProjectReference Include="..\TokenService\TokenService.csproj" />

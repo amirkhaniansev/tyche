@@ -21,6 +21,7 @@
 
 using DbConnectClient;
 using MailSevice;
+using LoggerService;
 using PasswordHasherService;
 
 namespace AuthAPI
@@ -44,5 +45,10 @@ namespace AuthAPI
         /// Gets or sets mailer.
         /// </summary>
         public static Mailer Mailer { get; set; }
+
+        /// <summary>
+        /// Gets or sets logger
+        /// </summary>
+        public static Logger Logger { get; set; }
     }
 }

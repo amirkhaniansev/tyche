@@ -19,11 +19,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
+using System;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using DbConnectClient;
 using DbConnectClient.Models;
+using LoggerService;
 
 namespace AuthAPI.Controllers
 {
@@ -31,7 +33,7 @@ namespace AuthAPI.Controllers
     /// Controller for signing up API
     /// </summary>
     [ApiController]
-    [Route("api/sign-up")]    
+    [Route("api/sign-up")]
     [Produces("application/json")]
     public class SignUpController : ControllerBase
     {
@@ -42,25 +44,37 @@ namespace AuthAPI.Controllers
         /// <returns>action result</returns>
         public async Task<IActionResult> Post([FromBody]User user)
         {
-            if (user == null)
-                return this.BadRequest();
-
-            user.PasswordHash = App.PasswordHasher.HashPassword(user.PasswordHash);
-            var request = new Request<User>
+            try
             {
-                Input = user,
-                Operation = Operation.CreateUser
-            };
+                if (user == null)
+                    return this.BadRequest();
 
-            var response = await App.DataClient.SendRequestAsync(request);
+                user.PasswordHash = App.PasswordHasher.HashPassword(user.PasswordHash);
+                var request = new Request<User>
+                {
+                    Input = user,
+                    Operation = Operation.CreateUser
+                };
 
-            if (response.ResponseCode == ResponseCode.InternalError)
-                return this.StatusCode((int)HttpStatusCode.InternalServerError);
+                var response = await App.DataClient.SendRequestAsync(request);
 
-            if (response.ResponseCode == ResponseCode.Success)
-                return this.Ok(response);
+                if (response.ResponseCode == ResponseCode.InternalError)
+                    return this.StatusCode((int)HttpStatusCode.InternalServerError);
 
-            return this.BadRequest(response);
+                if (response.ResponseCode == ResponseCode.Success)
+                {
+                    App.Logger.Log(Constants.UserCreated);
+                    return this.Ok(response);
+                }
+
+                return this.BadRequest(response);
+            }
+            catch (Exception exception)
+            {
+                App.Logger.Log(LogHelper.CreateLog(
+                    DateTime.Now, LogType.Fatal, Constants.InternalError, exception));
+                return this.StatusCode(500);
+            }
         }
     }
 }
