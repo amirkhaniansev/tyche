@@ -1,6 +1,6 @@
 /**
  * GNU General Public License Version 3.0, 29 June 2007
- * LogHelper
+ * ILogger
  * Copyright (C) <2019>
  *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
  *               <DavidPetr>       <david.petrosyan11100@gmail.com>
@@ -21,30 +21,28 @@
 
 using System;
 
-namespace XemsLogger
+namespace LoggerService
 {
     /// <summary>
-    /// Class for helping logger operations
+    /// Interface for logger
     /// </summary>
-    public class LogHelper
+    public interface ILogger : IDisposable
     {
         /// <summary>
-        /// Creates log
+        /// Logs log info.
         /// </summary>
-        /// <param name="time">time</param>
-        /// <param name="logType">log type</param>
-        /// <param name="message">log message</param>
-        /// <param name="exception">exception</param>
-        /// <returns>log information</returns>
-        public static LogInfo CreateLog(DateTime? time, LogType logType, string message, Exception exception)
-        {
-            return new LogInfo
-            {
-                Time = time,
-                LogType = logType,
-                Message = message,
-                Exception = exception
-            };
-        }
+        /// <param name="logInfo">log info</param>
+        void Log(LogInfo logInfo);
+
+        /// <summary>
+        /// Logs log info
+        /// </summary>
+        /// <param name="logInfo">log info</param>
+        void Log(string logInfo);
+
+        /// <summary>
+        /// Clears log cache
+        /// </summary>
+        void Clear();
     }
 }

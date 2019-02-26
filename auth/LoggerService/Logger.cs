@@ -28,7 +28,7 @@ using System.Collections.Generic;
 using System.Collections.Concurrent;
 using System.Diagnostics;
 
-namespace XemsLogger
+namespace LoggerService
 {
     /// <summary>
     /// Class for logger that implements ILogger interface

@@ -1,6 +1,6 @@
 /**
  * GNU General Public License Version 3.0, 29 June 2007
- * LogType
+ * LogHelper
  * Copyright (C) <2019>
  *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
  *               <DavidPetr>       <david.petrosyan11100@gmail.com>
@@ -19,16 +19,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-namespace XemsLogger
+using System;
+
+namespace LoggerService
 {
     /// <summary>
-    /// Enum for log types
+    /// Class for helping logger operations
     /// </summary>
-    public enum LogType
+    public class LogHelper
     {
-        Fail,
-        Success,
-        Fatal,
-        Default
+        /// <summary>
+        /// Creates log
+        /// </summary>
+        /// <param name="time">time</param>
+        /// <param name="logType">log type</param>
+        /// <param name="message">log message</param>
+        /// <param name="exception">exception</param>
+        /// <returns>log information</returns>
+        public static LogInfo CreateLog(DateTime? time, LogType logType, string message, Exception exception)
+        {
+            return new LogInfo
+            {
+                Time = time,
+                LogType = logType,
+                Message = message,
+                Exception = exception
+            };
+        }
     }
 }

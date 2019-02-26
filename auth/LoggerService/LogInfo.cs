@@ -1,6 +1,6 @@
 /**
  * GNU General Public License Version 3.0, 29 June 2007
- * ILogger
+ * LogInfo
  * Copyright (C) <2019>
  *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
  *               <DavidPetr>       <david.petrosyan11100@gmail.com>
@@ -21,28 +21,31 @@
 
 using System;
 
-namespace XemsLogger
+namespace LoggerService
 {
     /// <summary>
-    /// Interface for logger
+    /// Class for modeling log information
     /// </summary>
-    public interface ILogger : IDisposable
+    public class LogInfo
     {
         /// <summary>
-        /// Logs log info.
+        /// Gets or sets time
         /// </summary>
-        /// <param name="logInfo">log info</param>
-        void Log(LogInfo logInfo);
+        public DateTime? Time { get; set; }
 
         /// <summary>
-        /// Logs log info
+        /// Gets or sets log type
         /// </summary>
-        /// <param name="logInfo">log info</param>
-        void Log(string logInfo);
+        public LogType? LogType { get; set; }
 
         /// <summary>
-        /// Clears log cache
+        /// Gets or sets log message
         /// </summary>
-        void Clear();
+        public string Message { get; set; }
+
+        /// <summary>
+        /// Gets or sets exception
+        /// </summary>
+        public Exception Exception { get; set; }
     }
 }

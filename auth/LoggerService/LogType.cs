@@ -1,6 +1,6 @@
 /**
  * GNU General Public License Version 3.0, 29 June 2007
- * LogInfo
+ * LogType
  * Copyright (C) <2019>
  *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
  *               <DavidPetr>       <david.petrosyan11100@gmail.com>
@@ -19,33 +19,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-using System;
-
-namespace XemsLogger
+namespace LoggerService
 {
     /// <summary>
-    /// Class for modeling log information
+    /// Enum for log types
     /// </summary>
-    public class LogInfo
+    public enum LogType
     {
-        /// <summary>
-        /// Gets or sets time
-        /// </summary>
-        public DateTime? Time { get; set; }
-
-        /// <summary>
-        /// Gets or sets log type
-        /// </summary>
-        public LogType? LogType { get; set; }
-
-        /// <summary>
-        /// Gets or sets log message
-        /// </summary>
-        public string Message { get; set; }
-
-        /// <summary>
-        /// Gets or sets exception
-        /// </summary>
-        public Exception Exception { get; set; }
+        Fail,
+        Success,
+        Fatal,
+        Default
     }
 }
