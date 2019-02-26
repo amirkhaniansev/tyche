@@ -45,6 +45,7 @@ namespace AuthAPI.Controllers
             if (user == null)
                 return this.BadRequest();
 
+            user.PasswordHash = App.PasswordHasher.HashPassword(user.PasswordHash);
             var request = new Request<User>
             {
                 Input = user,
