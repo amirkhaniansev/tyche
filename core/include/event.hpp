@@ -31,19 +31,16 @@ namespace core
 	template<typename TEventArgument, typename TSender = void*>
 	class Event
 	{
-		typedef std::function<void(const TSender&, const TEventArgument&)> Handler;
-		typedef std::list<Handler> HandlersList;
-		typedef unsigned long long ulong;
-		private:
-			HandlersList *handlers;
-			ulong riseCount;
-		public:
-			Event();
-			Event(const Event&);
-			~Event();
-			void AddHandler(const Handler&);
-			void RemoveHandler(const Handler&);
-			void RiseEvent(const TSender&, const TEventArgument&);
+	public:
+		Event();
+		Event(const Event&);
+		~Event();
+		void AddHandler(const Handler&);
+		void RemoveHandler(const Handler&);
+		void RiseEvent(const TSender&, const TEventArgument&);
+	private:
+		HandlersList *handlers;
+		ulong riseCount;
 	};
 
 	template<typename TEventArgument, typename TSender>

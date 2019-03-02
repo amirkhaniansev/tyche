@@ -27,16 +27,16 @@
 
 namespace core
 {
-	namespace socket
-	{
-		typedef int AddressFamily;
-		typedef int SocketType;
-		typedef int ProtocolType;
-		typedef int SocketDescriptor;
-		typedef unsigned char byte;
-		typedef struct sockaddr_in SocketAddressIn;
-		typedef struct sockaddr SocketAddress;
-	}
+	typedef int AddressFamily;
+	typedef int SocketType;
+	typedef int ProtocolType;
+	typedef int SocketDescriptor;
+	typedef unsigned char byte;
+	typedef struct sockaddr_in SocketAddressIn;
+	typedef struct sockaddr SocketAddress;
+	typedef unsigned long long ulong;
+	typedef std::function<void(const TSender&, const TEventArgument&)> Handler;
+	typedef std::list<Handler> HandlersList;
 }
 
 #endif

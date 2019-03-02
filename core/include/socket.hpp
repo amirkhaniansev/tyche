@@ -27,38 +27,35 @@
 
 namespace core
 {
-	namespace socket
+	class Socket
 	{
-		class Socket
-		{
-			private:
-				AddressFamily addressFamily;
-				SocketType socketType;
-				ProtocolType protocolType;
-				SocketAddress address;
-				SocketDescriptor descriptor;
-			protected:
-				bool isConnected;
-				bool isDisconnected;
-				bool isListening;
-			public:
-				Socket(const SocketType&, const ProtocolType&);
-				Socket(const AddressFamily&, const SocketType&, const ProtocolType&);
-				Socket(const Socket&);
-				~Socket();
-				AddressFamily GetAddressFamily();
-				ProtocolType  GetProtocolType();
-				SocketType    GetSocketType();
-				SocketAddress GetSocketAddress();
-				Socket* Accept();
-				void Bind(const SocketAddress&);
-				void Listen(const int&);
-				void Connect(const SocketAddress&);
-				void Close();
-				void Receive(const byte*, const int&);
-				void Send(const byte*, const int&);
-		};
-	}
+	public:
+		Socket(const SocketType&, const ProtocolType&);
+		Socket(const AddressFamily&, const SocketType&, const ProtocolType&);
+		Socket(const Socket&);
+		~Socket();
+		AddressFamily GetAddressFamily();
+		ProtocolType  GetProtocolType();
+		SocketType    GetSocketType();
+		SocketAddress GetSocketAddress();
+		Socket* Accept();
+		void Bind(const SocketAddress&);
+		void Listen(const int&);
+		void Connect(const SocketAddress&);
+		void Close();
+		void Receive(const byte*, const int&);
+		void Send(const byte*, const int&);
+	private:
+		AddressFamily addressFamily;
+		SocketType socketType;
+		ProtocolType protocolType;
+		SocketAddress address;
+		SocketDescriptor descriptor;
+	protected:
+		bool isConnected;
+		bool isDisconnected;
+		bool isListening;
+	};
 }
 
 #endif
