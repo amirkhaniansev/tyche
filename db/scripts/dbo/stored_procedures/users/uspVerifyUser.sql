@@ -38,7 +38,7 @@ AS
 				SELECT @created = Created, @validOffset = ValidOffset FROM [Verifications]
 					WHERE UserId = @userId AND Code = @code
 				IF @created + @validOffset > GETDATE()
-					RETURN 0x7
+					RETURN 0x6
 				DELETE FROM [Verifications] WHERE UserId = @userId AND Code = @code
 				UPDATE [Users] SET IsVerified = 1 WHERE Id = @userId
 				RETURN 0x0

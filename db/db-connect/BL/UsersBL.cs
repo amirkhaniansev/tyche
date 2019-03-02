@@ -53,15 +53,18 @@ namespace DbConnect.BL
                 var result = await this.dm.OperateAsync<User, object>(
                     nameof(DbOperation.CreateUser),
                     user);
-               
-                var numericValue = (int)result;
-                if (numericValue == 1)
-                    return this.ConstructDbResponse(ResponseCode.UserExists, Messages.UserExists);
 
-                if (numericValue == 2)
-                    return this.ConstructDbResponse(ResponseCode.DbError, Messages.DbError);
+                var numeric = (int)result;
 
-                user.Id = numericValue;
+                if (numeric < 100000)
+                {
+                    var responseCode = (ResponseCode)numeric;
+                    return this.ConstructDbResponse(
+                        responseCode,
+                        Messages.Message(responseCode));
+                }
+
+                user.Id = numeric;
                 return this.ConstructDbResponse(ResponseCode.Success, user);
             }
             catch(Exception ex)
@@ -70,6 +73,57 @@ namespace DbConnect.BL
                     ResponseCode.DbError,
                     Messages.DbError,
                     ex);
+            }
+        }
+
+        /// <summary>
+        /// Creates verification code for user asynchronously.
+        /// </summary>
+        /// <param name="verification">verification</param>
+        /// <returns>database response</returns>
+        public async Task<DbResponse> CreateVerificationForUser(Verification verification)
+        {
+            try
+            {
+                verification.ValidOffset = 30;
+                var result = await this.dm.OperateAsync<Verification, object>(
+                   nameof(DbOperation.CreateVerificationCode),
+                   verification);
+
+                if (result == null)
+                    return this.ConstructDbResponse(ResponseCode.VerificationCreationError);
+
+                return this.ConstructDbResponse(ResponseCode.Success);
+            }
+            catch (Exception ex)
+            {
+                return this.ConstructDbResponse(ResponseCode.DbError, Messages.DbError, ex);
+            }
+        }
+
+        /// <summary>
+        /// Verifies user asynchronously.
+        /// </summary>
+        /// <param name="verification">verification</param>
+        /// <returns>database response</returns>
+        public async Task<DbResponse> VerifyUser(Verification verification)
+        {
+            try
+            {
+                var result = await this.dm.OperateAsync<Verification, object>(
+                    nameof(DbOperation.VerifyUser),
+                    verification);
+
+                var numeric = (ResponseCode)result;
+
+                if (numeric != ResponseCode.Success)
+                    return this.ConstructDbResponse(numeric, Messages.Message(numeric));
+
+                return this.ConstructDbResponse(ResponseCode.Success);
+            }
+            catch(Exception ex)
+            {
+                return this.ConstructDbResponse(ResponseCode.DbError, Messages.DbError, ex);
             }
         }
     }
