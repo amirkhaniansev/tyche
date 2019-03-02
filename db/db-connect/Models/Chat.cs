@@ -1,6 +1,6 @@
 /**
  * GNU General Public License Version 3.0, 29 June 2007
- * UserVerificationDescriptor
+ * ChatCreationDescriptor
  * Copyright (C) <2019>
  *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
  *               <DavidPetr>       <david.petrosyan11100@gmail.com>
@@ -23,18 +23,23 @@
 namespace DbConnect.Models
 {
     /// <summary>
-    /// Model for describing user verifications
+    /// Model for describing chat creation
     /// </summary>
-    public class UserVerificationDescriptor
+    public class Chat
     {
         /// <summary>
-        /// Gets or sets user id
+        /// Gets or sets name
         /// </summary>
-        public int UserId { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets code
+        /// Gets or sets info if chat is group chat
         /// </summary>
-        public string Code { get; set; }
+        public bool IsGroup { get; set; }
+
+        /// <summary>
+        /// Gets or sets picture url
+        /// </summary>
+        public string PictureUrl { get; set; }
     }
 }

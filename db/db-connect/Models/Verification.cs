@@ -25,7 +25,7 @@ namespace DbConnect.Models
     /// <summary>
     /// Class for describing verification code creation
     /// </summary>
-    public class VerificationCodeDescriptor
+    public class Verification
     {
         /// <summary>
         /// Gets or sets user id
