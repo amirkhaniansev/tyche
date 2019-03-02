@@ -1,6 +1,6 @@
 /**
  * GNU General Public License Version 3.0, 29 June 2007
- * Chat
+ * Message
  * Copyright (C) <2019>
  *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
  *               <DavidPetr>       <david.petrosyan11100@gmail.com>
@@ -19,27 +19,38 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
+using System;
 
 namespace DbConnect.Models
 {
     /// <summary>
-    /// Model for describing chat creation
+    /// Model for message
     /// </summary>
-    public class Chat
+    public class Message
     {
         /// <summary>
-        /// Gets or sets name
+        /// Gets or sets ID
         /// </summary>
-        public string Name { get; set; }
+        public long Id { get; set; }
 
         /// <summary>
-        /// Gets or sets info if chat is group chat
+        /// Gets or sets user ID, who sent this message.
         /// </summary>
-        public bool IsGroup { get; set; }
+        public int From { get; set; }
 
         /// <summary>
-        /// Gets or sets picture url
+        /// Gets or sets Chatroom ID, which this message is sent to.
         /// </summary>
-        public string PictureUrl { get; set; }
+        public int To { get; set; }
+
+        /// <summary>
+        /// Gets or sets message text.
+        /// </summary>
+        public string Text { get; set; }
+
+        /// <summary>
+        /// Gets or sets date and time of message creation.
+        /// </summary>
+        public DateTime Created { get; set; }
     }
 }
