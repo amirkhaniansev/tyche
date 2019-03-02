@@ -19,10 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-
-
-#ifndef LOGGER_HPP
-#define LOGGER_HPP
+#ifndef __LOGGER_HPP__
+#define __LOGGER_HPP__
 
 #include <iostream>
 #include <string>					
@@ -33,38 +31,40 @@
 #include <ctime>
 #include <chrono>        
 
-enum ErrorType {
-	SUCCESS = 0x0,
-	FATAL = 0x1,
-	DEFAULT = 0x2,
-	FAIL = 0x3
-};
+namespace logger {
 
-struct LogInfo {
-	ErrorType errorType;
-	std::string message;
-	std::string exceptionMessage;
-	std::string time;
-	LogInfo(ErrorType e, std::string m, std::string ex, std::string t) :errorType(e), message(m), exceptionMessage(ex), time(t) {};
-};
+	enum ErrorType {
+		SUCCESS = 0x0,
+		FATAL = 0x1,
+		DEFAULT = 0x2,
+		FAIL = 0x3
+	};
 
-class Logger
-{
-public:	
-	Logger(std::string, int);
-	~Logger();
-	void Log(const LogInfo&);
-	void writeInFile();
-	void passiveLogThreadFunction();
-private:		
-	std::unordered_map<std::string, LogInfo> *logCache;
-	std::mutex cacheMutex;
-	std::thread timerThread;	
-	std::string filePath;
-	std::string modulName;
-	int interval;
-};
+	struct LogInfo {
+		ErrorType errorType;
+		std::string message;
+		std::string exceptionMessage;
+		std::string time;
+		LogInfo(ErrorType e, std::string m, std::string ex, std::string t)
+			:errorType(e), message(m), exceptionMessage(ex), time(t) {};
+	};
 
-std::string Date();
-std::string Time();
+	class Logger
+	{
+	public:
+		Logger(std::string, int);
+		~Logger();
+		void Log(const LogInfo&);
+		void WriteInFile();
+		void PassiveLogThreadFunction();
+	private:
+		std::unordered_map<std::string, LogInfo> *logCache;
+		std::mutex cacheMutex;
+		std::thread timerThread;
+		std::string filePath;
+		std::string modulName;
+		int interval;
+	};
+}
+
 #endif

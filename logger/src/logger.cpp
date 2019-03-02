@@ -21,8 +21,7 @@
 
 #include "../include/logger.hpp"
 
-
-void addSecond(std::string &time)
+void AddSecond(std::string &time)
 {
 	int h = (time[0]-'0') * 10 + (time[1]-'0');
 	int m = (time[3]-'0') * 10 + (time[4]-'0');
@@ -57,6 +56,7 @@ void addSecond(std::string &time)
 	time[6] = s / 10 + '0';
 	time[7] = s % 10 + '0';
 }
+
 std::string Date() {
 	time_t now = time(0);
 	tm g;
@@ -89,6 +89,7 @@ std::string Date() {
 
 	return s;
 }
+
 std::string Time() {
 	time_t now = time(0);
 	tm g;
@@ -115,90 +116,97 @@ std::string Time() {
 
 	return s;
 }
-void Logger::passiveLogThreadFunction() {
-	while(true){
-		std::this_thread::sleep_for(std::chrono::minutes(this->interval));	
-		try {
-			this->cacheMutex.lock();
-			
-			writeInFile();
 
-			this->cacheMutex.unlock();
-		}
-		catch(std::exception &e){
-			this->cacheMutex.unlock();
-		}
-	}
-}
-Logger::Logger(std::string modulName,int interval) : timerThread(&Logger::passiveLogThreadFunction, this)
-{
-	if (interval < 60)
-		interval = 60;
-	
-	this->interval = interval;
+namespace logger {
 
-	this->modulName = modulName;	
-	
-	this->logCache = new std::unordered_map<std::string, LogInfo>();
-
-	this->filePath = Date() + ".txt";
-
-	std::ifstream f(this->filePath);
-	if (!f.good())
-		std::ofstream file(this->filePath, std::ofstream::app);
-
-}
-void Logger::Log(const LogInfo &l)
-{	
-	static std::string last_log_time = Time();
-	std::string current_time = Time();
-
-	if (current_time == "23:59:59")
+	Logger::Logger(std::string modulName, int interval) 
+		: timerThread(&Logger::passiveLogThreadFunction, this)
 	{
-		writeInFile();
-		current_time = "00:00:00";
+		if (interval < 60)
+			interval = 60;
+
+		this->interval = interval;
+		this->modulName = modulName;
+
+		this->logCache = new std::unordered_map<std::string, LogInfo>();
+
+		this->filePath = Date() + ".txt";
+
+		std::ifstream f(this->filePath);
+		if (!f.good())
+			std::ofstream file(this->filePath, std::ofstream::app);
 	}
-	else {
-		while (last_log_time >= current_time) 
-			addSecond(current_time);
+
+	void Logger::PassiveLogThreadFunction() {
+		while (true) {
+			std::this_thread::sleep_for(std::chrono::minutes(this->interval));
+			try {
+				this->cacheMutex.lock();
+
+				writeInFile();
+
+				this->cacheMutex.unlock();
+			}
+			catch (std::exception &e) {
+				this->cacheMutex.unlock();
+			}
+		}
 	}
-	last_log_time = current_time;
 	
-	std::pair<std::string, LogInfo> logpair(current_time, l);
-	
-	this->logCache->insert(logpair);
-	if (this->logCache->size() > 10000) {		
-		try {
-			this->cacheMutex.lock();
-			
+	void Logger::Log(const LogInfo &l)
+	{
+		static std::string last_log_time = Time();
+		std::string current_time = Time();
+
+		if (current_time == "23:59:59")
+		{
 			writeInFile();
-			
-			this->cacheMutex.unlock();
+			current_time = "00:00:00";
 		}
-		catch (std::exception &e) {
-			this->cacheMutex.unlock();
+		else {
+			while (last_log_time >= current_time)
+				addSecond(current_time);
 		}
-	}	
-}
-void Logger::writeInFile()
-{
-	std::unordered_map<std::string, LogInfo>::iterator itr = this->logCache->begin();
-	std::ofstream file;
-	file.open(this->filePath, std::ios_base::app);
-	while(itr != this->logCache->end())
-	{		
-		file<< itr->first<<"\t"
-			<<"ErrorType- "<< itr->second.errorType<<"\t"
-			<<"ExceptionMessage- "<< itr->second.exceptionMessage<<"\t\t"
-			<<"Message- "<< itr->second.message<<"\t"
-			<<"Time- "<< itr->second.time<< std::endl;		
-		itr++;
+		last_log_time = current_time;
+
+		std::pair<std::string, LogInfo> logpair(current_time, l);
+
+		this->logCache->insert(logpair);
+		if (this->logCache->size() > 10000) {
+			try {
+				this->cacheMutex.lock();
+
+				this->WriteInFile();
+
+				this->cacheMutex.unlock();
+			}
+			catch (std::exception &e) {
+				this->cacheMutex.unlock();
+			}
+		}
 	}
-	this->logCache->clear();
-	file.close();
-	
-}
-Logger::~Logger()
-{
-	delete logCache;
+
+	void Logger::WriteInFile()
+	{
+		std::unordered_map<std::string, LogInfo>::iterator itr = this->logCache->begin();
+		std::ofstream file;
+		file.open(this->filePath, std::ios_base::app);
+		while (itr != this->logCache->end())
+		{
+			file << itr->first << "\t"
+				<< "ErrorType- " << itr->second.errorType << "\t"
+				<< "ExceptionMessage- " << itr->second.exceptionMessage << "\t\t"
+				<< "Message- " << itr->second.message << "\t"
+				<< "Time- " << itr->second.time << std::endl;
+			itr++;
+		}
+		this->logCache->clear();
+		file.close();
+
+	}
+
+	Logger::~Logger()
+	{
+		delete logCache;
+	}
 }
