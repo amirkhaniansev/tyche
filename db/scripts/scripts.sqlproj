@@ -80,5 +80,15 @@
     <Build Include="dbo\stored_procedures\notifications\uspCreateNotification.sql" />
     <Build Include="dbo\stored_procedures\users\uspVerifyUser.sql" />
     <Build Include="dbo\stored_procedures\messages\uspCreateMessage.sql" />
+    <Build Include="dbo\stored_procedures\chatrooms\uspAddUserToChatroom.sql" />
+    <Build Include="dbo\stored_procedures\chatrooms\uspGetChatroomById.sql" />
+    <Build Include="dbo\stored_procedures\chatrooms\uspGetChatroomMembersByChatroomId.sql" />
+    <Build Include="dbo\stored_procedures\chatrooms\uspGetChatroomsByMemberId.sql" />
+    <Build Include="dbo\stored_procedures\messages\uspGetMessagesByChatroomId.sql" />
+    <Build Include="dbo\stored_procedures\messages\uspGetMessagesByChatroomIdAndDate.sql" />
+    <Build Include="dbo\stored_procedures\notifications\uspAssignNotificationToUser.sql" />
+    <Build Include="dbo\stored_procedures\users\uspGetUserById.sql" />
+    <Build Include="dbo\stored_procedures\users\uspGetUsersByUsername.sql" />
+    <Build Include="dbo\tables\NotificationsUsers.sql" />
   </ItemGroup>
 </Project>
