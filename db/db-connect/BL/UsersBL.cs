@@ -67,7 +67,7 @@ namespace DbConnect.BL
                 user.Id = numeric;
                 return this.ConstructDbResponse(ResponseCode.Success, user);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return this.ConstructDbResponse(
                     ResponseCode.DbError,
@@ -121,10 +121,68 @@ namespace DbConnect.BL
 
                 return this.ConstructDbResponse(ResponseCode.Success);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return this.ConstructDbResponse(ResponseCode.DbError, Messages.DbError, ex);
             }
         }
+
+        /// <summary>
+        /// Gets user by ID asyncronously.
+        /// </summary>
+        /// <param name="id">ID</param>
+        /// <returns>user</returns>
+        public async Task<DbResponse> GetUserById(int id)
+        {
+            try
+            {
+                var result = await this.dm.OperateAsync<int, User>(
+                    nameof(DbOperation.GetUserById),
+                    id);
+
+                var user = result as User;
+                if (user == null)
+                    return this.ConstructDbResponse(ResponseCode.UserNotExist, Messages.UserNotExists);
+
+                user.PasswordHash = null;
+                return this.ConstructDbResponse(ResponseCode.Success, user);
+            }
+            catch (Exception ex)
+            {
+                return this.ConstructDbResponse(
+                    ResponseCode.DbError,
+                    Messages.DbError,
+                    ex);
+            }
+        }
+
+        /// <summary>
+        /// Gets user by username asynchronously.
+        /// </summary>
+        /// <param name="username">username</param>
+        /// <returns>user</returns>
+        public async Task<DbResponse> GetUserByUsername(string username)
+        {
+            try
+            {
+                var result = await this.dm.OperateAsync<string, User>(
+                    nameof(DbOperation.GetUserByUsername),
+                    username);
+
+                var user = result as User;
+                if (user == null)
+                    return this.ConstructDbResponse(ResponseCode.UserNotExist, Messages.UserNotExists);
+
+                user.PasswordHash = null;
+                return this.ConstructDbResponse(ResponseCode.Success, user);
+            }
+            catch (Exception ex)
+            {
+                return this.ConstructDbResponse(
+                    ResponseCode.DbError,
+                    Messages.DbError,
+                    ex);
+            }
+        } 
     }
 }

@@ -31,6 +31,8 @@ namespace DbConnect
         CreateChatRooom         = 0x2,
         CreateVerificationCode  = 0x3,
         CreateNotification      = 0x4,
-        VerifyUser              = 0x5
+        VerifyUser              = 0x5,
+        GetUserById             = 0x6,
+        GetUserByUsername       = 0x7
     }
 }

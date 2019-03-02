@@ -1,7 +1,3 @@
-
-
-
-using System.Collections.Generic;
 /**
 * GNU General Public License Version 3.0, 29 June 2007
 * Messages
@@ -22,6 +18,9 @@ using System.Collections.Generic;
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
+
+using System.Collections.Generic;
+
 namespace DbConnect
 {
     /// <summary>

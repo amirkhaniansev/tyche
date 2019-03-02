@@ -43,6 +43,11 @@ namespace DbConnect.Models
         public string LastName { get; set; }
 
         /// <summary>
+        /// Gets or sets username
+        /// </summary>
+        public string Username { get; set; }
+
+        /// <summary>
         /// Gets or sets email
         /// </summary>
         public string Email { get; set; }
