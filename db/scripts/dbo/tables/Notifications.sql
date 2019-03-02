@@ -22,10 +22,10 @@
 
 CREATE TABLE [dbo].[Notifications]
 (
-	[Id]			BIGINT	IDENTITY(1,1)	NOT NULL,
-	[Type]			INT						NULL,
-	[Info]			NVARCHAR(MAX)			NULL,
-	[ChatRoomId]	INT						NULL
+	[Id]			BIGINT	IDENTITY(100000,1)	NOT NULL,
+	[Type]			INT							NULL,
+	[Info]			NVARCHAR(MAX)				NULL,
+	[ChatRoomId]	INT							NULL
 	
 	CONSTRAINT [PK_NOTIFICATION_ID] PRIMARY KEY([Id]),
 	CONSTRAINT [FK_NOTIFICATION_CHAT_ROOM_ID] FOREIGN KEY ([ChatRoomId]) REFERENCES [ChatRooms]([Id])

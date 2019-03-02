@@ -22,7 +22,7 @@
 
 CREATE TABLE [dbo].[Users]
 (
-	[Id]				INT				NOT NULL	IDENTITY(1,1) ,
+	[Id]				INT				NOT NULL	IDENTITY(100000,1) ,
 	[FirstName]			NVARCHAR(20)	NOT NULL,
 	[LastName]			NVARCHAR(50)	NULL,
 	[Username]			VARCHAR(55)		NOT NULL,

@@ -31,5 +31,5 @@ AS
 			@code,
 			GETDATE(),
 			@validOffset)
-		RETURN 0
+		RETURN 0x0
 	END
