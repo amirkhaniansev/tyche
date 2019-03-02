@@ -1,6 +1,6 @@
 /**
  * GNU General Public License Version 3.0, 29 June 2007
- * UserVerificationDescriptor
+ * Verification
  * Copyright (C) <2019>
  *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
  *               <DavidPetr>       <david.petrosyan11100@gmail.com>
@@ -23,9 +23,9 @@
 namespace DbConnectClient.Models
 {
     /// <summary>
-    /// Model for describing user verifications
+    /// Class for describing verification code creation
     /// </summary>
-    public class UserVerificationDescriptor
+    public class Verification
     {
         /// <summary>
         /// Gets or sets user id
@@ -36,5 +36,10 @@ namespace DbConnectClient.Models
         /// Gets or sets code
         /// </summary>
         public string Code { get; set; }
+
+        /// <summary>
+        /// Gets or sets valid offset
+        /// </summary>
+        public int ValidOffset { get; set; }
     }
 }

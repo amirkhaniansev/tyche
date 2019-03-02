@@ -1,6 +1,6 @@
 /**
  * GNU General Public License Version 3.0, 29 June 2007
- * VerificationCodeDescriptor
+ * Chat
  * Copyright (C) <2019>
  *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
  *               <DavidPetr>       <david.petrosyan11100@gmail.com>
@@ -23,23 +23,23 @@
 namespace DbConnectClient.Models
 {
     /// <summary>
-    /// Class for describing verification code creation
+    /// Model for describing chat creation
     /// </summary>
-    public class VerificationCodeDescriptor
+    public class Chat
     {
         /// <summary>
-        /// Gets or sets user id
+        /// Gets or sets name
         /// </summary>
-        public int UserId { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets code
+        /// Gets or sets info if chat is group chat
         /// </summary>
-        public string Code { get; set; }
+        public bool IsGroup { get; set; }
 
         /// <summary>
-        /// Gets or sets valid offset
+        /// Gets or sets picture url
         /// </summary>
-        public int ValidOffset { get; set; }
+        public string PictureUrl { get; set; }
     }
 }
