@@ -1,6 +1,6 @@
 /**
  * GNU General Public License Version 3.0, 29 June 2007
- * MessageFilter
+ * NotificationType
  * Copyright (C) <2019>
  *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
  *               <DavidPetr>       <david.petrosyan11100@gmail.com>
@@ -20,27 +20,19 @@
 **/
 
 using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace TycheBL.Models
+namespace TycheBL
 {
     /// <summary>
-    /// Model for filtering messages
+    /// Enum for notification type
     /// </summary>
-    public class MessageFilter
+    public enum NotificationType
     {
-        /// <summary>
-        /// Gets or sets from date
-        /// </summary>
-        public DateTime FromDate { get; set; }
-
-        /// <summary>
-        /// Gets or sets to date
-        /// </summary>
-        public DateTime ToDate { get; set; }
-
-        /// <summary>
-        /// Gets or sets chatroom ID
-        /// </summary>
-        public int ChatroomId { get; set; }
+        Welcome             = 0x0,
+        NewMessage          = 0x1,
+        NewUserToChatroom   = 0x2,
+        NewChat= 0x3
     }
 }

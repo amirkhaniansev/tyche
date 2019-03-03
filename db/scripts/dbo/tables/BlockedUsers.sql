@@ -1,6 +1,6 @@
 /**
  * GNU General Public License Version 3.0, 29 June 2007
- * MessageFilter
+ * BlockedUsers
  * Copyright (C) <2019>
  *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
  *               <DavidPetr>       <david.petrosyan11100@gmail.com>
@@ -19,28 +19,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-using System;
+CREATE TABLE [dbo].[BlockedUsers]
+(
+	[Id]				INT					NOT NULL,
+	[Reason]			NVARCHAR(4000)		NULL,
+	[Date]				DATETIME			NULL,
+	[BlockExpires]		DATETIME			NULL
 
-namespace TycheBL.Models
-{
-    /// <summary>
-    /// Model for filtering messages
-    /// </summary>
-    public class MessageFilter
-    {
-        /// <summary>
-        /// Gets or sets from date
-        /// </summary>
-        public DateTime FromDate { get; set; }
-
-        /// <summary>
-        /// Gets or sets to date
-        /// </summary>
-        public DateTime ToDate { get; set; }
-
-        /// <summary>
-        /// Gets or sets chatroom ID
-        /// </summary>
-        public int ChatroomId { get; set; }
-    }
-}
+	CONSTRAINT [PK_BLOCKED_USER_ID]	PRIMARY KEY([Id]),
+	
+	CONSTRAINT [FK_BLOCKED_USER_ID]	FOREIGN KEY([Id]) REFERENCES [Users]([Id])
+		ON DELETE CASCADE
+)

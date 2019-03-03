@@ -1,0 +1,1 @@
+dotnet d:/repositories/tyche/tools/licensegen/bin/Debug/netcoreapp2.1/licensegen.dll d:/repositories/tyche d:/license.txt
