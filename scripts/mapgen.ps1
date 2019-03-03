@@ -1,0 +1,1 @@
+dotnet d:/repositories/tyche/tools/mapgen/bin/Debug/netcoreapp2.1/mapgen.dll d:/repositories/tyche/db/scripts/dbo/stored_procedures d:/repositories/tyche/db/db-connect/Config/map.xml
