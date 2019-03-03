@@ -1,6 +1,6 @@
 /**
  * GNU General Public License Version 3.0, 29 June 2007
- * ResponseCode
+ * NotificationAssignment
  * Copyright (C) <2019>
  *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
  *               <DavidPetr>       <david.petrosyan11100@gmail.com>
@@ -19,22 +19,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-namespace TycheBL
+namespace TycheBL.Models
 {
     /// <summary>
-    /// Enum for response codes
+    /// Model for notification assignment
     /// </summary>
-    public enum ResponseCode
+    public class NotificationAssignment
     {
-        Success                     = 0x0,
-        UnknownError                = 0x1,
-        NoSuchOperation             = 0x2,
-        UserExists                  = 0x3,
-        DbError                     = 0x4,
-        VerificationCreationError   = 0x5,
-        VerificationCodeExpired     = 0x6,
-        UserNotExist                = 0x7,
-        UserAlreadyVerified         = 0x8,
-        NoContent                   = 0x9
-    } 
+        /// <summary>
+        /// Gets or sets notification ID
+        /// </summary>
+        public long NotificationId { get; set; }
+
+        /// <summary>
+        /// Gets or sets User ID
+        /// </summary>
+        public int UserId { get; set; }
+    }
 }

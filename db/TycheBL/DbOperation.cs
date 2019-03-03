@@ -34,6 +34,7 @@ namespace TycheBL
         VerifyUser                      = 0x5,
         GetUserById                     = 0x6,
         GetUserByUsername               = 0x7,
-        GetMessagesByChatroomId         = 0x8
+        GetMessagesByChatroomId         = 0x8,
+        AssignNotificationToUser        = 0x9
     }
 }

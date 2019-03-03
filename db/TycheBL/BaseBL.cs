@@ -21,7 +21,9 @@
 
 
 using System;
+using System.Threading.Tasks;
 using AccessCore.Repository;
+using TycheBL.Models;
 
 namespace TycheBL
 {
@@ -49,6 +51,47 @@ namespace TycheBL
         {
             this.dm = dm;
             this.blType = blType;
+        }
+
+        /// <summary>
+        /// Creates new notification
+        /// </summary>
+        /// <param name="notification">notification</param>
+        /// <returns>database response</returns>
+        public async Task<DbResponse> CreateNotification(Notification notification)
+        {
+            try
+            {
+                var response = await this.dm.OperateAsync<Notification, object>(
+                    nameof(DbOperation.CreateNotification), notification);
+
+                var numeric = (int)response;
+                
+                if (numeric < 100000 && numeric == (int)ResponseCode.DbError)
+                    return this.ConstructDbResponse(ResponseCode.DbError, Messages.DbError);
+
+                var notificationId = numeric;
+                var assignment = new NotificationAssignment
+                {
+                    NotificationId = notificationId
+                };
+
+                foreach (var userId in notification.UserIds)
+                {
+                    assignment.UserId = userId;
+                    response = await this.dm.OperateAsync<NotificationAssignment, object>(
+                        nameof(DbOperation.AssignNotificationToUser), assignment);
+
+                    if ((ResponseCode)response == ResponseCode.DbError)
+                        return this.ConstructDbResponse(ResponseCode.DbError, Messages.DbError);
+                }
+
+                return this.ConstructDbResponse(ResponseCode.Success, Messages.Success);
+            }
+            catch (Exception ex)
+            {
+                return this.ConstructDbResponse(ResponseCode.UnknownError, Messages.UnknownError, ex);
+            }
         }
 
         /// <summary>

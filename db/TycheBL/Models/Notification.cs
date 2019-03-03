@@ -1,6 +1,6 @@
 /**
  * GNU General Public License Version 3.0, 29 June 2007
- * ResponseCode
+ * Notification
  * Copyright (C) <2019>
  *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
  *               <DavidPetr>       <david.petrosyan11100@gmail.com>
@@ -19,22 +19,33 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-namespace TycheBL
+using System.Collections.Generic;
+
+namespace TycheBL.Models
 {
     /// <summary>
-    /// Enum for response codes
+    /// Model for notification
     /// </summary>
-    public enum ResponseCode
+    public class Notification
     {
-        Success                     = 0x0,
-        UnknownError                = 0x1,
-        NoSuchOperation             = 0x2,
-        UserExists                  = 0x3,
-        DbError                     = 0x4,
-        VerificationCreationError   = 0x5,
-        VerificationCodeExpired     = 0x6,
-        UserNotExist                = 0x7,
-        UserAlreadyVerified         = 0x8,
-        NoContent                   = 0x9
-    } 
+        /// <summary>
+        /// Gets or sets notification type
+        /// </summary>
+        public NotificationType Type { get; set; }
+
+        /// <summary>
+        /// Gets or sets Info
+        /// </summary>
+        public string Info { get; set; }
+
+        /// <summary>
+        /// Gets or sets Chatroom ID
+        /// </summary>
+        public int? ChatRoomId { get; set; }
+
+        /// <summary>
+        /// Gets or sest user ID
+        /// </summary>
+        public List<int> UserIds { get; set; }
+    }
 }
