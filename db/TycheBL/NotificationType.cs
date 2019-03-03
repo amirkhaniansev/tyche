@@ -19,10 +19,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace TycheBL
 {
     /// <summary>
@@ -33,6 +29,7 @@ namespace TycheBL
         Welcome             = 0x0,
         NewMessage          = 0x1,
         NewUserToChatroom   = 0x2,
-        NewChat= 0x3
+        NewChatInvitation   = 0x3,
+        VerificationSuccess = 0x4
     }
 }

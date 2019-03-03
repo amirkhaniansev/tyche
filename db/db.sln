@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "db-connect", "db-connect\db
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TycheBL", "TycheBL\TycheBL.csproj", "{95F2C3B7-2DE1-411A-8788-107AAB3F7980}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessLogicTest", "BusinessLogicTest\BusinessLogicTest.csproj", "{70E58A79-069D-4C3B-84E3-E7C78A81BA2E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,10 @@ Global
 		{95F2C3B7-2DE1-411A-8788-107AAB3F7980}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{95F2C3B7-2DE1-411A-8788-107AAB3F7980}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{95F2C3B7-2DE1-411A-8788-107AAB3F7980}.Release|Any CPU.Build.0 = Release|Any CPU
+		{70E58A79-069D-4C3B-84E3-E7C78A81BA2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70E58A79-069D-4C3B-84E3-E7C78A81BA2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70E58A79-069D-4C3B-84E3-E7C78A81BA2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70E58A79-069D-4C3B-84E3-E7C78A81BA2E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

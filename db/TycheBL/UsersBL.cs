@@ -21,6 +21,7 @@
 
 
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AccessCore.Repository;
 using TycheBL.Models;
@@ -59,17 +60,30 @@ namespace TycheBL
                 if (numeric < 100000)
                 {
                     var responseCode = (ResponseCode)numeric;
-                    return this.ConstructDbResponse(
+                    return Helper.ConstructDbResponse(
                         responseCode,
                         Messages.Message(responseCode));
                 }
 
                 user.Id = numeric;
-                return this.ConstructDbResponse(ResponseCode.Success, user);
+
+                var notification = new Notification
+                {
+                    Type = NotificationType.Welcome,
+                    Info = Messages.Welcome,
+                    UserIds = new List<int>
+                    {
+                        user.Id
+                    },
+                };
+
+                await this.CreateNotification(notification);
+
+                return Helper.ConstructDbResponse(ResponseCode.Success, user);
             }
             catch (Exception ex)
             {
-                return this.ConstructDbResponse(
+                return Helper.ConstructDbResponse(
                     ResponseCode.DbError,
                     Messages.DbError,
                     ex);
@@ -91,13 +105,13 @@ namespace TycheBL
                    verification);
 
                 if (result == null)
-                    return this.ConstructDbResponse(ResponseCode.VerificationCreationError);
+                    return Helper.ConstructDbResponse(ResponseCode.VerificationCreationError);
 
-                return this.ConstructDbResponse(ResponseCode.Success);
+                return Helper.ConstructDbResponse(ResponseCode.Success);
             }
             catch (Exception ex)
             {
-                return this.ConstructDbResponse(ResponseCode.DbError, Messages.DbError, ex);
+                return Helper.ConstructDbResponse(ResponseCode.DbError, Messages.DbError, ex);
             }
         }
 
@@ -117,13 +131,18 @@ namespace TycheBL
                 var numeric = (ResponseCode)result;
 
                 if (numeric != ResponseCode.Success)
-                    return this.ConstructDbResponse(numeric, Messages.Message(numeric));
+                    return Helper.ConstructDbResponse(numeric, Messages.Message(numeric));
 
-                return this.ConstructDbResponse(ResponseCode.Success);
+                await this.CreateNotification(Helper.ConstructNotification(
+                    NotificationType.VerificationSuccess,
+                    verification.UserId,
+                    Messages.VerificationSuccess));
+
+                return Helper.ConstructDbResponse(ResponseCode.Success);
             }
             catch (Exception ex)
             {
-                return this.ConstructDbResponse(ResponseCode.DbError, Messages.DbError, ex);
+                return Helper.ConstructDbResponse(ResponseCode.DbError, Messages.DbError, ex);
             }
         }
 
@@ -142,14 +161,14 @@ namespace TycheBL
 
                 var user = result as User;
                 if (user == null)
-                    return this.ConstructDbResponse(ResponseCode.UserNotExist, Messages.UserNotExists);
+                    return Helper.ConstructDbResponse(ResponseCode.UserNotExist, Messages.UserNotExists);
 
                 user.PasswordHash = null;
-                return this.ConstructDbResponse(ResponseCode.Success, user);
+                return Helper.ConstructDbResponse(ResponseCode.Success, user);
             }
             catch (Exception ex)
             {
-                return this.ConstructDbResponse(
+                return Helper.ConstructDbResponse(
                     ResponseCode.DbError,
                     Messages.DbError,
                     ex);
@@ -171,14 +190,14 @@ namespace TycheBL
 
                 var user = result as User;
                 if (user == null)
-                    return this.ConstructDbResponse(ResponseCode.UserNotExist, Messages.UserNotExists);
+                    return Helper.ConstructDbResponse(ResponseCode.UserNotExist, Messages.UserNotExists);
 
                 user.PasswordHash = null;
-                return this.ConstructDbResponse(ResponseCode.Success, user);
+                return Helper.ConstructDbResponse(ResponseCode.Success, user);
             }
             catch (Exception ex)
             {
-                return this.ConstructDbResponse(
+                return Helper.ConstructDbResponse(
                     ResponseCode.DbError,
                     Messages.DbError,
                     ex);

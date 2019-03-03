@@ -68,7 +68,7 @@ namespace TycheBL
                 var numeric = (int)response;
                 
                 if (numeric < 100000 && numeric == (int)ResponseCode.DbError)
-                    return this.ConstructDbResponse(ResponseCode.DbError, Messages.DbError);
+                    return Helper.ConstructDbResponse(ResponseCode.DbError, Messages.DbError);
 
                 var notificationId = numeric;
                 var assignment = new NotificationAssignment
@@ -83,35 +83,15 @@ namespace TycheBL
                         nameof(DbOperation.AssignNotificationToUser), assignment);
 
                     if ((ResponseCode)response == ResponseCode.DbError)
-                        return this.ConstructDbResponse(ResponseCode.DbError, Messages.DbError);
+                        return Helper.ConstructDbResponse(ResponseCode.DbError, Messages.DbError);
                 }
 
-                return this.ConstructDbResponse(ResponseCode.Success, Messages.Success);
+                return Helper.ConstructDbResponse(ResponseCode.Success, Messages.Success);
             }
             catch (Exception ex)
             {
-                return this.ConstructDbResponse(ResponseCode.UnknownError, Messages.UnknownError, ex);
+                return Helper.ConstructDbResponse(ResponseCode.UnknownError, Messages.UnknownError, ex);
             }
-        }
-
-        /// <summary>
-        /// Constructs database response
-        /// </summary>
-        /// <param name="responseCode">Response code</param>
-        /// <param name="content">Content</param>
-        /// <param name="exception">Exception</param>
-        /// <returns>constructed database response</returns>
-        protected DbResponse ConstructDbResponse(
-            ResponseCode responseCode,
-            object content = null,
-            Exception exception = null)
-        {
-            return new DbResponse
-            {
-                ResponseCode = responseCode,
-                Content = content,
-                Exception = exception
-            };
-        }
+        }        
     }
 }

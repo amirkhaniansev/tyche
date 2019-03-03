@@ -21,7 +21,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using AccessCore.Repository;
 using TycheBL.Models;
@@ -56,13 +55,13 @@ namespace TycheBL
 
                 var response = (ResponseCode)result;
                 if (response != ResponseCode.Success)
-                    return this.ConstructDbResponse(response, Messages.Message(response));
+                    return Helper.ConstructDbResponse(response, Messages.Message(response));
 
-                return this.ConstructDbResponse(ResponseCode.Success);
+                return Helper.ConstructDbResponse(ResponseCode.Success);
             }
             catch (Exception ex)
             {
-                return this.ConstructDbResponse(
+                return Helper.ConstructDbResponse(
                     ResponseCode.DbError,
                     Messages.DbError,
                     ex);
@@ -83,13 +82,13 @@ namespace TycheBL
                     messageFilter);
 
                 if (result == null)
-                    return this.ConstructDbResponse(ResponseCode.NoContent, Messages.NoContent);
+                    return Helper.ConstructDbResponse(ResponseCode.NoContent, Messages.NoContent);
 
-                return this.ConstructDbResponse(ResponseCode.Success, result);
+                return Helper.ConstructDbResponse(ResponseCode.Success, result);
             }
             catch(Exception ex)
             {
-                return this.ConstructDbResponse(ResponseCode.DbError, Messages.NoContent, ex);
+                return Helper.ConstructDbResponse(ResponseCode.DbError, Messages.NoContent, ex);
             }
         }
     }

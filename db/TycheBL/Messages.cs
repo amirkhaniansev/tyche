@@ -38,6 +38,8 @@ namespace TycheBL
         public const string UserAlreadyVerified         = "User is already verified.";
         public const string UserNotExists               = "User doesn't exist.";
         public const string NoContent                   = "No content";
+        public const string Welcome                     = "Welcome to Tyche chat system.";
+        public const string VerificationSuccess         = "You are successfullyy verified";
 
         private static Dictionary<ResponseCode, string> messages;
 
