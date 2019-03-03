@@ -27,7 +27,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Newtonsoft.Json;
-using DbConnect.BL;
+using TycheBL;
 
 namespace DbConnect
 {

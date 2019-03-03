@@ -24,5 +24,5 @@ CREATE PROCEDURE [dbo].[uspGetChatroomById]
 	@id	INT
 AS
 	BEGIN
-		SELECT * FROM [Chatrooms] WHERE [Id] = @id
+		SELECT * FROM [ChatRooms] WHERE [Id] = @id
 	END

@@ -1,6 +1,6 @@
 /**
  * GNU General Public License Version 3.0, 29 June 2007
- * User
+ * DbResponse
  * Copyright (C) <2019>
  *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
  *               <DavidPetr>       <david.petrosyan11100@gmail.com>
@@ -19,47 +19,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
+using System;
 
-namespace DbConnect.Models
+namespace TycheBL
 {
     /// <summary>
-    /// Model for user
+    /// Class for modelling database response
     /// </summary>
-    public class User 
+    public class DbResponse
     {
         /// <summary>
-        /// Gets or sets Id
+        /// Gets or sets Response code
         /// </summary>
-        public int Id { get; set; }
+        public ResponseCode ResponseCode { get; set; }
 
         /// <summary>
-        /// Gets or sets first name
+        /// Gets or sets exception
         /// </summary>
-        public string FirstName { get; set; }
+        public Exception Exception {get;set;}
 
         /// <summary>
-        /// Gets or sets last name
+        /// Gets or sets content
         /// </summary>
-        public string LastName { get; set; }
-
-        /// <summary>
-        /// Gets or sets username
-        /// </summary>
-        public string Username { get; set; }
-
-        /// <summary>
-        /// Gets or sets email
-        /// </summary>
-        public string Email { get; set; }
-
-        /// <summary>
-        /// Gets or sets profile picture url
-        /// </summary>
-        public string ProfilePictureUrl { get; set; }
-
-        /// <summary>
-        /// Gets or sets password hash
-        /// </summary>
-        public string PasswordHash { get; set; }
+        public object Content { get; set; }
     }
 }

@@ -1,6 +1,6 @@
 /**
  * GNU General Public License Version 3.0, 29 June 2007
- * BlType
+ * DbOperation
  * Copyright (C) <2019>
  *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
  *               <DavidPetr>       <david.petrosyan11100@gmail.com>
@@ -19,19 +19,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-
-namespace DbConnect.BL
+namespace TycheBL
 {
     /// <summary>
-    /// Enum for business logic type
+    /// Enum for database operation types
     /// </summary>
-    public enum BlType
+    public enum DbOperation : uint
     {
-        BaseBL             = 0x0,
-        UsersBL            = 0x1,
-        ChatroomsBL        = 0x2,
-        NotificationsBL    = 0x3,
-        VerificationsBL    = 0x4,
-        MessagesBL         = 0x5
+        CreateUser                      = 0x0,
+        CreateMessage                   = 0x1,
+        CreateChatRooom                 = 0x2,
+        CreateVerificationCode          = 0x3,
+        CreateNotification              = 0x4,
+        VerifyUser                      = 0x5,
+        GetUserById                     = 0x6,
+        GetUserByUsername               = 0x7,
+        GetMessagesByChatroomId         = 0x8
     }
 }

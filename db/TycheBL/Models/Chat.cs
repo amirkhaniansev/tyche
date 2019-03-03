@@ -1,6 +1,6 @@
 /**
  * GNU General Public License Version 3.0, 29 June 2007
- * DbResponse
+ * Chat
  * Copyright (C) <2019>
  *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
  *               <DavidPetr>       <david.petrosyan11100@gmail.com>
@@ -19,28 +19,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-using System;
 
-namespace DbConnect
+namespace TycheBL.Models
 {
     /// <summary>
-    /// Class for modelling database response
+    /// Model for describing chat creation
     /// </summary>
-    public class DbResponse
+    public class Chat
     {
         /// <summary>
-        /// Gets or sets Response code
+        /// Gets or sets name
         /// </summary>
-        public ResponseCode ResponseCode { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets exception
+        /// Gets or sets info if chat is group chat
         /// </summary>
-        public Exception Exception {get;set;}
+        public bool IsGroup { get; set; }
 
         /// <summary>
-        /// Gets or sets content
+        /// Gets or sets picture url
         /// </summary>
-        public object Content { get; set; }
+        public string PictureUrl { get; set; }
     }
 }

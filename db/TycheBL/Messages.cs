@@ -21,12 +21,12 @@
 
 using System.Collections.Generic;
 
-namespace DbConnect
+namespace TycheBL
 {
     /// <summary>
     /// Class for storing constant messages
     /// </summary>
-    internal static class Messages
+    public static class Messages
     {
         public const string NoSuchOperation             = "Operation is not supported.";
         public const string UnknownError                = "Unknown error occured.";
@@ -37,6 +37,7 @@ namespace DbConnect
         public const string VerificationCodeExpired     = "Verification Code Expired.";
         public const string UserAlreadyVerified         = "User is already verified.";
         public const string UserNotExists               = "User doesn't exist.";
+        public const string NoContent                   = "No content";
 
         private static Dictionary<ResponseCode, string> messages;
 
@@ -52,7 +53,8 @@ namespace DbConnect
                 [ResponseCode.UserExists]                   = UserExists,
                 [ResponseCode.UserNotExist]                 = UserNotExists,
                 [ResponseCode.VerificationCodeExpired]      = VerificationCodeExpired,
-                [ResponseCode.VerificationCreationError]    = VerificationCreationError
+                [ResponseCode.VerificationCreationError]    = VerificationCreationError,
+                [ResponseCode.NoContent]                    = NoContent
             };
         }
 

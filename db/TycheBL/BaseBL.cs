@@ -23,7 +23,7 @@
 using System;
 using AccessCore.Repository;
 
-namespace DbConnect.BL
+namespace TycheBL
 {
     /// <summary>
     /// Base class for Business Logic

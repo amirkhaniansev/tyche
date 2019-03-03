@@ -1,6 +1,6 @@
 /**
  * GNU General Public License Version 3.0, 29 June 2007
- * Verification
+ * EntityCode
  * Copyright (C) <2019>
  *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
  *               <DavidPetr>       <david.petrosyan11100@gmail.com>
@@ -19,27 +19,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-
-namespace DbConnect.Models
+namespace TycheBL
 {
     /// <summary>
-    /// Class for describing verification code creation
+    /// Enum for entity code
     /// </summary>
-    public class Verification
+    public enum EntityCode
     {
-        /// <summary>
-        /// Gets or sets user id
-        /// </summary>
-        public int UserId { get; set; }
+        User               = 0x0,
 
-        /// <summary>
-        /// Gets or sets code
-        /// </summary>
-        public string Code { get; set; }
-
-        /// <summary>
-        /// Gets or sets valid offset
-        /// </summary>
-        public int ValidOffset { get; set; }
     }
 }

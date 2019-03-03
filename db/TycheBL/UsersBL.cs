@@ -23,9 +23,9 @@
 using System;
 using System.Threading.Tasks;
 using AccessCore.Repository;
-using DbConnect.Models;
+using TycheBL.Models;
 
-namespace DbConnect.BL
+namespace TycheBL
 {
     /// <summary>
     /// Users business logic

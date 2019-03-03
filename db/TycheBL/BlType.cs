@@ -1,6 +1,6 @@
 /**
  * GNU General Public License Version 3.0, 29 June 2007
- * Message
+ * BlType
  * Copyright (C) <2019>
  *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
  *               <DavidPetr>       <david.petrosyan11100@gmail.com>
@@ -19,38 +19,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-using System;
 
-namespace DbConnect.Models
+namespace TycheBL
 {
     /// <summary>
-    /// Model for message
+    /// Enum for business logic type
     /// </summary>
-    public class Message
+    public enum BlType
     {
-        /// <summary>
-        /// Gets or sets ID
-        /// </summary>
-        public long Id { get; set; }
-
-        /// <summary>
-        /// Gets or sets user ID, who sent this message.
-        /// </summary>
-        public int From { get; set; }
-
-        /// <summary>
-        /// Gets or sets Chatroom ID, which this message is sent to.
-        /// </summary>
-        public int To { get; set; }
-
-        /// <summary>
-        /// Gets or sets message text.
-        /// </summary>
-        public string Text { get; set; }
-
-        /// <summary>
-        /// Gets or sets date and time of message creation.
-        /// </summary>
-        public DateTime Created { get; set; }
+        BaseBL             = 0x0,
+        UsersBL            = 0x1,
+        ChatroomsBL        = 0x2,
+        NotificationsBL    = 0x3,
+        VerificationsBL    = 0x4,
+        MessagesBL         = 0x5
     }
 }

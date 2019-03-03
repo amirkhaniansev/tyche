@@ -22,11 +22,11 @@
 /***Type : Enumerable***/
 CREATE PROCEDURE [dbo].[uspGetMessagesByChatroomId]
 	@chatroomId	INT,
-	@date		DATETIME	
+	@toDate		DATETIME	
 AS
 	BEGIN
 		SELECT TOP 10 * 
 			FROM  [Messages] 
-			WHERE [To] = @chatroomId AND [Created] <= @date
+			WHERE [To] = @chatroomId AND [Created] <= @toDate
 			ORDER BY [CREATED] DESC
 	END

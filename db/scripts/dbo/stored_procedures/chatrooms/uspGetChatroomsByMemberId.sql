@@ -30,6 +30,6 @@ AS
 				[IsGroup],
 				[PictureUrl] 
 			FROM [ChatRoomMembers] crm 
-			INNER JOIN [Chatrooms] cr  ON crm.[ChatroomId] = cr.[Id]
+			INNER JOIN [ChatRooms] cr  ON crm.[ChatRoomId] = cr.[Id]
 			WHERE [UserId] = @memberId  			
     END

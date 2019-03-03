@@ -21,6 +21,7 @@
 
 using System;
 using System.Threading.Tasks;
+using TycheBL;
 
 namespace DbConnect
 {

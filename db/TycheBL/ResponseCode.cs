@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-namespace DbConnect
+namespace TycheBL
 {
     /// <summary>
     /// Enum for response codes
@@ -34,6 +34,7 @@ namespace DbConnect
         VerificationCreationError   = 0x5,
         VerificationCodeExpired     = 0x6,
         UserNotExist                = 0x7,
-        UserAlreadyVerified         = 0x8
+        UserAlreadyVerified         = 0x8,
+        NoContent                   = 0x9
     } 
 }

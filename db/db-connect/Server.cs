@@ -22,9 +22,9 @@
 using AccessCore.SpExecuters;
 using AccessCore.Repository;
 using AccessCore.Repository.MapInfos;
+using TycheBL;
+using TycheBL.Models;
 using DbConnect.Config;
-using DbConnect.Models;
-using DbConnect.BL;
 
 namespace DbConnect
 {

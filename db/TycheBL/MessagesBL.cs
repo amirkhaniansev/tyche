@@ -24,9 +24,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using AccessCore.Repository;
-using DbConnect.Models;
+using TycheBL.Models;
 
-namespace DbConnect.BL
+namespace TycheBL
 {
     /// <summary>
     /// Messages business logic
@@ -66,6 +66,30 @@ namespace DbConnect.BL
                     ResponseCode.DbError,
                     Messages.DbError,
                     ex);
+            }
+        }
+
+        /// <summary>
+        /// Gets messages by the given message filter.
+        /// </summary>
+        /// <param name="messageFilter">message filter.</param>
+        /// <returns>messages</returns>
+        public async Task<DbResponse> GetMessagesByChatroomId(MessageFilter messageFilter)
+        {
+            try
+            {
+                var result = await this.dm.OperateAsync<MessageFilter, IEnumerable<Message>>(
+                    nameof(DbOperation.GetMessagesByChatroomId),
+                    messageFilter);
+
+                if (result == null)
+                    return this.ConstructDbResponse(ResponseCode.NoContent, Messages.NoContent);
+
+                return this.ConstructDbResponse(ResponseCode.Success, result);
+            }
+            catch(Exception ex)
+            {
+                return this.ConstructDbResponse(ResponseCode.DbError, Messages.NoContent, ex);
             }
         }
     }
