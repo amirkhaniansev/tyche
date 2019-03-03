@@ -116,8 +116,8 @@
 				<spParameterName>chatroomId</spParameterName>
 			</parameter>
 			<parameter>
-				<parameterName>Date</parameterName>
-				<spParameterName>date</spParameterName>
+				<parameterName>ToDate</parameterName>
+				<spParameterName>toDate</spParameterName>
 			</parameter>
 		</parameters>
 		<returnDataType>Enumerable</returnDataType>
