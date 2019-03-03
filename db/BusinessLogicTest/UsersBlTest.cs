@@ -60,7 +60,7 @@ namespace BusinessLogicTest
         internal static async Task TestGetUserByUsername()
         {
             var userBl = new UsersBL(Program.DataManager);
-            var response = await userBl.GetUserByUsername("username");
+            var response = await userBl.GetUsersByUsername("sev");
             Print.PrintDbResponse("GetUserByUsername", response);
         }
     }

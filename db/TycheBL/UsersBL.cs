@@ -176,24 +176,25 @@ namespace TycheBL
         }
 
         /// <summary>
-        /// Gets user by username asynchronously.
+        /// Gets users by username asynchronously.
         /// </summary>
         /// <param name="username">username</param>
         /// <returns>user</returns>
-        public async Task<DbResponse> GetUserByUsername(string username)
+        public async Task<DbResponse> GetUsersByUsername(string username)
         {
             try
             {
                 var result = await this.dm.OperateAsync<string, User>(
-                    nameof(DbOperation.GetUserByUsername),
+                    nameof(DbOperation.GetUsersByUsername),
                     username);
 
-                var user = result as User;
-                if (user == null)
+                var users = result as IEnumerable<User>;
+                if (users == null)
                     return Helper.ConstructDbResponse(ResponseCode.UserNotExist, Messages.UserNotExists);
 
-                user.PasswordHash = null;
-                return Helper.ConstructDbResponse(ResponseCode.Success, user);
+                users.ForEach(user => user.PasswordHash = null);
+
+                return Helper.ConstructDbResponse(ResponseCode.Success, users);
             }
             catch (Exception ex)
             {
