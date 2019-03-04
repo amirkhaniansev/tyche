@@ -19,12 +19,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-using AccessCore.SpExecuters;
-using AccessCore.Repository;
-using AccessCore.Repository.MapInfos;
 using TycheBL;
+using TycheBL.Logic;
 using TycheBL.Models;
 using DbConnect.Config;
+using TycheBL.Context;
 
 namespace DbConnect
 {
@@ -37,22 +36,12 @@ namespace DbConnect
         /// Gets or sets Tyche Config
         /// </summary>
         public static TycheConfig TycheConfig { get; set; }
-
-        /// <summary>
-        /// Gets or sets Xml Map Information
-        /// </summary>
-        public static XmlMapInfo XmlMapInfo { get; set; }
-
-        /// <summary>
-        /// Gets or sets sp executer
-        /// </summary>
-        public static MsSqlSpExecuter MsSqlSpExecuter { get; set; }
-
-        /// <summary>
-        /// Gets or sets Data Manager
-        /// </summary>
-        public static DataManager DataManager { get; set; }
         
+        /// <summary>
+        /// Gets or sets context
+        /// </summary>
+        public static TycheContext Context { get; set; }
+
         /// <summary>
         /// Gets or sets User BL
         /// </summary>
@@ -74,16 +63,6 @@ namespace DbConnect
         public static void InitConfigs()
         {
             TycheConfig = new TycheConfig("./Config/config.xml");
-            XmlMapInfo = new XmlMapInfo("Config/map.xml");
-        }
-
-        /// <summary>
-        /// Initializes Data manager
-        /// </summary>
-        public static void InitDataManager()
-        {
-            MsSqlSpExecuter = new MsSqlSpExecuter(TycheConfig.ConnectionString);
-            DataManager = new DataManager(MsSqlSpExecuter, XmlMapInfo);
         }
 
         /// <summary>
@@ -102,9 +81,13 @@ namespace DbConnect
                 .AddHandler(DbOperation.CreateUser, Helper.CostructHandler<User>(UsersBL.CreateUser));
         }
 
+        /// <summary>
+        /// Initializes business logic
+        /// </summary>
         public static void InitBusinessLogic()
         {
-            UsersBL = new UsersBL(Server.DataManager);
+            Context = new TycheContext(TycheConfig.ConnectionString);
+            UsersBL = new UsersBL(Context);
         }
 
         /// <summary>

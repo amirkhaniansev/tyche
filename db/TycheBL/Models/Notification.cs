@@ -20,6 +20,7 @@
 **/
 
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TycheBL.Models
 {
@@ -28,6 +29,11 @@ namespace TycheBL.Models
     /// </summary>
     public class Notification
     {
+        /// <summary>
+        /// Gets or sets ID
+        /// </summary>
+        public long Id { get; set; }
+
         /// <summary>
         /// Gets or sets notification type
         /// </summary>
@@ -46,6 +52,7 @@ namespace TycheBL.Models
         /// <summary>
         /// Gets or sest user ID
         /// </summary>
+        [NotMapped]
         public List<int> UserIds { get; set; }
     }
 }

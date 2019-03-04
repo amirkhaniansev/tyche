@@ -1,6 +1,6 @@
 /**
  * GNU General Public License Version 3.0, 29 June 2007
- * Chat
+ * MessagesBL
  * Copyright (C) <2019>
  *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
  *               <DavidPetr>       <david.petrosyan11100@gmail.com>
@@ -19,27 +19,44 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
+using System;
+using System.Threading.Tasks;
+using TycheBL.Context;
+using TycheBL.Models;
 
-namespace TycheBL.Models
+namespace TycheBL.Logic
 {
     /// <summary>
-    /// Model for describing chat creation
+    /// Messages business logic
     /// </summary>
-    public class Chat
+    public class MessagesBL : BaseBL
     {
         /// <summary>
-        /// Gets or sets name
+        /// Creates new instance of <see cref="MessagesBL"/>
         /// </summary>
-        public string Name { get; set; }
+        /// <param name="context">context</param>
+        public MessagesBL(TycheContext context) : base(context, BlType.MessagesBL)
+        {
+        }
 
         /// <summary>
-        /// Gets or sets info if chat is group chat
+        /// Creates message asynchronously.
         /// </summary>
-        public bool IsGroup { get; set; }
+        /// <param name="message">message</param>
+        /// <returns>database response</returns>
+        public async Task<DbResponse> CreateMessage(Message message)
+        {
+            throw new NotImplementedException();
+        }
 
         /// <summary>
-        /// Gets or sets picture url
+        /// Gets messages by the given message filter.
         /// </summary>
-        public string PictureUrl { get; set; }
+        /// <param name="messageFilter">message filter.</param>
+        /// <returns>messages</returns>
+        public async Task<DbResponse> GetMessagesByChatroomId(MessageFilter messageFilter)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

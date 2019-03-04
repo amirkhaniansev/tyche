@@ -1,6 +1,6 @@
 /**
  * GNU General Public License Version 3.0, 29 June 2007
- * Print
+ * NotificationAssignments
  * Copyright (C) <2019>
  *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
  *               <DavidPetr>       <david.petrosyan11100@gmail.com>
@@ -19,21 +19,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-using Newtonsoft.Json;
-using System;
-using TycheBL;
+CREATE TABLE [dbo].[NotificationAssignments]
+(
+	[UserId]			INT			NOT NULL,
+	[NotificationId]	BIGINT		NOT NULL,
+	[IsSeen]			BIT			NULL
 
-namespace BusinessLogicTest
-{
-    static class Print
-    {
-        internal static void PrintDbResponse(string name, DbResponse dbResponse)
-        {
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine(name);
-            Console.ResetColor();
-            Console.WriteLine(JsonConvert.SerializeObject(dbResponse, Formatting.Indented));
-            Console.ReadLine();
-        }
-    }
-}
+	CONSTRAINT	[PK_NOTIFICATION_ASSIGNMENT] PRIMARY KEY([NotificationId], [UserId]),
+	CONSTRAINT	[FK_NOTIFICATION_USER_ID]	FOREIGN KEY ([UserId]) REFERENCES [Users]([Id])
+		ON DELETE CASCADE,
+	CONSTRAINT	[FK_NOTIFICATION_ID]		FOREIGN KEY ([NotificationId]) REFERENCES [Notifications]([Id])
+		ON DELETE CASCADE
+)

@@ -40,6 +40,7 @@ namespace TycheBL
         public const string NoContent                   = "No content";
         public const string Welcome                     = "Welcome to Tyche chat system.";
         public const string VerificationSuccess         = "You are successfullyy verified";
+        public const string ChatroomNotExist            = "Chatroom doesn't exist.";
 
         private static Dictionary<ResponseCode, string> messages;
 
@@ -56,7 +57,8 @@ namespace TycheBL
                 [ResponseCode.UserNotExist]                 = UserNotExists,
                 [ResponseCode.VerificationCodeExpired]      = VerificationCodeExpired,
                 [ResponseCode.VerificationCreationError]    = VerificationCreationError,
-                [ResponseCode.NoContent]                    = NoContent
+                [ResponseCode.NoContent]                    = NoContent,
+                [ResponseCode.ChatroomNotExist]             = ChatroomNotExist
             };
         }
 

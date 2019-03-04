@@ -28,6 +28,11 @@ namespace TycheBL.Models
     public class Verification
     {
         /// <summary>
+        /// Gets or sets Id
+        /// </summary>
+        public int Id { get; set; }
+
+        /// <summary>
         /// Gets or sets user id
         /// </summary>
         public int UserId { get; set; }

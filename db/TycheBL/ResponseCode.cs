@@ -35,6 +35,7 @@ namespace TycheBL
         VerificationCodeExpired     = 0x6,
         UserNotExist                = 0x7,
         UserAlreadyVerified         = 0x8,
-        NoContent                   = 0x9
+        NoContent                   = 0x9,
+        ChatroomNotExist            = 0x10
     } 
 }

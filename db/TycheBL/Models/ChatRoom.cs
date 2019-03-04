@@ -1,6 +1,6 @@
 /**
  * GNU General Public License Version 3.0, 29 June 2007
- * Print
+ * ChatRoom
  * Copyright (C) <2019>
  *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
  *               <DavidPetr>       <david.petrosyan11100@gmail.com>
@@ -19,21 +19,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-using Newtonsoft.Json;
-using System;
-using TycheBL;
 
-namespace BusinessLogicTest
+namespace TycheBL.Models
 {
-    static class Print
+    /// <summary>
+    /// Model for describing chat creation
+    /// </summary>
+    public class ChatRoom
     {
-        internal static void PrintDbResponse(string name, DbResponse dbResponse)
-        {
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine(name);
-            Console.ResetColor();
-            Console.WriteLine(JsonConvert.SerializeObject(dbResponse, Formatting.Indented));
-            Console.ReadLine();
-        }
+        /// <summary>
+        /// Gets or sets ID
+        /// </summary>
+        public int Id { get; set; }
+
+        /// <summary>
+        /// Gets or sets name
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets info if chat is group chat
+        /// </summary>
+        public bool IsGroup { get; set; }
+
+        /// <summary>
+        /// Gets or sets picture url
+        /// </summary>
+        public string PictureUrl { get; set; }
     }
 }

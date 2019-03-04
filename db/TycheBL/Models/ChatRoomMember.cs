@@ -1,6 +1,6 @@
 /**
  * GNU General Public License Version 3.0, 29 June 2007
- * NotificationsUsers
+ * ChatRoomMember
  * Copyright (C) <2019>
  *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
  *               <DavidPetr>       <david.petrosyan11100@gmail.com>
@@ -19,14 +19,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-CREATE TABLE [dbo].[NotificationsUsers]
-(
-	[UserId]			INT			NOT NULL,
-	[NotificationId]	BIGINT		NOT NULL,
-	[IsSeen]			BIT			NULL
+using System.ComponentModel.DataAnnotations;
 
-	CONSTRAINT	[FK_NOTIFICATION_USER_ID]	FOREIGN KEY ([UserId]) REFERENCES [Users]([Id])
-		ON DELETE CASCADE,
-	CONSTRAINT	[FK_NOTIFICATION_ID]		FOREIGN KEY ([NotificationId]) REFERENCES [Notifications]([Id])
-		ON DELETE CASCADE
-)
+namespace TycheBL.Models
+{
+    /// <summary>
+    /// Model for chatroom and members relationship
+    /// </summary>
+    public class ChatRoomMember
+    {
+        /// <summary>
+        /// Gets or sets chatroom ID
+        /// </summary>
+        public int ChatRoomId { get; set; }
+
+        /// <summary>
+        /// Gets or sets user ID
+        /// </summary>
+        public int UserId { get; set; }
+    }
+}
