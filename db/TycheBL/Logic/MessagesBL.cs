@@ -20,8 +20,9 @@
 **/
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
-using TycheBL.Context;
+using Microsoft.EntityFrameworkCore;
 using TycheBL.Models;
 
 namespace TycheBL.Logic
@@ -34,8 +35,8 @@ namespace TycheBL.Logic
         /// <summary>
         /// Creates new instance of <see cref="MessagesBL"/>
         /// </summary>
-        /// <param name="context">context</param>
-        public MessagesBL(TycheContext context) : base(context, BlType.MessagesBL)
+        /// <param name="connectionString">Connection String</param>
+        public MessagesBL(string connectionString) : base(connectionString, BlType.MessagesBL)
         {
         }
 
@@ -46,7 +47,33 @@ namespace TycheBL.Logic
         /// <returns>database response</returns>
         public async Task<DbResponse> CreateMessage(Message message)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var chatroom = await this.Db.ChatRooms.FindAsync(message.To);
+                if (chatroom == null)
+                {
+                    return Helper.ConstructDbResponse(
+                        ResponseCode.ChatroomNotExist, 
+                        Messages.ChatroomNotExist);
+                }
+
+                var msg = await this.Db.Messages.AddAsync(message);
+
+                var notification = new Notification
+                {
+                    ChatRoomId = message.To,
+                    Info = Messages.NewMessage,
+                    Type = NotificationType.NewMessage
+                };
+
+                await this.CreateNotification(notification);
+
+                return Helper.ConstructDbResponse(ResponseCode.Success);
+            }
+            catch (Exception ex)
+            {
+                return Helper.ConstructDbResponse(ResponseCode.DbError, Messages.DbError, ex);
+            }
         }
 
         /// <summary>
@@ -54,9 +81,38 @@ namespace TycheBL.Logic
         /// </summary>
         /// <param name="messageFilter">message filter.</param>
         /// <returns>messages</returns>
-        public async Task<DbResponse> GetMessagesByChatroomId(MessageFilter messageFilter)
+        public async Task<DbResponse> GetMessages(MessageFilter messageFilter)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (!this.Db.ChatRooms.Any(cr => cr.Id == messageFilter.ChatroomId))
+                {
+                    return Helper.ConstructDbResponse(
+                        ResponseCode.ChatroomNotExist,
+                        Messages.ChatroomNotExist);
+                }
+
+                var messages = await this.Db
+                    .Messages
+                    .Where(m =>
+                        m.To == messageFilter.ChatroomId &&
+                        m.Created > messageFilter.FromDate &&
+                        m.Created < messageFilter.ToDate)
+                     .ToListAsync();
+
+                if (messages == null || !messages.Any())
+                {
+                    return Helper.ConstructDbResponse(
+                        ResponseCode.NoContent,
+                        Messages.NoContent);
+                }
+
+                return Helper.ConstructDbResponse(ResponseCode.Success, messages);
+            }
+            catch (Exception ex)
+            {
+                return Helper.ConstructDbResponse(ResponseCode.DbError, Messages.DbError, ex);
+            }
         }
     }
 }

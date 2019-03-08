@@ -19,12 +19,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using TycheBL.Context;
+using Microsoft.EntityFrameworkCore;
 using TycheBL.Models;
 
 namespace TycheBL.Logic
@@ -37,8 +35,8 @@ namespace TycheBL.Logic
         /// <summary>
         /// Creates new instance of <see cref="UsersBL"/>
         /// </summary>
-        /// <param name="context">context</param>
-        public UsersBL(TycheContext context) : base(context, BlType.UsersBL)
+        /// <param name="connectionString">connection string</param>
+        public UsersBL(string connectionString) : base(connectionString, BlType.UsersBL)
         {
         }
 
@@ -85,7 +83,24 @@ namespace TycheBL.Logic
         /// <returns>database response</returns>
         public async Task<DbResponse> CreateVerificationForUser(Verification verification)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var entry = await this.Db.Verifications.AddAsync(verification);
+
+                if (!await this.SaveChanges())
+                {
+                    return Helper.ConstructDbResponse(ResponseCode.DbError, Messages.DbError);
+                }
+
+                return Helper.ConstructDbResponse(ResponseCode.Success, Messages.Success);
+            }
+            catch (Exception ex)
+            {
+                return Helper.ConstructDbResponse(
+                    ResponseCode.DbError, 
+                    Messages.VerificationCreationError, 
+                    ex);
+            }
         }
 
         /// <summary>
@@ -95,7 +110,50 @@ namespace TycheBL.Logic
         /// <returns>database response</returns>
         public async Task<DbResponse> VerifyUser(Verification verification)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var user = await this.Db.Users.FindAsync(verification.UserId);
+                if (user == null)
+                {
+                    return Helper.ConstructDbResponse(ResponseCode.UserNotExist, 
+                        Messages.UserNotExists);
+                }
+
+                if (user.IsVerified)
+                {
+                    return Helper.ConstructDbResponse(ResponseCode.UserAlreadyVerified, 
+                        Messages.UserAlreadyVerified);
+                }
+
+                var verificationInfo = this.Db.Verifications.FirstOrDefault(
+                   v => v.UserId == verification.UserId && v.Code == verification.Code);
+
+                if (verificationInfo == null || 
+                    verificationInfo.Created.AddMinutes(verification.ValidOffset) >= DateTime.Now)
+                {
+                    return Helper.ConstructDbResponse(
+                        ResponseCode.VerificationCodeExpired,
+                        Messages.VerificationCodeExpired);
+                }
+
+                user.IsVerified = true;
+
+                this.Db.Verifications.Remove(verificationInfo);
+                this.Db.Users.Update(user);
+
+                if (!await this.SaveChanges())
+                {
+                    return Helper.ConstructDbResponse(
+                        ResponseCode.DbError,
+                        Messages.DbError);
+                }
+
+                return Helper.ConstructDbResponse(ResponseCode.Success);
+            }
+            catch (Exception ex)
+            {
+                return Helper.ConstructDbResponse(ResponseCode.DbError, Messages.DbError, ex);
+            }
         }
 
         /// <summary>
@@ -105,7 +163,23 @@ namespace TycheBL.Logic
         /// <returns>user</returns>
         public async Task<DbResponse> GetUserById(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var user = await this.Db.Users.FindAsync(id);
+                if (user == null)
+                {
+                    return Helper.ConstructDbResponse(
+                        ResponseCode.UserNotExist,
+                        Messages.UserNotExists);
+                }
+
+                user.PasswordHash = null;
+                return Helper.ConstructDbResponse(ResponseCode.Success, user);
+            }
+            catch(Exception ex)
+            {
+                return Helper.ConstructDbResponse(ResponseCode.DbError, Messages.DbError, ex);
+            }
         }
 
         /// <summary>
@@ -115,7 +189,36 @@ namespace TycheBL.Logic
         /// <returns>user</returns>
         public async Task<DbResponse> GetUsersByUsername(string username)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var users = await this.Db.Users
+                    .Where(u => u.Username.Contains(username))
+                    .Select(user => new
+                    {
+                        user.Id,
+                        user.IsVerified,
+                        user.FirstName,
+                        user.LastName,
+                        user.ProfilePictureUrl,
+                        user.Username
+                    })
+                    .ToListAsync();
+
+                if (users == null || !users.Any())
+                {
+                    return Helper.ConstructDbResponse(ResponseCode.NoContent,
+                        Messages.NoContent);
+                }
+
+                return Helper.ConstructDbResponse(ResponseCode.Success, users);
+            }
+            catch(Exception ex)
+            {
+                return Helper.ConstructDbResponse(
+                    ResponseCode.DbError, 
+                    Messages.DbError, 
+                    ex);
+            }
         } 
     }
 }

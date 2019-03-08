@@ -13,10 +13,4 @@
     <ProjectReference Include="..\TycheBL\TycheBL.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="map.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
 </Project>

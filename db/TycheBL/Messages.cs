@@ -41,6 +41,7 @@ namespace TycheBL
         public const string Welcome                     = "Welcome to Tyche chat system.";
         public const string VerificationSuccess         = "You are successfullyy verified";
         public const string ChatroomNotExist            = "Chatroom doesn't exist.";
+        public const string NewMessage                  = "New message";
 
         private static Dictionary<ResponseCode, string> messages;
 

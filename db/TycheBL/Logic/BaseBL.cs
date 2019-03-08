@@ -31,8 +31,13 @@ namespace TycheBL.Logic
     /// <summary>
     /// Base class for Business Logic
     /// </summary>
-    public class BaseBL
+    public class BaseBL : IDisposable
     {
+        /// <summary>
+        /// Connection string
+        /// </summary>
+        protected readonly string connectionString;
+
         /// <summary>
         /// Tyche Context
         /// </summary>
@@ -51,12 +56,14 @@ namespace TycheBL.Logic
         /// <summary>
         /// Creates new instance of <see cref="BaseBL"/>
         /// </summary>
-        /// <param name="context">context</param>
+        /// <param name="connectionString">connection string</param>
         /// <param name="blType">Business Logic type.</param>
-        public BaseBL(TycheContext context, BlType blType = BlType.BaseBL)
+        public BaseBL(string connectionString, BlType blType = BlType.BaseBL)
         {
-            this.context = context;
+            this.connectionString = connectionString;
             this.blType = blType;
+
+            this.context = new TycheContext(this.connectionString);
         }
 
         /// <summary>
@@ -142,6 +149,14 @@ namespace TycheBL.Logic
                     return false;
                 }
             }
+        }
+
+        /// <summary>
+        /// Disposees bl
+        /// </summary>
+        public void Dispose()
+        {
+            this.context.Dispose();
         }
     }
 }

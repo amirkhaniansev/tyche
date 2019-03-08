@@ -53,6 +53,11 @@ namespace TycheBL.Models
         public string Email { get; set; }
 
         /// <summary>
+        /// Gets or sets is verified
+        /// </summary>
+        public bool IsVerified { get; set; }
+
+        /// <summary>
         /// Gets or sets profile picture url
         /// </summary>
         public string ProfilePictureUrl { get; set; }
