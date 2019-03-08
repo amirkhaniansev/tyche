@@ -33,8 +33,7 @@ namespace DbConnect
         static void Main(string[] args)
         {
             Server.InitConfigs();
-            Server.InitBusinessLogic();
-            Server.InitServerBuilder();
+            Server.InitBuilder();
             Server.Build();
             Server.Start();
         }

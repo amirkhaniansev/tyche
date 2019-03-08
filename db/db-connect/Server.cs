@@ -23,7 +23,6 @@ using TycheBL;
 using TycheBL.Logic;
 using TycheBL.Models;
 using DbConnect.Config;
-using TycheBL.Context;
 
 namespace DbConnect
 {
@@ -36,16 +35,6 @@ namespace DbConnect
         /// Gets or sets Tyche Config
         /// </summary>
         public static TycheConfig TycheConfig { get; set; }
-        
-        /// <summary>
-        /// Gets or sets context
-        /// </summary>
-        public static TycheContext Context { get; set; }
-
-        /// <summary>
-        /// Gets or sets User BL
-        /// </summary>
-        public static UsersBL UsersBL { get; set; }
 
         /// <summary>
         /// Gets or sets Data Server builder
@@ -66,31 +55,6 @@ namespace DbConnect
         }
 
         /// <summary>
-        /// Prepares the server for starting.
-        /// </summary>
-        public static void InitServerBuilder()
-        {
-            DataServerBuilder = new DataServerBuilder()
-                .AssignIp(TycheConfig.Host)
-                .AssignPort(TycheConfig.Port);
-
-            DataServerBuilder = DataServerBuilder
-                .AddOperation<User>(DbOperation.CreateUser);
-
-            DataServerBuilder = DataServerBuilder
-                .AddHandler(DbOperation.CreateUser, Helper.CostructHandler<User>(UsersBL.CreateUser));
-        }
-
-        /// <summary>
-        /// Initializes business logic
-        /// </summary>
-        public static void InitBusinessLogic()
-        {
-            Context = new TycheContext(TycheConfig.ConnectionString);
-            UsersBL = new UsersBL(Context);
-        }
-
-        /// <summary>
         /// Builds data server
         /// </summary>
         public static void Build()
@@ -104,6 +68,77 @@ namespace DbConnect
         public static void Start()
         {
             DataServer.Run();
+        }
+
+        /// <summary>
+        /// Prepares the server for starting.
+        /// </summary>
+        public static void InitBuilder()
+        {
+            DataServerBuilder = new DataServerBuilder()
+                .AssignIp(TycheConfig.Host)
+                .AssignPort(TycheConfig.Port);
+
+            DataServerBuilder = DataServerBuilder
+                .AddOperation<User>(DbOperation.CreateUser);
+
+            DataServerBuilder = DataServerBuilder
+                .AddHandler(DbOperation.CreateUser, async (input) =>
+                {
+                    using (var bl = new UsersBL(TycheConfig.ConnectionString))
+                    {
+                        return await bl.CreateUser(input as User);
+                    }
+                })
+                .AddHandler(DbOperation.CreateVerificationCode, async (input) =>
+                {
+                    using (var bl = new UsersBL(TycheConfig.ConnectionString))
+                    {
+                        return await bl.CreateVerificationForUser(input as Verification);
+                    }
+                })
+                .AddHandler(DbOperation.VerifyUser, async (input) =>
+                {
+                    using (var bl = new UsersBL(TycheConfig.ConnectionString))
+                    {
+                        return await bl.VerifyUser(input as Verification);
+                    }
+                })
+                .AddHandler(DbOperation.GetUserById, async (input) =>
+                {
+                    using (var bl = new UsersBL(TycheConfig.ConnectionString))
+                    {
+                        return await bl.GetUserById((int)input);
+                    }
+                })
+                .AddHandler(DbOperation.GetUsersByUsername, async (input) =>
+                {
+                    using (var bl = new UsersBL(TycheConfig.ConnectionString))
+                    {
+                        return await bl.GetUsersByUsername(input as string);
+                    }
+                })
+                .AddHandler(DbOperation.CreateNotification, async (input) =>
+                {
+                    using (var bl = new BaseBL(TycheConfig.ConnectionString))
+                    {
+                        return await bl.CreateNotification(input as Notification);
+                    }
+                })
+                .AddHandler(DbOperation.CreateMessage, async (input) =>
+                {
+                    using (var bl = new MessagesBL(TycheConfig.ConnectionString))
+                    {
+                        return await bl.CreateMessage(input as Message);
+                    }
+                })
+                .AddHandler(DbOperation.GetMessages, async (input) =>
+                {
+                    using (var bl = new MessagesBL(TycheConfig.ConnectionString))
+                    {
+                        return await bl.GetMessages(input as MessageFilter);
+                    }
+                });
         }
     }
 }
