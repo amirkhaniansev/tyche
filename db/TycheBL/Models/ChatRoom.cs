@@ -46,6 +46,11 @@ namespace TycheBL.Models
         public bool IsGroup { get; set; }
 
         /// <summary>
+        /// Gets or sets info if chat encryption key is fixed
+        /// </summary>
+        public bool IsKeyFixed { get; set; }
+
+        /// <summary>
         /// Gets or sets picture url
         /// </summary>
         public string PictureUrl { get; set; }

@@ -213,46 +213,61 @@ namespace DbConnect
         /// <returns>task</returns>
         private async Task ServeClient(TcpClient tcpClient)
         {
-            using (var client = tcpClient)
+            try
             {
-                using (var stream = client.GetStream())
+                using (var client = tcpClient)
                 {
-                    var buffer = new byte[4];
-                    var read = 0;
-
-                    // reading frame size
-                    read = await stream.ReadAsync(buffer, 0, 4);
-                    var frameSize = BitConverter.ToInt32(buffer, 0);
-                    
-                    // reading DB operation type
-                    read = await stream.ReadAsync(buffer, 0, 4);
-                    var dbOperationType = (DbOperation)BitConverter.ToInt32(buffer, 0);                    
-                    
-                    // reading input
-                    buffer = new byte[frameSize];
-                    read = await stream.ReadAsync(buffer, 0, frameSize);
-
-                    var inputJson = Encoding.Unicode.GetString(buffer);
-                    var type = this.operations[dbOperationType];
-                    var input = JsonConvert.DeserializeObject(inputJson, type);
-
-                    var handler = this.handlers[dbOperationType];
-                    var dbReponse = await handler(input);
-                    
-                    if(dbReponse.ResponseCode != ResponseCode.Success)
+                    using (var stream = client.GetStream())
                     {
-                        await this.SendErrorResponse(
-                            stream,
-                            dbReponse.Content as string,
-                            dbReponse.ResponseCode);
-                        return;
-                    }
+                        var buffer = new byte[4];
+                        var dbOperationType = DbOperation.CreateMessage;
+                        var frameSize = 0;
+                        var read = 0;
+                        var inputJson = default(string);
+                        var type = default(Type);
+                        var input = default(object);
+                        var handler = default(Func<object, Task<DbResponse>>);
+                        var dbResponse = default(DbResponse);
 
-                    await this.SendSuccessReponse(
-                        stream,
-                        dbReponse.Content,
-                        dbReponse.ResponseCode);
+                        // reading frame size
+                        read = await stream.ReadAsync(buffer, 0, 4);
+                        frameSize = BitConverter.ToInt32(buffer, 0);
+
+                        // reading DB operation type
+                        read = await stream.ReadAsync(buffer, 0, 4);
+                        dbOperationType = (DbOperation)BitConverter.ToInt32(buffer, 0);
+
+                        // reading input
+                        buffer = new byte[frameSize];
+                        read = await stream.ReadAsync(buffer, 0, frameSize);
+
+                        inputJson = Encoding.Unicode.GetString(buffer);
+                        type = this.operations[dbOperationType];
+                        input = JsonConvert.DeserializeObject(inputJson, type);
+
+                        handler = this.handlers[dbOperationType];
+                        dbResponse = await handler(input);
+
+                        if (dbResponse.ResponseCode != ResponseCode.Success)
+                        {
+                            await this.SendErrorResponse(
+                                stream,
+                                dbResponse.Content as string,
+                                dbResponse.ResponseCode);
+                            return;
+                        }
+
+                        await this.SendSuccessReponse(
+                            stream,
+                            dbResponse.Content,
+                            dbResponse.ResponseCode);
+
+                    }
                 }
+            }
+            catch (Exception)
+            {
+                return;
             }
         }
 

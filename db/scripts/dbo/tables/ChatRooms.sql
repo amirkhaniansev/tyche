@@ -27,6 +27,7 @@ CREATE TABLE [dbo].[ChatRooms]
 	[Name]			NVARCHAR(100)					NULL,
 	[Created]		DATETIME						NOT NULL,
 	[IsGroup]		BIT			DEFAULT(0)			NOT NULL,
+	[IsKeyFixed]	BIT			DEFAULT(0)			NOT NULL,
 	[PictureUrl]	VARCHAR(MAX)					NULL
 	
 	CONSTRAINT [PK_CHATROOM_ID] PRIMARY KEY ([Id])

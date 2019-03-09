@@ -44,6 +44,11 @@ namespace TycheBL.Models
         public int To { get; set; }
 
         /// <summary>
+        /// Gets or sets header
+        /// </summary>
+        public string Header { get; set; }
+
+        /// <summary>
         /// Gets or sets message text.
         /// </summary>
         public string Text { get; set; }

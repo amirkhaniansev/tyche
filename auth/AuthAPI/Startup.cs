@@ -73,7 +73,7 @@ namespace AuthAPI
             App.Logger = new Logger(
                 Constants.AuthAPI,
                 Constants.LogPath,
-                30);
+                60);
         }
 
         /// <summary>

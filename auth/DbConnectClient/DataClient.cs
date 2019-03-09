@@ -20,6 +20,7 @@
 **/
 
 using System;
+using System.Collections.Concurrent;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -42,7 +43,7 @@ namespace DbConnectClient
         /// Port to which Data Server is listening
         /// </summary>
         private readonly int port;
-
+        
         /// <summary>
         /// Creat new instance of <see cref="DataClient"/>
         /// </summary>
@@ -71,30 +72,30 @@ namespace DbConnectClient
 
                 using (var tcpClient = new TcpClient())
                 {
-                    await tcpClient.ConnectAsync(this.dataServerAddress, this.port);
+                    if (!tcpClient.Connected)
+                        await tcpClient.ConnectAsync(this.dataServerAddress, this.port);
 
-                    using (var stream = tcpClient.GetStream())
-                    {
-                        await stream.WriteAsync(buffer, 0, buffer.Length);
+                    var stream = tcpClient.GetStream();
 
-                        var outputLengthBytes = new byte[4];
-                        var read = await stream.ReadAsync(buffer, 0, 4);
-                        var length = BitConverter.ToInt32(outputLengthBytes);
+                    await stream.WriteAsync(buffer, 0, buffer.Length);
 
-                        var output = new byte[length];
-                        var outputRead = await stream.ReadAsync(output, 0, length);
-                        var json = Encoding.Unicode.GetString(output);
-                        var response = JsonConvert.DeserializeObject<Response>(json);
+                    var outputLengthBytes = new byte[4];
+                    var read = await stream.ReadAsync(outputLengthBytes, 0, 4);
+                    var length = BitConverter.ToInt32(outputLengthBytes);
 
-                        return response;
-                    }
+                    var output = new byte[length];
+                    var outputRead = await stream.ReadAsync(output, 0, length);
+                    var json = Encoding.Unicode.GetString(output);
+                    var response = JsonConvert.DeserializeObject<Response>(json);
+
+                    return response;
                 }
             }
             catch (Exception)
             {
                 return new Response
                 {
-                    ResponseCode = ResponseCode.InternalError,
+                    ResponseCode = ResponseCode.DbError,
                     IsError = true
                 };
             }

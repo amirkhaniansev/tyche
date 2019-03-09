@@ -19,6 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
+using System;
 
 namespace DbConnectClient.Models
 {
@@ -27,6 +28,11 @@ namespace DbConnectClient.Models
     /// </summary>
     public class Verification
     {
+        /// <summary>
+        /// Gets or sets Id
+        /// </summary>
+        public int Id { get; set; }
+
         /// <summary>
         /// Gets or sets user id
         /// </summary>
@@ -41,5 +47,10 @@ namespace DbConnectClient.Models
         /// Gets or sets valid offset
         /// </summary>
         public int ValidOffset { get; set; }
+
+        /// <summary>
+        /// Gets or sets created
+        /// </summary>
+        public DateTime Created { get; set; }
     }
 }

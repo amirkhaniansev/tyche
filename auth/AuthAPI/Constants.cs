@@ -26,13 +26,14 @@ namespace AuthAPI
     /// </summary>
     public static class Constants
     {
-        public const string DbConnectHost   = "DbConnectHost";
-        public const string DbConnectPort   = "DbConnectPort";
-        public const string EmailUsername   = "EmailUsername";
-        public const string EmailPassword   = "EmailPassowrd";
-        public const string AuthAPI         = "AuthAPI";
-        public const string LogPath         = "LogPath";
-        public const string UserCreated     = "UserCreated";
-        public const string InternalError   = "InternalError";
+        public const string DbConnectHost               = "DbConnectHost";
+        public const string DbConnectPort               = "DbConnectPort";
+        public const string EmailUsername               = "EmailUsername";
+        public const string EmailPassword               = "EmailPassowrd";
+        public const string AuthAPI                     = "AuthAPI";
+        public const string LogPath                     = "LogPath";
+        public const string UserCreated                 = "UserCreated";
+        public const string InternalError               = "InternalError";
+        public const string VerificationCodeCreated     = "Verification code is created";
     }
 }

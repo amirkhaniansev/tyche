@@ -37,5 +37,10 @@ namespace TycheBL.Models
         /// Gets or sets user ID
         /// </summary>
         public int UserId { get; set; }
+
+        /// <summary>
+        /// Gets or sets fixed header
+        /// </summary>
+        public string FixedHeader { get; set; }
     }
 }

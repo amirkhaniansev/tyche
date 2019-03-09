@@ -26,11 +26,15 @@ namespace DbConnectClient
     /// </summary>
     public enum ResponseCode
     {
-        Success         = 0x0,
-        UnknownError    = 0x1,
+        Success = 0x0,
+        UnknownError = 0x1,
         NoSuchOperation = 0x2,
-        UserExists      = 0x3,
-        DbError         = 0x3,
-        InternalError   = 0x4
+        UserExists = 0x3,
+        DbError = 0x4,
+        VerificationCreationError = 0x5,
+        VerificationCodeExpired = 0x6,
+        UserNotExist = 0x7,
+        UserAlreadyVerified = 0x8,
+        NoContent = 0x9
     } 
 }

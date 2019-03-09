@@ -28,6 +28,7 @@ namespace DbConnectClient
     {
         CreateUser              = 0x0,
         CreateVerificationCode  = 0x3,
-        VerifyUser              = 0x5
+        VerifyUser              = 0x5,
+        GetUserById             = 0x6
     }
 }

@@ -11,9 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PasswordHasherService", "Pa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthAPI", "AuthAPI\AuthAPI.csproj", "{79E6D985-5C30-4AEF-876D-B7A69F43E39F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailService", "MailService\MailService.csproj", "{3077B3F2-F242-4E02-B826-CCA910009D86}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MailService", "MailService\MailService.csproj", "{3077B3F2-F242-4E02-B826-CCA910009D86}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoggerService", "LoggerService\LoggerService.csproj", "{21294566-8595-40BC-BAFF-4EF1AEB4B1EB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoggerService", "LoggerService\LoggerService.csproj", "{21294566-8595-40BC-BAFF-4EF1AEB4B1EB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeGeneratorService", "CodeGeneratorService\CodeGeneratorService.csproj", "{11EBF46E-18D7-4A6B-B03F-8CE604AE9A57}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{21294566-8595-40BC-BAFF-4EF1AEB4B1EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{21294566-8595-40BC-BAFF-4EF1AEB4B1EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{21294566-8595-40BC-BAFF-4EF1AEB4B1EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11EBF46E-18D7-4A6B-B03F-8CE604AE9A57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11EBF46E-18D7-4A6B-B03F-8CE604AE9A57}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11EBF46E-18D7-4A6B-B03F-8CE604AE9A57}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11EBF46E-18D7-4A6B-B03F-8CE604AE9A57}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

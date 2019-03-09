@@ -22,8 +22,9 @@
 
 CREATE TABLE [dbo].[ChatRoomMembers]
 (
-	[ChatRoomId]	INT NOT NULL,
-	[UserId]		INT NOT NULL
+	[ChatRoomId]	INT				NOT NULL,
+	[UserId]		INT				NOT NULL,
+	[FixedHeader]	NVARCHAR(MAX)	NULL
 
 	CONSTRAINT [PK_CHATROOM_MEMBER]	PRIMARY KEY ([ChatRoomId], [UserId]),
 	CONSTRAINT [FK_CHATROOM_ID] FOREIGN KEY ([ChatRoomId]) REFERENCES [ChatRooms]([Id])

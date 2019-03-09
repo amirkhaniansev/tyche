@@ -34,9 +34,9 @@ namespace AuthAPI.Controllers
     /// Controller for signing up API
     /// </summary>
     [ApiController]
-    [Route("api/sign-up")]
+    [Route("api/users")]
     [Produces("application/json")]
-    public class SignUpController : ControllerBase
+    public class UsersController : ControllerBase
     {
         /// <summary>
         /// Handler for sending POST request to register a user
@@ -57,10 +57,11 @@ namespace AuthAPI.Controllers
                     Operation = Operation.CreateUser
                 };
 
+                
                 var response = await App.DataClient.SendRequestAsync(request);
 
-                if (response.ResponseCode == ResponseCode.InternalError)
-                    return this.StatusCode((int)HttpStatusCode.InternalServerError);
+                if (response.ResponseCode != ResponseCode.Success)
+                    return this.BadRequest(response);
 
                 if (response.ResponseCode == ResponseCode.Success)
                 {
