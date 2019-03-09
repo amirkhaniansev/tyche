@@ -35,6 +35,8 @@ namespace TycheBL
         GetUserById                     = 0x6,
         GetUsersByUsername              = 0x7,
         GetMessages                     = 0x8,
-        AssignNotificationToUser        = 0x9
+        GetUserChatrooms                = 0x9,
+        GetChatroomById                 = 0xA,
+        AddMemberToChatroom             = 0xB
     }
 }

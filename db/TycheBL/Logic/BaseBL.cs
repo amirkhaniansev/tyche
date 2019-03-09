@@ -109,7 +109,8 @@ namespace TycheBL.Logic
                         .Select(id => new NotificationAssignment
                         {
                             NotificationId = notification.Id,
-                            UserId = id
+                            UserId = id,
+                            IsSeen = false
                         });
                 }
 
@@ -143,7 +144,7 @@ namespace TycheBL.Logic
                     transaction.Commit();
                     return true;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     transaction.Rollback();
                     return false;

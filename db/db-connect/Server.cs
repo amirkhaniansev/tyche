@@ -80,7 +80,18 @@ namespace DbConnect
                 .AssignPort(TycheConfig.Port);
 
             DataServerBuilder = DataServerBuilder
-                .AddOperation<User>(DbOperation.CreateUser);
+                .AddOperation<User>(DbOperation.CreateUser)
+                .AddOperation<Verification>(DbOperation.CreateVerificationCode)
+                .AddOperation<Verification>(DbOperation.VerifyUser)
+                .AddOperation<int>(DbOperation.GetUserById)
+                .AddOperation<string>(DbOperation.GetUsersByUsername)
+                .AddOperation<Notification>(DbOperation.CreateNotification)
+                .AddOperation<Message>(DbOperation.CreateMessage)
+                .AddOperation<MessageFilter>(DbOperation.GetMessages)
+                .AddOperation<ChatRoom>(DbOperation.CreateChatRooom)
+                .AddOperation<int>(DbOperation.GetUserChatrooms)
+                .AddOperation<int>(DbOperation.GetChatroomById)
+                .AddOperation<ChatRoomMember>(DbOperation.AddMemberToChatroom);
 
             DataServerBuilder = DataServerBuilder
                 .AddHandler(DbOperation.CreateUser, async (input) =>
@@ -137,6 +148,34 @@ namespace DbConnect
                     using (var bl = new MessagesBL(TycheConfig.ConnectionString))
                     {
                         return await bl.GetMessages(input as MessageFilter);
+                    }
+                })
+                .AddHandler(DbOperation.CreateChatRooom, async (input) =>
+                {
+                    using (var bl = new ChatroomsBL(TycheConfig.ConnectionString))
+                    {
+                        return await bl.CreateChatroom(input as ChatRoom);
+                    }
+                })
+                .AddHandler(DbOperation.GetUserChatrooms, async(input) =>
+                {
+                    using (var bl = new ChatroomsBL(TycheConfig.ConnectionString))
+                    {
+                        return await bl.GetChatroomsByUserId((int)input);
+                    }
+                })
+                .AddHandler(DbOperation.GetChatroomById, async(input) =>
+                {
+                    using (var bl = new ChatroomsBL(TycheConfig.ConnectionString))
+                    {
+                        return await bl.GetChatroomById((int)input);
+                    }
+                })
+                .AddHandler(DbOperation.AddMemberToChatroom, async (input) =>
+                {
+                    using (var bl = new ChatroomsBL(TycheConfig.ConnectionString))
+                    {
+                        return await bl.AddMemberToChatroom(input as ChatRoomMember);
                     }
                 });
         }

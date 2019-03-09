@@ -19,6 +19,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TycheBL.Models
 {
@@ -46,5 +49,21 @@ namespace TycheBL.Models
         /// Gets or sets picture url
         /// </summary>
         public string PictureUrl { get; set; }
+
+        /// <summary>
+        /// Gets or sets creator ID
+        /// </summary>
+        public int? CreatorId { get; set; }
+
+        /// <summary>
+        /// Gets or sets date and time when chatroom is created
+        /// </summary>
+        public DateTime Created { get; set; }
+
+        /// <summary>
+        /// Gets or setes chatroom members
+        /// </summary>
+        [NotMapped]
+        public List<User> Members { get; set; }
     }
 }

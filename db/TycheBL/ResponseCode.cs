@@ -36,6 +36,8 @@ namespace TycheBL
         UserNotExist                = 0x7,
         UserAlreadyVerified         = 0x8,
         NoContent                   = 0x9,
-        ChatroomNotExist            = 0x10
+        ChatroomNotExist            = 0xA,
+        ChatroomExists              = 0xB,
+        MemberIsAlreadyInChatroom   = 0xC
     } 
 }

@@ -124,7 +124,7 @@ namespace Test
                     Text = "NewMessage",
                     Created = DateTime.Now,
                     From = 100007,
-                    To = 1
+                    To = 2
                 };
 
                 var response = await bl.CreateMessage(message);
@@ -139,7 +139,7 @@ namespace Test
             {
                 var filter = new MessageFilter
                 {
-                    ChatroomId = 1,
+                    ChatroomId = 2,
                     FromDate = DateTime.MinValue,
                     ToDate = DateTime.Now
                 };
@@ -147,6 +147,61 @@ namespace Test
                 var response = await bl.GetMessages(filter);
 
                 Print("GetMessages", response);
+            }
+        }
+
+        static async Task TestCreateChatroom()
+        {
+            using (var bl = new ChatroomsBL(cnn))
+            {
+                var chatroom = new ChatRoom
+                {
+                    Created = DateTime.Now,
+                    CreatorId = 100007,
+                    IsGroup = true,
+                    Name = "ChatRoom",
+                    PictureUrl = ""
+                };
+
+                var response = await bl.CreateChatroom(chatroom);
+
+                Print("CreateChatroom", response);
+            }
+        }
+
+        static async Task TestGetUserChatrooms()
+        {
+            using (var bl = new ChatroomsBL(cnn))
+            {
+                var response = await bl.GetChatroomsByUserId(100007);
+
+                Print("GetUserChatrooms", response);
+            }
+        }
+
+        static async Task TestGetChatroom()
+        {
+            using (var bl = new ChatroomsBL(cnn))
+            {
+                var response = await bl.GetChatroomById(2);
+
+                Print("GetChatroom", response);
+            }
+        }
+
+        static async Task TestAddMemberToChatroom()
+        {
+            using (var bl = new ChatroomsBL(cnn))
+            {
+                var crm = new ChatRoomMember
+                {
+                    ChatRoomId = 2,
+                    UserId = 100000
+                };
+
+                var response = await bl.AddMemberToChatroom(crm);
+
+                Print("AddMemberToChatroom", response);
             }
         }
 
@@ -159,6 +214,10 @@ namespace Test
             TestGetUsersByUsername().Wait();
             TestCreateMessage().Wait();
             TestGetMessages().Wait();
+            TestCreateChatroom().Wait();
+            TestGetUserChatrooms().Wait();
+            TestGetChatroom().Wait();
+            TestAddMemberToChatroom().Wait();
         }
     }
 }

@@ -42,6 +42,9 @@ namespace TycheBL
         public const string VerificationSuccess         = "You are successfullyy verified";
         public const string ChatroomNotExist            = "Chatroom doesn't exist.";
         public const string NewMessage                  = "New message";
+        public const string ChatroomExists              = "Chatroom already exists.";
+        public const string MemberIsAlreadyInChatroom   = "Member is already in chatroom.";
+        public const string NewMemberIsAddedToChatroom  = "New member is added to chatroom.";
 
         private static Dictionary<ResponseCode, string> messages;
 
@@ -59,13 +62,20 @@ namespace TycheBL
                 [ResponseCode.VerificationCodeExpired]      = VerificationCodeExpired,
                 [ResponseCode.VerificationCreationError]    = VerificationCreationError,
                 [ResponseCode.NoContent]                    = NoContent,
-                [ResponseCode.ChatroomNotExist]             = ChatroomNotExist
+                [ResponseCode.ChatroomNotExist]             = ChatroomNotExist,
+                [ResponseCode.ChatroomExists]               = ChatroomExists,
+                [ResponseCode.MemberIsAlreadyInChatroom]    = MemberIsAlreadyInChatroom
             };
         }
 
+        /// <summary>
+        /// Gets message with the given code
+        /// </summary>
+        /// <param name="code">response code</param>
+        /// <returns>message</returns>
         public static string Message(ResponseCode code)
         {
-            return messages[code];
+            return messages.ContainsKey(code) ? messages[code] : string.Empty;
         }
     }
 }

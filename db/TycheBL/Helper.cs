@@ -51,6 +51,26 @@ namespace TycheBL
         }
 
         /// <summary>
+        /// Constructs database response
+        /// </summary>
+        /// <param name="responseCode">response code</param>
+        /// <returns>database response</returns>
+        internal static DbResponse ConstructDbResponse(ResponseCode responseCode)
+        {
+            return ConstructDbResponse(responseCode, Messages.Message(responseCode));
+        }
+
+        /// <summary>
+        /// Constructs database error response
+        /// </summary>
+        /// <param name="exception">exception</param>
+        /// <returns>database reponse</returns>
+        internal static DbResponse ConstructDbError(Exception exception = null)
+        {
+            return ConstructDbResponse(ResponseCode.DbError, Messages.DbError, exception);
+        }
+
+        /// <summary>
         /// Creates notification
         /// </summary>
         /// <param name="notificationType">notification type</param>

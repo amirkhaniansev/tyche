@@ -39,6 +39,6 @@ namespace TycheBL.Models
         /// <summary>
         /// Gets or sets is seen boolean value which indicate if the user saw the notification
         /// </summary>
-        public bool? IsSeen { get; set; }
+        public bool IsSeen { get; set; }
     }
 }
