@@ -1,6 +1,6 @@
 /**
  * GNU General Public License Version 3.0, 29 June 2007
- * User
+ * ChatRoom
  * Copyright (C) <2019>
  *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
  *               <DavidPetr>       <david.petrosyan11100@gmail.com>
@@ -19,52 +19,56 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace TycheBL.Models
+namespace TycheDAL.Models
 {
     /// <summary>
-    /// Model for user
+    /// Model for describing chat creation
     /// </summary>
-    public class User 
+    public class ChatRoom
     {
         /// <summary>
-        /// Gets or sets Id
+        /// Gets or sets ID
         /// </summary>
         public int Id { get; set; }
 
         /// <summary>
-        /// Gets or sets first name
+        /// Gets or sets name
         /// </summary>
-        public string FirstName { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets last name
+        /// Gets or sets info if chat is group chat
         /// </summary>
-        public string LastName { get; set; }
+        public bool IsGroup { get; set; }
 
         /// <summary>
-        /// Gets or sets username
+        /// Gets or sets info if chat encryption key is fixed
         /// </summary>
-        public string Username { get; set; }
+        public bool IsKeyFixed { get; set; }
 
         /// <summary>
-        /// Gets or sets email
+        /// Gets or sets picture url
         /// </summary>
-        public string Email { get; set; }
+        public string PictureUrl { get; set; }
 
         /// <summary>
-        /// Gets or sets is verified
+        /// Gets or sets creator ID
         /// </summary>
-        public bool IsVerified { get; set; }
+        public int? CreatorId { get; set; }
 
         /// <summary>
-        /// Gets or sets profile picture url
+        /// Gets or sets date and time when chatroom is created
         /// </summary>
-        public string ProfilePictureUrl { get; set; }
+        public DateTime Created { get; set; }
 
         /// <summary>
-        /// Gets or sets password hash
+        /// Gets or setes chatroom members
         /// </summary>
-        public string PasswordHash { get; set; }
+        [NotMapped]
+        public List<User> Members { get; set; }
     }
 }

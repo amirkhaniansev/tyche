@@ -21,7 +21,7 @@
 
 using System;
 
-namespace TycheBL.Models
+namespace TycheDAL.Models
 {
     /// <summary>
     /// Model for filtering messages

@@ -1,6 +1,6 @@
 /**
  * GNU General Public License Version 3.0, 29 June 2007
- * Program
+ * Message
  * Copyright (C) <2019>
  *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
  *               <DavidPetr>       <david.petrosyan11100@gmail.com>
@@ -19,23 +19,43 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-namespace DbConnect
+using System;
+
+namespace TycheDAL.Models
 {
     /// <summary>
-    /// Main class in application
+    /// Model for message
     /// </summary>
-    class Program
+    public class Message
     {
         /// <summary>
-        /// Entry point for application
+        /// Gets or sets ID
         /// </summary>
-        /// <param name="args">command line arguments</param>
-        static void Main(string[] args)
-        {
-            Server.InitConfigs();
-            Server.InitBuilder();
-            Server.Build();
-            Server.Start();
-        }
+        public long Id { get; set; }
+
+        /// <summary>
+        /// Gets or sets user ID, who sent this message.
+        /// </summary>
+        public int From { get; set; }
+
+        /// <summary>
+        /// Gets or sets Chatroom ID, which this message is sent to.
+        /// </summary>
+        public int To { get; set; }
+
+        /// <summary>
+        /// Gets or sets header
+        /// </summary>
+        public string Header { get; set; }
+
+        /// <summary>
+        /// Gets or sets message text.
+        /// </summary>
+        public string Text { get; set; }
+
+        /// <summary>
+        /// Gets or sets date and time of message creation.
+        /// </summary>
+        public DateTime Created { get; set; }
     }
 }

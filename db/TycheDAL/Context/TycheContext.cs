@@ -20,9 +20,9 @@
 **/
 
 using Microsoft.EntityFrameworkCore;
-using TycheBL.Models;
+using TycheDAL.Models;
 
-namespace TycheBL.Context
+namespace TycheDAL.Context
 {
     public class TycheContext : DbContext
     {

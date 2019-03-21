@@ -27,7 +27,7 @@ AS
 	BEGIN
 		BEGIN TRY
 			BEGIN TRANSACTION ASSIGN_NOTIFICATION_TO_USER
-				INSERT INTO [NotificationsUsers] VALUES (@userId, @notificationId, 0)
+				INSERT INTO [NotificationAssignments] VALUES (@userId, @notificationId, 0)
 			COMMIT TRANSACTION ASSIGN_NOTIFICATION_TO_USER
 			RETURN 0x0
 		END TRY

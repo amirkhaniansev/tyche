@@ -1,6 +1,6 @@
 /**
  * GNU General Public License Version 3.0, 29 June 2007
- * Response
+ * NotificationType
  * Copyright (C) <2019>
  *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
  *               <DavidPetr>       <david.petrosyan11100@gmail.com>
@@ -19,35 +19,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-using TycheBL;
-
-namespace DbConnect
+namespace TycheDAL.Database
 {
     /// <summary>
-    /// Class for response
+    /// Enum for notification type
     /// </summary>
-    /// <typeparam name="T">Type of Data</typeparam>
-    internal class Response
+    public enum NotificationType
     {
-        /// <summary>
-        /// Gets or sets response code
-        /// </summary>
-        public ResponseCode ResponseCode { get; set; }
-        
-        /// <summary>
-        /// Gets or sets boolean value which indicates whether
-        /// the response contains error.
-        /// </summary>
-        public bool IsError { get; set; }
-
-        /// <summary>
-        /// Gets or sets message.
-        /// </summary>
-        public string Message { get; set; }
-
-        /// <summary>
-        /// Gets or sets data
-        /// </summary>
-        public object Data { get; set; }
+        Welcome             = 0x0,
+        NewMessage          = 0x1,
+        NewUserToChatroom   = 0x2,
+        NewChatInvitation   = 0x3,
+        VerificationSuccess = 0x4
     }
 }

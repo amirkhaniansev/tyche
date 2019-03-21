@@ -1,6 +1,6 @@
 /**
  * GNU General Public License Version 3.0, 29 June 2007
- * Message
+ * ChatRoomMember
  * Copyright (C) <2019>
  *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
  *               <DavidPetr>       <david.petrosyan11100@gmail.com>
@@ -19,43 +19,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-using System;
-
-namespace TycheBL.Models
+namespace TycheDAL.Models
 {
     /// <summary>
-    /// Model for message
+    /// Model for chatroom and members relationship
     /// </summary>
-    public class Message
+    public class ChatRoomMember
     {
         /// <summary>
-        /// Gets or sets ID
+        /// Gets or sets chatroom ID
         /// </summary>
-        public long Id { get; set; }
+        public int ChatRoomId { get; set; }
 
         /// <summary>
-        /// Gets or sets user ID, who sent this message.
+        /// Gets or sets user ID
         /// </summary>
-        public int From { get; set; }
+        public int UserId { get; set; }
 
         /// <summary>
-        /// Gets or sets Chatroom ID, which this message is sent to.
+        /// Gets or sets fixed header
         /// </summary>
-        public int To { get; set; }
-
-        /// <summary>
-        /// Gets or sets header
-        /// </summary>
-        public string Header { get; set; }
-
-        /// <summary>
-        /// Gets or sets message text.
-        /// </summary>
-        public string Text { get; set; }
-
-        /// <summary>
-        /// Gets or sets date and time of message creation.
-        /// </summary>
-        public DateTime Created { get; set; }
+        public string FixedHeader { get; set; }
     }
 }

@@ -21,7 +21,8 @@
 
 using System;
 using System.Collections.Generic;
-using TycheBL.Models;
+using TycheDAL.Models;
+using TycheDAL.Database;
 
 namespace TycheBL
 {

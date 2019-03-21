@@ -1,6 +1,6 @@
 /**
  * GNU General Public License Version 3.0, 29 June 2007
- * TycheConfig
+ * Notification
  * Copyright (C) <2019>
  *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
  *               <DavidPetr>       <david.petrosyan11100@gmail.com>
@@ -19,42 +19,41 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using TycheDAL.Database;
 
-using System.Xml.Linq;
-
-namespace DbConnect.Config
+namespace TycheDAL.Models
 {
     /// <summary>
-    /// Class for configuration of DbConnect
+    /// Model for notification
     /// </summary>
-    public class TycheConfig
+    public class Notification
     {
         /// <summary>
-        /// Gets ip
+        /// Gets or sets ID
         /// </summary>
-        public string Host { get; }
-        
-        /// <summary>
-        /// Gets port
-        /// </summary>
-        public string Port { get; }
-        
-        /// <summary>
-        /// Gets connection string
-        /// </summary>
-        public string ConnectionString { get; }
+        public long Id { get; set; }
 
         /// <summary>
-        /// Creates new instance of <see cref="TycheConfig"/>
+        /// Gets or sets notification type
         /// </summary>
-        /// <param name="path">Path</param>
-        public TycheConfig(string path)
-        {
-            var xml = XDocument.Load(path);
-            var root = xml.Element("configuration");
-            this.Host = root.Element("host").Attribute("value").Value;
-            this.Port = root.Element("port").Attribute("value").Value;
-            this.ConnectionString = root.Element("conn").Attribute("value").Value;
-        }
+        public NotificationType Type { get; set; }
+
+        /// <summary>
+        /// Gets or sets Info
+        /// </summary>
+        public string Info { get; set; }
+
+        /// <summary>
+        /// Gets or sets Chatroom ID
+        /// </summary>
+        public int? ChatRoomId { get; set; }
+
+        /// <summary>
+        /// Gets or sest user ID
+        /// </summary>
+        [NotMapped]
+        public List<int> UserIds { get; set; }
     }
 }

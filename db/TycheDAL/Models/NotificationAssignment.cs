@@ -1,6 +1,6 @@
 /**
  * GNU General Public License Version 3.0, 29 June 2007
- * ChatRoomMember
+ * NotificationAssignment
  * Copyright (C) <2019>
  *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
  *               <DavidPetr>       <david.petrosyan11100@gmail.com>
@@ -19,28 +19,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-using System.ComponentModel.DataAnnotations;
-
-namespace TycheBL.Models
+namespace TycheDAL.Models
 {
     /// <summary>
-    /// Model for chatroom and members relationship
+    /// Model for notification assignment
     /// </summary>
-    public class ChatRoomMember
+    public class NotificationAssignment
     {
         /// <summary>
-        /// Gets or sets chatroom ID
+        /// Gets or sets notification ID
         /// </summary>
-        public int ChatRoomId { get; set; }
+        public long NotificationId { get; set; }
 
         /// <summary>
-        /// Gets or sets user ID
+        /// Gets or sets User ID
         /// </summary>
         public int UserId { get; set; }
 
         /// <summary>
-        /// Gets or sets fixed header
+        /// Gets or sets is seen boolean value which indicate if the user saw the notification
         /// </summary>
-        public string FixedHeader { get; set; }
+        public bool IsSeen { get; set; }
     }
 }

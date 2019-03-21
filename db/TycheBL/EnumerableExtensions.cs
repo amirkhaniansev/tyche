@@ -37,13 +37,15 @@ namespace TycheBL
         /// <param name="action">action</param>
         public static void ForEach<T>(this IEnumerable<T> enumerable, Action<T> action)
         {
-            var enumerator = enumerable.GetEnumerator();
-            if (enumerator == null)
-                return;
-
-            while (enumerator.MoveNext())
+            using (var enumerator = enumerable.GetEnumerator())
             {
-                action.Invoke(enumerator.Current);
+                if (enumerator == null)
+                    return;
+
+                while (enumerator.MoveNext())
+                {
+                    action.Invoke(enumerator.Current);
+                }
             }
         }
     }
