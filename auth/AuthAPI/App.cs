@@ -32,11 +32,6 @@ namespace AuthAPI
     public static class App
     {
         /// <summary>
-        /// Gets or sets Data client for Auth API.
-        /// </summary>
-        public static DataClient DataClient { get; set; }
-
-        /// <summary>
         /// Gets or sets Password hasher.
         /// </summary>
         public static PasswordHasher PasswordHasher { get; set; }

@@ -59,11 +59,7 @@ namespace AuthAPI
         {
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-
-            App.DataClient = new DataClient(
-                IPAddress.Parse(Configuration[Constants.DbConnectHost]),
-                int.Parse(Configuration[Constants.DbConnectPort]));
-
+            
             App.PasswordHasher = new PasswordHasher();
 
             App.Mailer = new Mailer(new NetworkCredential(

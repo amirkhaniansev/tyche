@@ -45,38 +45,7 @@ namespace AuthAPI.Controllers
         /// <returns>action result</returns>
         public async Task<IActionResult> Post([FromBody]User user)
         {
-            try
-            {
-                if (user == null)
-                    return this.BadRequest();
-
-                user.PasswordHash = App.PasswordHasher.HashPassword(user.PasswordHash);
-                var request = new Request<User>
-                {
-                    Input = user,
-                    Operation = Operation.CreateUser
-                };
-
-                
-                var response = await App.DataClient.SendRequestAsync(request);
-
-                if (response.ResponseCode != ResponseCode.Success)
-                    return this.BadRequest(response);
-
-                if (response.ResponseCode == ResponseCode.Success)
-                {
-                    App.Logger.Log(Constants.UserCreated);
-                    return this.Ok(response);
-                }
-
-                return this.BadRequest(response);
-            }
-            catch (Exception exception)
-            {
-                App.Logger.Log(LogHelper.CreateLog(
-                    DateTime.Now, LogType.Fatal, Constants.InternalError, exception));
-                return this.StatusCode(500);
-            }
+            throw new NotImplementedException();
         }
     }
 }
