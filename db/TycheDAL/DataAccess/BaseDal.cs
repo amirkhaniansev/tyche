@@ -20,14 +20,56 @@
 **/
 
 using System;
+using System.Threading.Tasks;
+using TycheDAL.Context;
 
 namespace TycheDAL.DataAccess
 {
     public class BaseDal : IDisposable
     {
+        private readonly string connectionString;
+
+        private TycheContext db;
+
+        public string DbConnectionString => this.connectionString;
+
+        public TycheContext Db => this.db;
+
+        public BaseDal(string connectionString, TycheContext context = null)
+        {
+            this.connectionString = connectionString;
+
+            this.InitializeContext(context);
+        }
+
+        public async Task<bool> SaveChanges()
+        {
+            using (var transaction = await this.db.Database.BeginTransactionAsync())
+            {
+                try
+                {
+                    await this.db.SaveChangesAsync();
+                    transaction.Commit();
+                    return true;
+                }
+                catch (Exception)
+                {
+                    transaction.Rollback();
+                    return false;
+                }
+            }
+        }
+
         public void Dispose()
         {
-            throw new NotImplementedException();
+            this.db.Dispose();
+        }
+
+        private void InitializeContext(TycheContext context)
+        {
+            if (context == null)
+                context = new TycheContext(connectionString);
+            this.db = context;
         }
     }
 }

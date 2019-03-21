@@ -19,6 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using TycheDAL.Database;
@@ -49,6 +50,11 @@ namespace TycheDAL.Models
         /// Gets or sets Chatroom ID
         /// </summary>
         public int? ChatRoomId { get; set; }
+
+        /// <summary>
+        /// Gets or sets creation time of notification
+        /// </summary>
+        public DateTime? Created { get; set; }
 
         /// <summary>
         /// Gets or sest user ID

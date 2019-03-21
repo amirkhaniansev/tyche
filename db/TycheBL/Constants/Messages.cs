@@ -21,7 +21,7 @@
 
 using System.Collections.Generic;
 
-namespace TycheBL
+namespace TycheBL.Constants
 {
     /// <summary>
     /// Class for storing constant messages
@@ -45,6 +45,7 @@ namespace TycheBL
         public const string ChatroomExists              = "Chatroom already exists.";
         public const string MemberIsAlreadyInChatroom   = "Member is already in chatroom.";
         public const string NewMemberIsAddedToChatroom  = "New member is added to chatroom.";
+        public const string NotificationCreationError   = "Unable to creat notification";
 
         private static Dictionary<ResponseCode, string> messages;
 
@@ -64,7 +65,8 @@ namespace TycheBL
                 [ResponseCode.NoContent]                    = NoContent,
                 [ResponseCode.ChatroomNotExist]             = ChatroomNotExist,
                 [ResponseCode.ChatroomExists]               = ChatroomExists,
-                [ResponseCode.MemberIsAlreadyInChatroom]    = MemberIsAlreadyInChatroom
+                [ResponseCode.MemberIsAlreadyInChatroom]    = MemberIsAlreadyInChatroom,
+                [ResponseCode.NotificationCreationError]    = NotificationCreationError
             };
         }
 

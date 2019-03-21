@@ -5,8 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Context\" />
-    <Folder Include="Logic\" />
+    <Compile Remove="Context\**" />
+    <EmbeddedResource Remove="Context\**" />
+    <None Remove="Context\**" />
   </ItemGroup>
 
   <ItemGroup>

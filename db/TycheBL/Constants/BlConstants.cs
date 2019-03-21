@@ -1,6 +1,6 @@
 /**
  * GNU General Public License Version 3.0, 29 June 2007
- * Helper
+ * BlConstants
  * Copyright (C) <2019>
  *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
  *               <DavidPetr>       <david.petrosyan11100@gmail.com>
@@ -19,26 +19,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-using System;
-using TycheBL.Constants;
-
-namespace TycheBL
+namespace TycheBL.Constants
 {
-    internal static class Helper
+    public static class BlConstants
     {
-        public static OperationResult Result(object content)
-        {
-            return Helper.Result(ResponseCode.Success, null, content);
-        }
-
-        public static OperationResult Result(ResponseCode responseCode, Exception exception = null, object content = null)
-        {
-            return new OperationResult
-            {
-                ResponseCode = responseCode,
-                Exception = exception,
-                Content = content
-            };
-        }
+        public const string Notification        = "Notification";
+        public const string InvalidID           = "Invalid ID";
+        public const string InvalidUsername     = "Invalid username";
+        public const string UserIdsAreNull      = "User IDs are null";
+        public const string UserIdsAreEmpty     = "User IDs are empty";
+        public const string UserIsNull          = "User is null";
+        public const string ConnectionString    = "Connection string";
     }
 }

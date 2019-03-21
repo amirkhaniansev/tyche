@@ -1,6 +1,6 @@
 /**
  * GNU General Public License Version 3.0, 29 June 2007
- * Helper
+ * BaseBL
  * Copyright (C) <2019>
  *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
  *               <DavidPetr>       <david.petrosyan11100@gmail.com>
@@ -20,25 +20,46 @@
 **/
 
 using System;
+using TycheDAL.DataAccess;
 using TycheBL.Constants;
 
-namespace TycheBL
+namespace TycheBL.Logic
 {
-    internal static class Helper
+    public class BaseBL<TDal> : IDisposable
+        where TDal : BaseDal
     {
-        public static OperationResult Result(object content)
+        private TDal dal;
+
+        private readonly string connectionString;
+
+        public TDal Dal
         {
-            return Helper.Result(ResponseCode.Success, null, content);
+            get
+            {
+                return this.dal;
+            }
+            protected set
+            {
+                if (this.dal == value)
+                    return;
+
+                this.dal = value;
+            }
         }
 
-        public static OperationResult Result(ResponseCode responseCode, Exception exception = null, object content = null)
+        public string ConnectionString => this.connectionString;
+        
+        public BaseBL(string connectionString = null)
         {
-            return new OperationResult
-            {
-                ResponseCode = responseCode,
-                Exception = exception,
-                Content = content
-            };
+            if (connectionString == null && string.IsNullOrEmpty(LogicGlobalAttributes.ConnectionString))
+                throw new ArgumentException(BlConstants.ConnectionString);
+
+            this.connectionString = connectionString;
+        }
+
+        public void Dispose()
+        {
+            this.dal.Dispose();
         }
     }
 }

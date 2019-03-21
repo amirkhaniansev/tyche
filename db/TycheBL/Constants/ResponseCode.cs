@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-namespace TycheBL
+namespace TycheBL.Constants
 {
     /// <summary>
     /// Enum for response codes
@@ -38,6 +38,7 @@ namespace TycheBL
         NoContent                   = 0x9,
         ChatroomNotExist            = 0xA,
         ChatroomExists              = 0xB,
-        MemberIsAlreadyInChatroom   = 0xC
+        MemberIsAlreadyInChatroom   = 0xC,
+        NotificationCreationError   = 0xD
     } 
 }

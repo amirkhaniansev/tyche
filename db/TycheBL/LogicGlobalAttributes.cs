@@ -1,6 +1,6 @@
 /**
  * GNU General Public License Version 3.0, 29 June 2007
- * Helper
+ * LogicGlobalAttributes
  * Copyright (C) <2019>
  *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
  *               <DavidPetr>       <david.petrosyan11100@gmail.com>
@@ -19,26 +19,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-using System;
-using TycheBL.Constants;
-
 namespace TycheBL
 {
-    internal static class Helper
+    public static class LogicGlobalAttributes
     {
-        public static OperationResult Result(object content)
-        {
-            return Helper.Result(ResponseCode.Success, null, content);
-        }
-
-        public static OperationResult Result(ResponseCode responseCode, Exception exception = null, object content = null)
-        {
-            return new OperationResult
-            {
-                ResponseCode = responseCode,
-                Exception = exception,
-                Content = content
-            };
-        }
+        public static string ConnectionString { get; set; }
     }
 }
