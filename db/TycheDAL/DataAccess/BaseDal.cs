@@ -64,6 +64,17 @@ namespace TycheDAL.DataAccess
         {
             this.db.Dispose();
         }
+        
+        protected virtual async Task<TEntity> AddEntity<TEntity>(TEntity entity, bool saveAfterAdding = true)
+            where TEntity : class
+        {
+            var entry = await this.db.AddAsync(entity);
+
+            if (saveAfterAdding && await this.SaveChanges())
+                return entry.Entity;
+
+            return null;
+        }
 
         private void InitializeContext(TycheContext context)
         {

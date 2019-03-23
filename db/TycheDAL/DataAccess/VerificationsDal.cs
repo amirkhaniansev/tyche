@@ -1,6 +1,6 @@
 /**
  * GNU General Public License Version 3.0, 29 June 2007
- * UsersDal
+ * VerificationsDal
  * Copyright (C) <2019>
  *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
  *               <DavidPetr>       <david.petrosyan11100@gmail.com>
@@ -19,7 +19,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 using TycheDAL.Context;
@@ -27,43 +26,42 @@ using TycheDAL.Models;
 
 namespace TycheDAL.DataAccess
 {
-    public class UsersDal : BaseDal
+    public class VerificationsDal : BaseDal
     {
-        public UsersDal(string connectionString, TycheContext context = null) 
+        public VerificationsDal(string connectionString, TycheContext context = null) 
             : base(connectionString, context)
         {
         }
 
-        public bool Exists(Predicate<User> userExistancePredicate)
+        public async Task<Verification> CreateVerification(Verification verification, bool saveAfterAdding = true)
         {
-            return this.Db.Users.Any(u => userExistancePredicate(u));
+            return await this.AddEntity(verification, saveAfterAdding);
         }
 
-        public async Task<User> CreateUser(User user, bool saveAfterAdding = true)
+        public IQueryable<Verification> GetVerificationsByUserId(int userId)
         {
-            return await this.AddEntity(user, saveAfterAdding);
+            return this.Db
+                .Verifications
+                .AsQueryable()
+                .Where(v => v.UserId == userId);
         }
 
-        public async Task<User> GetUserById(int userId)
+        public async Task<bool> DeleteVerification(int userId, string code)
         {
-            return await this.Db.Users.FindAsync(userId);
+            var userVerifications = this.GetVerificationsByUserId(userId);
+            var verification = userVerifications.FirstOrDefault(v => v.Code == code);
+
+            if (verification == null)
+                return false;
+
+            return await this.DeleteVerification(verification);
         }
 
-        public User GetUserByUsername(string username)
+        public async Task<bool> DeleteVerification(Verification verification)
         {
-            return this.Db.Users.FirstOrDefault(u => u.Username == username);
-        }
+            this.Db.Verifications.Remove(verification);
 
-        public IQueryable<User> GetUsersByIds(params int[] userIds)
-        {
-            return this.Db.Users.AsQueryable().Where(user => userIds.Contains(user.Id));
-        }
-
-        public IQueryable<User> GetUsersByUsername(string username)
-        {
-            var usersQuery = this.Db.Users.AsQueryable();
-
-            return usersQuery.Where(u => u.Username.Contains(username));
+            return await this.SaveChanges();
         }
     }
 }

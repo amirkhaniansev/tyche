@@ -1,6 +1,6 @@
 /**
  * GNU General Public License Version 3.0, 29 June 2007
- * UsersDal
+ * ChatroomsDal
  * Copyright (C) <2019>
  *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
  *               <DavidPetr>       <david.petrosyan11100@gmail.com>
@@ -19,7 +19,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 using TycheDAL.Context;
@@ -27,43 +26,42 @@ using TycheDAL.Models;
 
 namespace TycheDAL.DataAccess
 {
-    public class UsersDal : BaseDal
+    public class ChatroomsDal : BaseDal
     {
-        public UsersDal(string connectionString, TycheContext context = null) 
+        public ChatroomsDal(string connectionString, TycheContext context = null) 
             : base(connectionString, context)
         {
         }
 
-        public bool Exists(Predicate<User> userExistancePredicate)
+        public async Task<ChatRoom> CreateChatroom(ChatRoom chatRoom, bool saveAfterChanges)
         {
-            return this.Db.Users.Any(u => userExistancePredicate(u));
+            return await this.AddEntity(chatRoom, saveAfterChanges);
         }
 
-        public async Task<User> CreateUser(User user, bool saveAfterAdding = true)
+        public IQueryable<ChatRoom> GetChatrooms()
         {
-            return await this.AddEntity(user, saveAfterAdding);
+            return this.Db.ChatRooms.AsQueryable();
         }
 
-        public async Task<User> GetUserById(int userId)
+        public IQueryable<int> GetChatroomMembersIds(int chatroomId)
         {
-            return await this.Db.Users.FindAsync(userId);
+            return this.GetChatRoomMembers(chatroomId)
+                    .Select(crm => crm.UserId);
         }
 
-        public User GetUserByUsername(string username)
+        public IQueryable<ChatRoomMember> GetChatRoomMembers(int chatroomId)
         {
-            return this.Db.Users.FirstOrDefault(u => u.Username == username);
+            return this.Db
+                   .ChatroomMembers
+                   .AsQueryable()
+                   .Where(crm => crm.UserId == chatroomId);
         }
 
-        public IQueryable<User> GetUsersByIds(params int[] userIds)
+        public async Task<bool> DeleteChatroom(ChatRoom chatRoom)
         {
-            return this.Db.Users.AsQueryable().Where(user => userIds.Contains(user.Id));
-        }
+            var entry = this.Db.ChatRooms.Remove(chatRoom);
 
-        public IQueryable<User> GetUsersByUsername(string username)
-        {
-            var usersQuery = this.Db.Users.AsQueryable();
-
-            return usersQuery.Where(u => u.Username.Contains(username));
+            return await this.SaveChanges();
         }
     }
 }

@@ -35,12 +35,7 @@ namespace TycheDAL.DataAccess
 
         public async Task<Notification> CreateNotification(Notification notification, bool saveAfterAdding = true)
         {
-            var entry = await this.Db.Notifications.AddAsync(notification);
-
-            if (saveAfterAdding && await this.SaveChanges())
-                return entry.Entity;
-
-            return null;
+            return await this.AddEntity(notification, saveAfterAdding);
         }
 
         public async Task AssignNotification(long notificationId, params int[] userIds)
@@ -59,7 +54,9 @@ namespace TycheDAL.DataAccess
             var notifications = this.Db.Notifications.AsQueryable();
             var assignments = this.Db.NotificationAssignments.AsQueryable();
 
-            var query = assignments
+            var notSeen = assignments.Where(na => !na.IsSeen);
+
+            var query = notSeen
                 .Where(assignment => assignment.UserId == userId)
                 .Join(
                     notifications,
