@@ -1,6 +1,6 @@
 /**
  * GNU General Public License Version 3.0, 29 June 2007
- * OperationResult
+ * Chat
  * Copyright (C) <2019>
  *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
  *
@@ -18,29 +18,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-using System;
-using TycheBL.Constants;
+using TycheDAL.Models;
 
-namespace TycheBL
+namespace TycheBL.Models
 {
-    /// <summary>
-    /// Class for modelling database response
-    /// </summary>
-    public class OperationResult
+    public class Chat : ChatRoom
     {
-        /// <summary>
-        /// Gets or sets Response code
-        /// </summary>
-        public ResponseCode ResponseCode { get; set; }
-
-        /// <summary>
-        /// Gets or sets exception
-        /// </summary>
-        public Exception Exception {get;set;}
-
-        /// <summary>
-        /// Gets or sets content
-        /// </summary>
-        public object Content { get; set; }
+        public User Creator { get; set; }
     }
 }

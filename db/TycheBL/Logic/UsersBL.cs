@@ -38,18 +38,18 @@ namespace TycheBL.Logic
             this.Dal = new UsersDal(this.ConnectionString);
         }
 
-        public async Task<OperationResult> CreateUser(User user)
+        public async Task<BlOperationResult<User>> CreateUser(User user)
         {
             if (user == null)
                 throw new ArgumentNullException(BlConstants.UserIsNull);
 
             var predicate = new Predicate<User>(u => u.Username == user.Username || u.Email == user.Email);
             if (this.Dal.Exists(predicate))
-                return Helper.Result(ResponseCode.UserExists, null, Messages.UserExists);
+                return Helper.Result<User>(ResponseCode.UserExists, null);
 
             var entity = await this.Dal.CreateUser(user);
             if (entity == null)
-                return Helper.Result(ResponseCode.DbError, null, Messages.DbError);
+                return Helper.Result<User>(ResponseCode.DbError, null);
 
             try
             {
@@ -67,12 +67,12 @@ namespace TycheBL.Logic
                     await notificationsDal.AssignNotification(notificationEntity.Id, entity.Id);
 
                 await notificationsDal.SaveChanges();
-                
-                return Helper.Result(ResponseCode.Success);
+
+                return Helper.Result(entity);
             }
             catch (Exception ex)
             {
-                return Helper.Result(ResponseCode.Success, ex, Messages.NotificationCreationError);
+                return Helper.Result<User>(ResponseCode.Success, ex);
             }
         }
 

@@ -1,6 +1,6 @@
 /**
  * GNU General Public License Version 3.0, 29 June 2007
- * Helper
+ * BlOperationResult
  * Copyright (C) <2019>
  *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
  *
@@ -23,22 +23,24 @@ using TycheBL.Constants;
 
 namespace TycheBL
 {
-    internal static class Helper
+    /// <summary>
+    /// Class for modelling database response
+    /// </summary>
+    public class BlOperationResult<TResult>
     {
-        public static BlOperationResult<TResult> Result<TResult>(TResult content)
-        {
-            return Helper.Result(ResponseCode.Success, null, content);
-        }
+        /// <summary>
+        /// Gets or sets Response code
+        /// </summary>
+        public ResponseCode ResponseCode { get; set; }
 
-        public static BlOperationResult<TResult> Result<TResult>(
-            ResponseCode responseCode, Exception exception = null, TResult content = default(TResult))
-        {
-            return new BlOperationResult<TResult>
-            {
-                ResponseCode = responseCode,
-                Exception = exception,
-                Content = content
-            };
-        }
+        /// <summary>
+        /// Gets or sets exception
+        /// </summary>
+        public Exception Exception {get;set;}
+
+        /// <summary>
+        /// Gets or sets content
+        /// </summary>
+        public TResult Content { get; set; }
     }
 }
