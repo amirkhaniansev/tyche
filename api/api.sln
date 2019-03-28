@@ -27,7 +27,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{7E9C8FC7-A
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Logic", "Logic", "{FD82E135-583B-4D38-BF51-DF787952B4E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TycheApiUtilities", "TycheApiUtilities\TycheApiUtilities.csproj", "{F93D15BD-F611-43B3-8A88-BD7098F82844}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TycheApiUtilities", "TycheApiUtilities\TycheApiUtilities.csproj", "{F93D15BD-F611-43B3-8A88-BD7098F82844}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAPI", "DataAPI\DataAPI.csproj", "{C9D5B63A-97EF-4149-8082-547E0AD1C6A5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -73,6 +75,10 @@ Global
 		{F93D15BD-F611-43B3-8A88-BD7098F82844}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F93D15BD-F611-43B3-8A88-BD7098F82844}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F93D15BD-F611-43B3-8A88-BD7098F82844}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9D5B63A-97EF-4149-8082-547E0AD1C6A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9D5B63A-97EF-4149-8082-547E0AD1C6A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9D5B63A-97EF-4149-8082-547E0AD1C6A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9D5B63A-97EF-4149-8082-547E0AD1C6A5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
