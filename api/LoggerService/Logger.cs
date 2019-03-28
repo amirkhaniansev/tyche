@@ -200,6 +200,20 @@ namespace LoggerService
         }
 
         /// <summary>
+        /// Logs error log info with the given message
+        /// </summary>
+        /// <param name="message">log message</param>
+        public void LogError(string message)
+        {
+            if (string.IsNullOrEmpty(message))
+                return;
+
+            var logInfo = LogHelper.CreateLog(DateTime.Now, LogType.Fatal, message, null);
+
+            this._logs.TryAdd(logInfo.Time, logInfo);
+        }
+
+        /// <summary>
         /// Logs log information
         /// </summary>
         /// <param name="logInfo">log information</param>

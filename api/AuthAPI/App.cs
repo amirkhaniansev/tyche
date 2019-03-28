@@ -43,5 +43,7 @@ namespace AuthAPI
         /// Gets or sets logger
         /// </summary>
         public static Logger Logger { get; set; }
+
+        public static string ConnectionString { get; set; }
     }
 }

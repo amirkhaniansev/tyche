@@ -16,6 +16,7 @@
     <ProjectReference Include="..\LoggerService\LoggerService.csproj" />
     <ProjectReference Include="..\MailService\MailService.csproj" />
     <ProjectReference Include="..\PasswordHasherService\PasswordHasherService.csproj" />
+    <ProjectReference Include="..\TycheApiUtilities\TycheApiUtilities.csproj" />
     <ProjectReference Include="..\TycheBL\TycheBL.csproj" />
     <ProjectReference Include="..\TycheDAL\TycheDAL.csproj" />
   </ItemGroup>

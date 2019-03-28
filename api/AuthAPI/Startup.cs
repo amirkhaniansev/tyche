@@ -69,6 +69,8 @@ namespace AuthAPI
                 Constants.AuthAPI,
                 Constants.LogPath,
                 60);
+
+            App.ConnectionString = Configuration[Constants.ConnectionString];
         }
 
         /// <summary>
