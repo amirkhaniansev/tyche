@@ -42,11 +42,11 @@ namespace CodeGeneratorService
         }
 
         /// <summary>
-        /// Generates verification key.
+        /// Generates key.
         /// </summary>
         /// <param name="length">Length of key</param>
         /// <returns>Verification key</returns>
-        public string GenerateVerifyKey(int length)
+        public string GenerateKey(int length)
         {
             // buffer for storing random bytes
             var buffer = new byte[length];

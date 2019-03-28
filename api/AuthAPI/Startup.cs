@@ -28,6 +28,7 @@ using MailSevice;
 using LoggerService;
 using PasswordHasherService;
 using AuthAPI.Constant;
+using CodeGeneratorService;
 
 namespace AuthAPI
 {
@@ -69,6 +70,8 @@ namespace AuthAPI
                 Constants.AuthAPI,
                 Constants.LogPath,
                 60);
+
+            App.CodeGenerator = new CodeGenerator();
 
             App.ConnectionString = Configuration[Constants.ConnectionString];
         }

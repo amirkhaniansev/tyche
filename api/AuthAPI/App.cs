@@ -21,6 +21,7 @@
 using MailSevice;
 using LoggerService;
 using PasswordHasherService;
+using CodeGeneratorService;
 
 namespace AuthAPI
 {
@@ -48,10 +49,10 @@ namespace AuthAPI
         /// Gets or sets connection string
         /// </summary>
         public static string ConnectionString { get; set; }
-
+        
         /// <summary>
-        /// Gets or sets secret
+        /// Gets or sets Code Generator
         /// </summary>
-        public static string Secret { get; set; }
+        public static CodeGenerator CodeGenerator { get; set; }
     }
 }

@@ -37,7 +37,7 @@ namespace AuthAPI
                     AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
                     ClientSecrets =
                     {
-                        new Secret(App.Secret.Sha256())
+                        new Secret(App.CodeGenerator.GenerateKey(256).Sha256())
                     },
                     AllowedScopes =
                     {
