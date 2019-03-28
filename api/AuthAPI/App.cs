@@ -1,6 +1,6 @@
 /**
  * GNU General Public License Version 3.0, 29 June 2007
- * Constants
+ * App
  * Copyright (C) <2019>
  *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
  *
@@ -18,21 +18,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
+using MailSevice;
+using LoggerService;
+using PasswordHasherService;
+
 namespace AuthAPI
 {
     /// <summary>
-    /// Static class for constants
+    /// Class for app
     /// </summary>
-    public static class Constants
+    public static class App
     {
-        public const string DbConnectHost               = "DbConnectHost";
-        public const string DbConnectPort               = "DbConnectPort";
-        public const string EmailUsername               = "EmailUsername";
-        public const string EmailPassword               = "EmailPassowrd";
-        public const string AuthAPI                     = "AuthAPI";
-        public const string LogPath                     = "LogPath";
-        public const string UserCreated                 = "UserCreated";
-        public const string InternalError               = "InternalError";
-        public const string VerificationCodeCreated     = "Verification code is created";
+        /// <summary>
+        /// Gets or sets Password hasher.
+        /// </summary>
+        public static PasswordHasher PasswordHasher { get; set; }
+
+        /// <summary>
+        /// Gets or sets mailer.
+        /// </summary>
+        public static Mailer Mailer { get; set; }
+
+        /// <summary>
+        /// Gets or sets logger
+        /// </summary>
+        public static Logger Logger { get; set; }
     }
 }

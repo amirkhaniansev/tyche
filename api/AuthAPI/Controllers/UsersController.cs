@@ -20,12 +20,9 @@
 
 
 using System;
-using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using DbConnectClient;
-using DbConnectClient.Models;
-using LoggerService;
+using TycheDAL.Models;
 
 namespace AuthAPI.Controllers
 {

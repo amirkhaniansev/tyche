@@ -21,10 +21,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using DbConnectClient;
-using DbConnectClient.Models;
-using LoggerService;
-using CodeGeneratorService;
+using TycheDAL.Models;
 
 namespace AuthAPI.Controllers
 {

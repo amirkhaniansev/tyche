@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
   </PropertyGroup>
 
@@ -16,6 +16,8 @@
     <ProjectReference Include="..\LoggerService\LoggerService.csproj" />
     <ProjectReference Include="..\MailService\MailService.csproj" />
     <ProjectReference Include="..\PasswordHasherService\PasswordHasherService.csproj" />
+    <ProjectReference Include="..\TycheBL\TycheBL.csproj" />
+    <ProjectReference Include="..\TycheDAL\TycheDAL.csproj" />
   </ItemGroup>
 
 </Project>

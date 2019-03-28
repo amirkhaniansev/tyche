@@ -24,10 +24,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using DbConnectClient;
 using MailSevice;
-using PasswordHasherService;
 using LoggerService;
+using PasswordHasherService;
+using AuthAPI.Constant;
 
 namespace AuthAPI
 {
