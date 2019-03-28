@@ -35,5 +35,9 @@ namespace AuthAPI.Constant
         public const string InternalError               = "InternalError";
         public const string VerificationCodeCreated     = "Verification code is created";
         public const string ConnectionString            = "ConnectionString";
+        public const string OfflineAccess               = "offline_access";
+        public const string DataAPI                     = "DataAPI";
+        public const string ClientId                    = "DefaultClient";
+        public const string Username                    = "Username";
     }
 }
