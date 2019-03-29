@@ -26,7 +26,7 @@ namespace PasswordHasherService
     /// <summary>
     /// Service for password hashing
     /// </summary>
-    public class PasswordHasher
+    public class PasswordHasher : IDisposable
     {
         /// <summary>
         /// Random number generation crypto service provide
@@ -55,18 +55,19 @@ namespace PasswordHasherService
             this._rng.GetBytes(salt);
 
             // creating password-based key derivation function 2
-            var pbkdf2 = new Rfc2898DeriveBytes(password, salt, 10000);
+            using (var pbkdf2 = new Rfc2898DeriveBytes(password, salt, 10000))
+            {
+                // getting bytes
+                var hash = pbkdf2.GetBytes(20);
+                
+                // hashing
+                var hashBytes = new byte[36];
+                Array.Copy(salt, 0, hashBytes, 0, 16);
+                Array.Copy(hash, 0, hashBytes, 16, 20);
 
-            // getting bytes
-            var hash = pbkdf2.GetBytes(20);
-
-            // hashing
-            var hashBytes = new byte[36];
-            Array.Copy(salt, 0, hashBytes, 0, 16);
-            Array.Copy(hash, 0, hashBytes, 16, 20);
-
-            // returning the hash of password
-            return Convert.ToBase64String(hashBytes);
+                // returning the hash of password
+                return Convert.ToBase64String(hashBytes);
+            }
         }
 
         /// <summary>
@@ -84,20 +85,30 @@ namespace PasswordHasherService
             var salt = new byte[16];
             Array.Copy(hashBytes, 0, salt, 0, 16);
 
-            // computing the hash on the password user entered with  password-based ket derivation function 2
-            var pbkdf2 = new Rfc2898DeriveBytes(password, salt, 10000);
-            var hash = pbkdf2.GetBytes(20);
-
-            // comparing hashes
-            for (int i = 0; i < 20; i++)
+            // computing the hash on the password user entered with  password-based key derivation function 2
+            using (var pbkdf2 = new Rfc2898DeriveBytes(password, salt, 10000))
             {
-                // return false if there is no-matching hash
-                if (hashBytes[i + 16] != hash[i])
-                    return false;
-            }
+                var hash = pbkdf2.GetBytes(20);
 
-            // otherwise return true
-            return true;
+                // comparing hashes
+                for (int i = 0; i < 20; i++)
+                {
+                    // return false if there is no-matching hash
+                    if (hashBytes[i + 16] != hash[i])
+                        return false;
+                }
+
+                // otherwise return true
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// Disposes password hasher
+        /// </summary>
+        public void Dispose()
+        {
+            this._rng.Dispose();
         }
     }
 }

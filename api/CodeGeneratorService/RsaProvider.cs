@@ -1,6 +1,6 @@
 /**
  * GNU General Public License Version 3.0, 29 June 2007
- * Response
+ * RsaProvider
  * Copyright (C) <2019>
  *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
  *
@@ -18,12 +18,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-namespace TycheApiUtilities
-{
-    public class Response
-    {
-        public int ResponseCode { get; set; }
+using System.Security.Cryptography;
+using Microsoft.IdentityModel.Tokens;
 
-        public object Content { get; set; }
+namespace CodeGeneratorService
+{
+    public static class RsaProvider
+    {
+        public static RsaSecurityKey GenerateSigningCredential()
+        {
+            using (var rsa = new RSACryptoServiceProvider(2048))
+            {
+                return new RsaSecurityKey(rsa.ExportParameters(true));
+            }
+        }
     }
 }

@@ -24,12 +24,15 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using IdentityServer4.Validation;
+using IdentityServer4.Services;
 using MailSevice;
 using LoggerService;
 using PasswordHasherService;
-using AuthAPI.Constant;
 using CodeGeneratorService;
-using TycheDAL;
+using AuthAPI.Constant;
+using AuthAPI.Authentication;
+using Microsoft.IdentityModel.Tokens;
 
 namespace AuthAPI
 {
@@ -49,7 +52,8 @@ namespace AuthAPI
         /// <param name="configuration">configurarion</param>
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            this.Configuration = configuration;
+            this.ConfigureApp();
         }
         
         /// <summary>
@@ -60,7 +64,41 @@ namespace AuthAPI
         {
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            
+
+            services.AddScoped<IUserRepository, UserRepository>();
+
+            services.AddIdentityServer()
+                .AddSigningCredential(RsaProvider.GenerateSigningCredential())
+                .AddInMemoryIdentityResources(Config.GetIdentityResources())
+                .AddInMemoryApiResources(Config.GetApiResources())
+                .AddInMemoryClients(Config.GetClients())
+                .AddProfileService<ProfileService>();
+
+            services.AddTransient<IResourceOwnerPasswordValidator, ResourceOwnerPasswordValidator>();
+            services.AddTransient<IProfileService, ProfileService>();            
+        }
+
+        /// <summary>
+        /// Configures API
+        /// </summary>
+        /// <param name="app">app</param>
+        /// <param name="env">environment</param>
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+
+            app.UseMvc();
+            app.UseIdentityServer();
+        }
+
+        /// <summary>
+        /// Configures app
+        /// </summary>
+        public void ConfigureApp()
+        {
             App.PasswordHasher = new PasswordHasher();
 
             App.Mailer = new Mailer(new NetworkCredential(
@@ -75,22 +113,6 @@ namespace AuthAPI
             App.CodeGenerator = new CodeGenerator();
 
             App.ConnectionString = Configuration[Constants.ConnectionString];
-
-            // DalConfig.IsTest = true;
-        }
-
-        /// <summary>
-        /// Configures API
-        /// </summary>
-        /// <param name="app">app</param>
-        /// <param name="env">environment</param>
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-        {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            app.UseMvc();
         }
     }
 }

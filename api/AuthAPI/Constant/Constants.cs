@@ -39,5 +39,11 @@ namespace AuthAPI.Constant
         public const string DataAPI                     = "DataAPI";
         public const string ClientId                    = "DefaultClient";
         public const string Username                    = "Username";
+        public const string InvalidPassword             = "Invalid Password";
+        public const string Custom                      = "custom";
+        public const string UserNotExist                = "User does not exist.";
+        public const string InvalidUsernameOrPassword   = "Invalid username or password";
+        public const string UserNotVerified             = "User is not verified.";
+        public const string AuthenticationSuccess       = "User is successfully authenticated";
     }
 }

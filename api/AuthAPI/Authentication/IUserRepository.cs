@@ -1,6 +1,6 @@
 /**
  * GNU General Public License Version 3.0, 29 June 2007
- * Response
+ * IUserRepository
  * Copyright (C) <2019>
  *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
  *
@@ -18,12 +18,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-namespace TycheApiUtilities
-{
-    public class Response
-    {
-        public int ResponseCode { get; set; }
+using System.Threading.Tasks;
+using TycheDAL.Models;
 
-        public object Content { get; set; }
+namespace AuthAPI.Authentication
+{
+    /// <summary>
+    /// Interface for users repository
+    /// </summary>
+    public interface IUserRepository
+    {
+        /// <summary>
+        /// Finds user by username.
+        /// </summary>
+        /// <param name="userName">Username.</param>
+        /// <returns>user.</returns>
+        Task<User> FindAsync(string username);
+
+        /// <summary>
+        /// Finds user by id.
+        /// </summary>
+        /// <param name="id">Id</param>
+        /// <returns>user</returns>
+        Task<User> FindAsync(int id);
     }
 }

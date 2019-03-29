@@ -29,7 +29,8 @@ CREATE TABLE [dbo].[Users]
 	[Email]				VARCHAR(100)	NOT NULL,
 	[ProfilePictureUrl] VARCHAR(MAX)	NULL,
 	[PasswordHash]		VARCHAR(MAX)	NOT NULL,
-	[IsVerified]	BIT				NOT NULL DEFAULT(0)
+	[IsVerified]		BIT				NOT NULL DEFAULT(0),
+	[IsActive]			BIT				NOT NULL DEFAULT(0)
 
 	CONSTRAINT	[PK_USER_ID]		PRIMARY KEY ([Id])
 )

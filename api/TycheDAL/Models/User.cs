@@ -57,6 +57,11 @@ namespace TycheDAL.Models
         public bool IsVerified { get; set; }
 
         /// <summary>
+        /// Gets or sets boolean value indicating user activity
+        /// </summary>
+        public bool IsActive { get; set; }
+
+        /// <summary>
         /// Gets or sets profile picture url
         /// </summary>
         public string ProfilePictureUrl { get; set; }
