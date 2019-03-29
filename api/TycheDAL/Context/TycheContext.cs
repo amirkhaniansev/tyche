@@ -48,7 +48,9 @@ namespace TycheDAL.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(this.connectionString);
+            if (DalConfig.IsTest)
+                optionsBuilder.UseInMemoryDatabase("TycheDB");
+            else optionsBuilder.UseSqlServer(this.connectionString);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

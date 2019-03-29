@@ -20,6 +20,7 @@
 
 using System;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Storage;
 using TycheDAL.Context;
 
 namespace TycheDAL.DataAccess
@@ -43,19 +44,26 @@ namespace TycheDAL.DataAccess
 
         public async Task<bool> SaveChanges()
         {
-            using (var transaction = await this.db.Database.BeginTransactionAsync())
+            var transaction = default(IDbContextTransaction);
+
+            try
             {
-                try
-                {
-                    await this.db.SaveChangesAsync();
-                    transaction.Commit();
-                    return true;
-                }
-                catch (Exception)
-                {
-                    transaction.Rollback();
-                    return false;
-                }
+                if (!DalConfig.IsTest)
+                    transaction = await this.db.Database.BeginTransactionAsync();
+
+                await this.db.SaveChangesAsync();
+
+                transaction?.Commit();
+                return true;
+            }
+            catch(Exception)
+            {
+                transaction?.Rollback();
+                return false;
+            }
+            finally
+            {
+                transaction?.Dispose();
             }
         }
 

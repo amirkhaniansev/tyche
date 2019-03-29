@@ -29,6 +29,7 @@ using LoggerService;
 using PasswordHasherService;
 using AuthAPI.Constant;
 using CodeGeneratorService;
+using TycheDAL;
 
 namespace AuthAPI
 {
@@ -74,6 +75,8 @@ namespace AuthAPI
             App.CodeGenerator = new CodeGenerator();
 
             App.ConnectionString = Configuration[Constants.ConnectionString];
+
+            // DalConfig.IsTest = true;
         }
 
         /// <summary>
