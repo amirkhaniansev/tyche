@@ -1,6 +1,6 @@
 /**
  * GNU General Public License Version 3.0, 29 June 2007
- * Tables
+ * BlockedUserConfiguration
  * Copyright (C) <2019>
  *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
  *
@@ -18,19 +18,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-namespace Tyche.TycheDAL.Constants
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Tyche.TycheDAL.Constants;
+using Tyche.TycheDAL.Models;
+
+namespace Tyche.TycheDAL.Configuration
 {
-    internal static class Tables
+    internal class BlockedUserConfiguration : IEntityTypeConfiguration<BlockedUser>
     {
-        public const string Users                   = "Users";
-        public const string BlockedUsers            = "BlockedUsers";
-        public const string Notifications           = "Notifications";
-        public const string BlockReasons            = "BlockReasons";
-        public const string ChatRooms               = "ChatRooms";
-        public const string ChatRoomMembers         = "ChatRoomMembers";
-        public const string Messages                = "Messages";
-        public const string NotificationAssignments = "NotificationAssignments";
-        public const string UserBlockedIPs          = "UserBlockedIPs";
-        public const string Verifications           = "Verifiacations";
+        public void Configure(EntityTypeBuilder<BlockedUser> builder)
+        {
+            builder.ToTable(Tables.BlockedUsers);
+
+            builder.HasKey(blockedUser => blockedUser.Id);
+        }
     }
 }

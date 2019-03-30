@@ -1,6 +1,6 @@
 /**
  * GNU General Public License Version 3.0, 29 June 2007
- * Tables
+ * BlockedUser
  * Copyright (C) <2019>
  *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
  *
@@ -18,19 +18,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-namespace Tyche.TycheDAL.Constants
+using System;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Tyche.TycheDAL.Models
 {
-    internal static class Tables
+    public class BlockedUser
     {
-        public const string Users                   = "Users";
-        public const string BlockedUsers            = "BlockedUsers";
-        public const string Notifications           = "Notifications";
-        public const string BlockReasons            = "BlockReasons";
-        public const string ChatRooms               = "ChatRooms";
-        public const string ChatRoomMembers         = "ChatRoomMembers";
-        public const string Messages                = "Messages";
-        public const string NotificationAssignments = "NotificationAssignments";
-        public const string UserBlockedIPs          = "UserBlockedIPs";
-        public const string Verifications           = "Verifiacations";
+        public int Id { get; set; }
+
+        public string Reason { get; set; }
+
+        public DateTime Date { get; set; }
+
+        public DateTime BlockExpires { get; set; }
+
+        [NotMapped]
+        public User UserInfo { get; set; }
     }
 }
