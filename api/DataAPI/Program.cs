@@ -21,7 +21,7 @@
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
-namespace DataAPI
+namespace Tyche.DataAPI
 {
     public class Program
     {

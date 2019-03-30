@@ -21,7 +21,7 @@
 using System;
 using System.Security.Cryptography;
 
-namespace PasswordHasherService
+namespace Tyche.PasswordHasherService
 {
     /// <summary>
     /// Service for password hashing

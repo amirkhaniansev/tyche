@@ -18,7 +18,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-namespace TycheDAL.Models
+namespace Tyche.TycheDAL.Models
 {
     /// <summary>
     /// Model for chatroom and members relationship

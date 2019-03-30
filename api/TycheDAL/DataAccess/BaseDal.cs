@@ -21,9 +21,9 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Storage;
-using TycheDAL.Context;
+using Tyche.TycheDAL.Context;
 
-namespace TycheDAL.DataAccess
+namespace Tyche.TycheDAL.DataAccess
 {
     public class BaseDal : IDisposable
     {

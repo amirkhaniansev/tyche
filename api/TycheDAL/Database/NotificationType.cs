@@ -18,7 +18,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-namespace TycheDAL.Database
+namespace Tyche.TycheDAL.Database
 {
     /// <summary>
     /// Enum for notification type

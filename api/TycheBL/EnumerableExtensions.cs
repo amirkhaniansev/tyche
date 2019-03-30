@@ -21,7 +21,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace TycheBL
+namespace Tyche.TycheBL
 {
     /// <summary>
     /// Extensions for enumerable

@@ -18,7 +18,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-namespace AuthAPI.Constant
+namespace Tyche.AuthAPI.Constant
 {
     /// <summary>
     /// Static class for constants

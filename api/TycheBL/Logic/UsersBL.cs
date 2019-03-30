@@ -23,13 +23,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using TycheDAL.DataAccess;
-using TycheDAL.Models;
-using TycheDAL.Constants;
-using TycheDAL.Database;
-using TycheBL.Constants;
+using Tyche.TycheDAL.DataAccess;
+using Tyche.TycheDAL.Models;
+using Tyche.TycheDAL.Constants;
+using Tyche.TycheDAL.Database;
+using Tyche.TycheBL.Constants;
 
-namespace TycheBL.Logic
+namespace Tyche.TycheBL.Logic
 {
     public class UsersBL : BaseBL<UsersDal>
     {

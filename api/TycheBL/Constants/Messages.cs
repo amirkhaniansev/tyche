@@ -20,7 +20,7 @@
 
 using System.Collections.Generic;
 
-namespace TycheBL.Constants
+namespace Tyche.TycheBL.Constants
 {
     /// <summary>
     /// Class for storing constant messages

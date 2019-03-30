@@ -19,10 +19,10 @@
 **/
 
 using System;
-using TycheDAL.DataAccess;
-using TycheBL.Constants;
+using Tyche.TycheDAL.DataAccess;
+using Tyche.TycheBL.Constants;
 
-namespace TycheBL.Logic
+namespace Tyche.TycheBL.Logic
 {
     public class BaseBL<TDal> : IDisposable
         where TDal : BaseDal

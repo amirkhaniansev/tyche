@@ -18,7 +18,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-namespace LoggerService
+namespace Tyche.LoggerService
 {
     /// <summary>
     /// Enum for log types

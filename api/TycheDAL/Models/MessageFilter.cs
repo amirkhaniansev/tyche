@@ -20,7 +20,7 @@
 
 using System;
 
-namespace TycheDAL.Models
+namespace Tyche.TycheDAL.Models
 {
     /// <summary>
     /// Model for filtering messages

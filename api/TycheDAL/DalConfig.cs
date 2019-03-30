@@ -18,7 +18,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-namespace TycheDAL
+namespace Tyche.TycheDAL
 {
     public static class DalConfig
     {

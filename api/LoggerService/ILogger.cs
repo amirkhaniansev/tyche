@@ -20,7 +20,7 @@
 
 using System;
 
-namespace LoggerService
+namespace Tyche.LoggerService
 {
     /// <summary>
     /// Interface for logger

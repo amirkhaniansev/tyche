@@ -18,7 +18,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-namespace TycheDAL.Constants
+namespace Tyche.TycheDAL.Constants
 {
     public static class Restrictions
     {

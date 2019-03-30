@@ -21,13 +21,13 @@
 using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using AuthAPI.Constant;
+using Tyche.AuthAPI.Constant;
 using IdentityModel;
 using IdentityServer4.Models;
 using IdentityServer4.Validation;
-using TycheDAL.Models;
+using Tyche.TycheDAL.Models;
 
-namespace AuthAPI.Authentication
+namespace Tyche.AuthAPI.Authentication
 {
     /// <summary>
     /// Resource owner password validator

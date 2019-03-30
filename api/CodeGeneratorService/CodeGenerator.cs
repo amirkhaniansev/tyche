@@ -21,7 +21,7 @@
 using System;
 using System.Security.Cryptography;
 
-namespace CodeGeneratorService
+namespace Tyche.CodeGeneratorService
 {
     /// <summary>
     /// Code generator

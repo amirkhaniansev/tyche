@@ -21,7 +21,7 @@
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
-namespace AuthAPI
+namespace Tyche.AuthAPI
 {
     /// <summary>
     /// Main class of Auth API

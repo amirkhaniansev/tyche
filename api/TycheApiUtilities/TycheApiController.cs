@@ -22,9 +22,9 @@ using System;
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using LoggerService;
+using Tyche.LoggerService;
 
-namespace TycheApiUtilities
+namespace Tyche.TycheApiUtilities
 {
     public class TycheApiController : ControllerBase
     {

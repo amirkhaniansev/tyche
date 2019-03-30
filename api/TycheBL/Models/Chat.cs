@@ -18,9 +18,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-using TycheDAL.Models;
+using Tyche.TycheDAL.Models;
 
-namespace TycheBL.Models
+namespace Tyche.TycheBL.Models
 {
     public class Chat : ChatRoom
     {

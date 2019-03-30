@@ -27,7 +27,7 @@ using System.Collections.Generic;
 using System.Collections.Concurrent;
 using System.Diagnostics;
 
-namespace LoggerService
+namespace Tyche.LoggerService
 {
     /// <summary>
     /// Class for logger that implements ILogger interface

@@ -23,9 +23,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using IdentityServer4.Models;
 using IdentityServer4.Services;
-using TycheDAL.Constants;
+using Tyche.TycheDAL.Constants;
 
-namespace AuthAPI.Authentication
+namespace Tyche.AuthAPI.Authentication
 {
     /// <summary>
     /// Profile serviice

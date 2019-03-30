@@ -23,13 +23,13 @@ using System;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using TycheApiUtilities;
-using TycheDAL.Models;
-using TycheBL.Logic;
-using TycheBL.Constants;
-using LoggerService;
+using Tyche.TycheApiUtilities;
+using Tyche.TycheDAL.Models;
+using Tyche.TycheBL.Logic;
+using Tyche.TycheBL.Constants;
+using Tyche.LoggerService;
 
-namespace AuthAPI.Controllers
+namespace Tyche.AuthAPI.Controllers
 {
     /// <summary>
     /// Controller for signing up API

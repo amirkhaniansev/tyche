@@ -22,7 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace TycheDAL.Models
+namespace Tyche.TycheDAL.Models
 {
     /// <summary>
     /// Model for describing chat creation

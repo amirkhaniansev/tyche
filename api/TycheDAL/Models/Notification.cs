@@ -21,9 +21,9 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using TycheDAL.Database;
+using Tyche.TycheDAL.Database;
 
-namespace TycheDAL.Models
+namespace Tyche.TycheDAL.Models
 {
     /// <summary>
     /// Model for notification

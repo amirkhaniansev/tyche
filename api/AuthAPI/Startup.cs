@@ -26,15 +26,14 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using IdentityServer4.Validation;
 using IdentityServer4.Services;
-using MailSevice;
-using LoggerService;
-using PasswordHasherService;
-using CodeGeneratorService;
-using AuthAPI.Constant;
-using AuthAPI.Authentication;
-using Microsoft.IdentityModel.Tokens;
+using Tyche.MailSevice;
+using Tyche.LoggerService;
+using Tyche.PasswordHasherService;
+using Tyche.CodeGeneratorService;
+using Tyche.AuthAPI.Constant;
+using Tyche.AuthAPI.Authentication;
 
-namespace AuthAPI
+namespace Tyche.AuthAPI
 {
     /// <summary>
     /// Class for startup of Authentication API

@@ -21,7 +21,7 @@
 using System.Net;
 using System.Net.Mail;
 
-namespace MailSevice
+namespace Tyche.MailSevice
 {
     /// <summary>
     /// Class for sending mails

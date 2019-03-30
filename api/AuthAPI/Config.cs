@@ -21,9 +21,9 @@
 using System.Collections.Generic;
 using IdentityServer4;
 using IdentityServer4.Models;
-using AuthAPI.Constant;
+using Tyche.AuthAPI.Constant;
 
-namespace AuthAPI
+namespace Tyche.AuthAPI
 {
     /// <summary>
     /// Class for configuration data.

@@ -19,9 +19,9 @@
 **/
 
 using System;
-using TycheBL.Constants;
+using Tyche.TycheBL.Constants;
 
-namespace TycheBL
+namespace Tyche.TycheBL
 {
     internal static class Helper
     {

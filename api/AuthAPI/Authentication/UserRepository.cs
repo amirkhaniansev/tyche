@@ -19,10 +19,10 @@
 **/
 
 using System.Threading.Tasks;
-using TycheBL.Logic;
-using TycheDAL.Models;
+using Tyche.TycheBL.Logic;
+using Tyche.TycheDAL.Models;
 
-namespace AuthAPI.Authentication
+namespace Tyche.AuthAPI.Authentication
 {
     public class UserRepository : IUserRepository
     {

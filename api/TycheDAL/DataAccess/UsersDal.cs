@@ -21,10 +21,10 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using TycheDAL.Context;
-using TycheDAL.Models;
+using Tyche.TycheDAL.Context;
+using Tyche.TycheDAL.Models;
 
-namespace TycheDAL.DataAccess
+namespace Tyche.TycheDAL.DataAccess
 {
     public class UsersDal : BaseDal
     {

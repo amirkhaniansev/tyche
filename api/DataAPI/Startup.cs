@@ -24,7 +24,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DataAPI
+namespace Tyche.DataAPI
 {
     public class Startup
     {

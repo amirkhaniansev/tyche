@@ -19,9 +19,9 @@
 **/
 
 using Microsoft.EntityFrameworkCore;
-using TycheDAL.Models;
+using Tyche.TycheDAL.Models;
 
-namespace TycheDAL.Context
+namespace Tyche.TycheDAL.Context
 {
     public class TycheContext : DbContext
     {

@@ -21,7 +21,7 @@
 using System.Security.Cryptography;
 using Microsoft.IdentityModel.Tokens;
 
-namespace CodeGeneratorService
+namespace Tyche.CodeGeneratorService
 {
     public static class RsaProvider
     {

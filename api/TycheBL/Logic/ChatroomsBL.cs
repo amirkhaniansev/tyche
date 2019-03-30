@@ -22,12 +22,12 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using TycheDAL.Models;
-using TycheDAL.DataAccess;
-using TycheBL.Models;
-using TycheBL.Constants;
+using Tyche.TycheDAL.Models;
+using Tyche.TycheDAL.DataAccess;
+using Tyche.TycheBL.Models;
+using Tyche.TycheBL.Constants;
 
-namespace TycheBL.Logic
+namespace Tyche.TycheBL.Logic
 {
     public class ChatroomsBL : BaseBL<ChatroomsDal>
     {

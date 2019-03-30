@@ -18,12 +18,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-using MailSevice;
-using LoggerService;
-using PasswordHasherService;
-using CodeGeneratorService;
+using Tyche.MailSevice;
+using Tyche.LoggerService;
+using Tyche.PasswordHasherService;
+using Tyche.CodeGeneratorService;
 
-namespace AuthAPI
+namespace Tyche.AuthAPI
 {
     /// <summary>
     /// Class for app

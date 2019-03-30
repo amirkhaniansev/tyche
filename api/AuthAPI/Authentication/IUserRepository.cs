@@ -19,9 +19,9 @@
 **/
 
 using System.Threading.Tasks;
-using TycheDAL.Models;
+using Tyche.TycheDAL.Models;
 
-namespace AuthAPI.Authentication
+namespace Tyche.AuthAPI.Authentication
 {
     /// <summary>
     /// Interface for users repository

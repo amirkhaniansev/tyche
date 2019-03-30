@@ -21,9 +21,9 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using TycheDAL.Models;
+using Tyche.TycheDAL.Models;
 
-namespace AuthAPI.Controllers
+namespace Tyche.AuthAPI.Controllers
 {
     /// <summary>
     /// Controller for verifications

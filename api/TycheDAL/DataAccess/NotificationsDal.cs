@@ -20,10 +20,10 @@
 
 using System.Linq;
 using System.Threading.Tasks;
-using TycheDAL.Models;
-using TycheDAL.Context;
+using Tyche.TycheDAL.Models;
+using Tyche.TycheDAL.Context;
 
-namespace TycheDAL.DataAccess
+namespace Tyche.TycheDAL.DataAccess
 {
     public class NotificationsDal : BaseDal
     {

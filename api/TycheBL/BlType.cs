@@ -19,7 +19,7 @@
 **/
 
 
-namespace TycheBL
+namespace Tyche.TycheBL
 {
     /// <summary>
     /// Enum for business logic type
