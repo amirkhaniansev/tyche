@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LoggerService\LoggerService.csproj" />
+    <ProjectReference Include="..\TycheBL\TycheBL.csproj" />
   </ItemGroup>
 
 </Project>

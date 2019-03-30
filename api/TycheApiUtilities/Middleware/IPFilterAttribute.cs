@@ -18,18 +18,73 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
+using System;
+using System.Linq;
+using System.Net;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Tyche.LoggerService;
+using Tyche.TycheBL.Constants;
 
 namespace Tyche.TycheApiUtilities.Middleware
 {
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
     public class IPFilterAttribute : ActionFilterAttribute
     {
-        public 
-
+        public bool IsPublic { get; set; }
+        
         public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
+            var controller = context.Controller as TycheApiController;
+            var code = HttpStatusCode.Forbidden;
 
+            try
+            {
+                var ipAddress = context.HttpContext.Connection.RemoteIpAddress;
+
+                var log = LogHelper.CreateLog(LogType.Fail, Messages.UserIPIsBlocked, null);
+
+                //if (this.IsPublic && this.blockedIPs.IsIPBlocked(ipAddress))
+                {
+                    var response = new Response
+                    {
+                        ResponseCode = (int)ResponseCode.BlockedIPAddress,
+                        Content = Messages.UserIPIsBlocked
+                    };
+
+                    context.Result = controller.ApiResponse(code, response, log);
+
+                    return;
+                }
+
+                var claimsIdentity = controller.User.Identity as ClaimsIdentity;
+                var userIdValue = claimsIdentity
+                    .Claims
+                    .First(claim => claim.Type == Constants.UserId)
+                    .Value;
+
+                var userId = int.Parse(userIdValue);
+
+//                if (this.blockedIPs.IsIPBlockedForUser(ipAddress, userId))
+                {
+                    var response = new Response
+                    {
+                        ResponseCode = (int)ResponseCode.BlockedIPAddress,
+                        Content = Messages.IPIsBlocked
+                    };
+
+                    context.Result = controller.ApiResponse(code, response, log);
+                }
+            }
+            catch (Exception ex)
+            {
+                context.Result = controller.ApiErrorResponse(ex.Message);
+            }
+            finally
+            {
+                await base.OnActionExecutionAsync(context, next);
+            }
         }
     }
 }

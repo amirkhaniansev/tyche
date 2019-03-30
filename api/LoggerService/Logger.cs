@@ -208,7 +208,7 @@ namespace Tyche.LoggerService
             if (string.IsNullOrEmpty(message))
                 return;
 
-            var logInfo = LogHelper.CreateLog(DateTime.Now, LogType.Fatal, message, null);
+            var logInfo = LogHelper.CreateLog(LogType.Fatal, message, null);
 
             this._logs.TryAdd(logInfo.Time, logInfo);
         }

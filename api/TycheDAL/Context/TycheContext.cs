@@ -42,6 +42,12 @@ namespace Tyche.TycheDAL.Context
         
         public DbSet<ChatRoomMember> ChatroomMembers { get; set; }
 
+        public DbSet<BlockedUser> BlockedUsers { get; set; }
+
+        public DbSet<BlockReason> BlockReasons { get; set; }
+
+        public DbSet<UserBlockedIP> UserBlockedIPs { get; set; }
+
         public TycheContext(string connectionString)
         {
             this.connectionString = connectionString;

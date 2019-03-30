@@ -84,6 +84,8 @@ namespace Tyche.TycheBL.Logic
             return await this.Dal.GetUserById(userId);
         }
 
+        public Dictionary<int, 
+
         public User GetUserByUsername(string username)
         {
             if (string.IsNullOrEmpty(username))

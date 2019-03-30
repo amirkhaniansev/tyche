@@ -35,11 +35,11 @@ namespace Tyche.LoggerService
         /// <param name="message">log message</param>
         /// <param name="exception">exception</param>
         /// <returns>log information</returns>
-        public static LogInfo CreateLog(DateTime? time, LogType logType, string message, Exception exception)
+        public static LogInfo CreateLog(LogType logType, string message, Exception exception)
         {
             return new LogInfo
             {
-                Time = time,
+                Time = DateTime.Now,
                 LogType = logType,
                 Message = message,
                 Exception = exception

@@ -64,5 +64,20 @@ namespace Tyche.TycheDAL.DataAccess
 
             return usersQuery.Where(u => u.Username.Contains(username));
         }
+
+        public IQueryable<BlockedUser> GetBlockedUsers()
+        {
+            return this.Db.BlockedUsers.AsQueryable();
+        }
+
+        public IQueryable<BlockReason> GetBlockReasons()
+        {
+            return this.Db.BlockReasons.AsQueryable();
+        }
+
+        public IQueryable<UserBlockedIP> GetUserBlockedIPs()
+        {
+            return this.Db.UserBlockedIPs.AsQueryable();
+        }
     }
 }

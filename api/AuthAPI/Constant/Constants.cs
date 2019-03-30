@@ -45,5 +45,6 @@ namespace Tyche.AuthAPI.Constant
         public const string InvalidUsernameOrPassword   = "Invalid username or password";
         public const string UserNotVerified             = "User is not verified.";
         public const string AuthenticationSuccess       = "User is successfully authenticated";
+        public const string UsersController             = "UsersController";
     }
 }

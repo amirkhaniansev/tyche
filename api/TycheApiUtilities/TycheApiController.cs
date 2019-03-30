@@ -23,6 +23,7 @@ using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Tyche.LoggerService;
+using Tyche.TycheBL.Constants;
 
 namespace Tyche.TycheApiUtilities
 {
@@ -48,7 +49,7 @@ namespace Tyche.TycheApiUtilities
             var response = new Response
             {
                 Content = Messages.InternalError,
-                ResponseCode = 500
+                ResponseCode = (int)ResponseCode.UnknownError
             };
 
             return this.ApiResponse(HttpStatusCode.InternalServerError, response, log);

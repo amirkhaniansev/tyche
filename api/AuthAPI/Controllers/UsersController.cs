@@ -24,10 +24,12 @@ using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Tyche.TycheApiUtilities;
+using Tyche.TycheApiUtilities.Middleware;
 using Tyche.TycheDAL.Models;
 using Tyche.TycheBL.Logic;
 using Tyche.TycheBL.Constants;
 using Tyche.LoggerService;
+using Tyche.AuthAPI.Constant;
 
 namespace Tyche.AuthAPI.Controllers
 {
@@ -35,8 +37,9 @@ namespace Tyche.AuthAPI.Controllers
     /// Controller for signing up API
     /// </summary>
     [ApiController]
-    [Route("api/users")]
-    [Produces("application/json")]
+    [Route(Routes.Users)]
+    [Produces(Production.Json)]
+    [IPFilter(IsPublic = true)]
     public class UsersController : TycheApiController
     {
         /// <summary>

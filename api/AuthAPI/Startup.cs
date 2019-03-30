@@ -32,6 +32,7 @@ using Tyche.PasswordHasherService;
 using Tyche.CodeGeneratorService;
 using Tyche.AuthAPI.Constant;
 using Tyche.AuthAPI.Authentication;
+using Tyche.TycheApiUtilities.Middleware;
 
 namespace Tyche.AuthAPI
 {
