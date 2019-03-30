@@ -19,6 +19,7 @@
 **/
 
 using Microsoft.EntityFrameworkCore;
+using Tyche.TycheDAL.Configuration;
 using Tyche.TycheDAL.Models;
 
 namespace Tyche.TycheDAL.Context
@@ -55,39 +56,15 @@ namespace Tyche.TycheDAL.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<ChatRoomMember>()
-                .HasKey(crm => new
-                {
-                    crm.ChatRoomId,
-                    crm.UserId
-                });
-
-            modelBuilder.Entity<NotificationAssignment>()
-                .HasKey(na => new
-                {
-                    na.NotificationId,
-                    na.UserId
-                });
-
-            modelBuilder.Entity<User>()
-                .Property(user => user.Id)
-                .ValueGeneratedOnAdd();
-
-            modelBuilder.Entity<Notification>()
-                .Property(notification => notification.Id)
-                .ValueGeneratedOnAdd();
-
-            modelBuilder.Entity<Message>()
-                .Property(message => message.Id)
-                .ValueGeneratedOnAdd();
-
-            modelBuilder.Entity<Verification>()
-                .Property(verification => verification.Id)
-                .ValueGeneratedOnAdd();
-
-            modelBuilder.Entity<ChatRoom>()
-                .Property(chatroom => chatroom.Id)
-                .ValueGeneratedOnAdd();
+            modelBuilder.ApplyConfiguration(new BlockReasonConfiguration())
+                .ApplyConfiguration(new ChatRoomConfiguration())
+                .ApplyConfiguration(new ChatRoomMemberConfiguration())
+                .ApplyConfiguration(new MessageConfiguration())
+                .ApplyConfiguration(new NotificationAssignmentConfiguration())
+                .ApplyConfiguration(new NotificationConfiguration())
+                .ApplyConfiguration(new UserBlockedIPConfiguration())
+                .ApplyConfiguration(new UserConfiguration())
+                .ApplyConfiguration(new VerificationConfiguration());
         }
     }
 }
