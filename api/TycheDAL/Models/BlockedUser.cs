@@ -27,11 +27,11 @@ namespace Tyche.TycheDAL.Models
     {
         public int Id { get; set; }
 
-        public string Reason { get; set; }
-
         public DateTime Date { get; set; }
 
         public DateTime BlockExpires { get; set; }
+
+        public int ReasonId { get; set; }
 
         [NotMapped]
         public User UserInfo { get; set; }

@@ -71,7 +71,8 @@ namespace Tyche.TycheDAL.Context
                 .ApplyConfiguration(new UserBlockedIPConfiguration())
                 .ApplyConfiguration(new UserConfiguration())
                 .ApplyConfiguration(new VerificationConfiguration())
-                .ApplyConfiguration(new BlockedUserConfiguration());
+                .ApplyConfiguration(new BlockedUserConfiguration())
+                .ApplyConfiguration(new BlockedIPConfiguration());
         }
     }
 }
