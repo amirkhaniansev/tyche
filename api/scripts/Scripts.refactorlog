@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Operations Version="1.0" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+  <Operation Name="Rename Refactor" Key="cd287906-f9fc-4a84-b9af-179e0e7190a9" ChangeDateTime="03/30/2019 15:07:03">
+    <Property Name="ElementName" Value="[dbo].[UserBlockedIPs].[Reason]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[UserBlockedIPs]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ReasonId" />
+  </Operation>
+</Operations>

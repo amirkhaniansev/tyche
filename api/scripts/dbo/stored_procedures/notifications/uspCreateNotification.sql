@@ -31,7 +31,8 @@ AS
 				INSERT INTO [Notifications] VALUES (
 					@type,
 					@info,
-					@chatRoomId)
+					@chatRoomId,
+					GETDATE())
 			COMMIT TRANSACTION CREATE_NOTIFICATION
 			RETURN SCOPE_IDENTITY()
 		END TRY

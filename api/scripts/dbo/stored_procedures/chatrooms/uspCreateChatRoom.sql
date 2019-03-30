@@ -22,16 +22,20 @@
 /***Type : NoReturnValue***/
 CREATE PROCEDURE [dbo].[uspCreateChatRoom]
 	@name			NVARCHAR(100),
+	@creatorId		INT,
 	@isGroup		BIT,
+	@isKeyFixed		BIT,
 	@pictureUrl		VARCHAR(MAX)
 AS
 	BEGIN
 		BEGIN TRY
 			BEGIN TRANSACTION CREATE_CHAT_ROOM
 				INSERT INTO [ChatRooms] VALUES (
+					@creatorId,
 					@name,
 					GETDATE(),
 					@isGroup,
+					@isKeyFixed,
 					@pictureUrl)
 			COMMIT TRANSACTION CREATE_CHAT_ROOM
 			RETURN SCOPE_IDENTITY()

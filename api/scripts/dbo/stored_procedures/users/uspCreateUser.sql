@@ -40,6 +40,7 @@ AS
 					@email,
 					@profilePictureUrl,
 					@passwordHash,
+					0,
 					0)
 			COMMIT TRANSACTION CREATE_USER
 			RETURN SCOPE_IDENTITY()

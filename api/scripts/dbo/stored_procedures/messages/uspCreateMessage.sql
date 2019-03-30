@@ -23,6 +23,7 @@
 CREATE PROCEDURE [dbo].[uspCreateMessage]
 	@from	INT,
 	@to		INT,
+	@header	NVARCHAR(MAX),
 	@text	NVARCHAR(4000)
 AS
 	BEGIN
@@ -33,6 +34,7 @@ AS
 				INSERT INTO [Messages] VALUES (
 					@from,
 					@to,
+					@header,
 					@text,
 					GETDATE()
 				)
