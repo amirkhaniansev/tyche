@@ -93,5 +93,6 @@
     <Build Include="dbo\tables\BlockedUsers.sql" />
     <Build Include="dbo\tables\UserBlockedIPs.sql" />
     <Build Include="dbo\tables\BlockReasons.sql" />
+    <Build Include="dbo\tables\BlockedIPs.sql" />
   </ItemGroup>
 </Project>
