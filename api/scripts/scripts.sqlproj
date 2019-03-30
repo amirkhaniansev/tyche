@@ -91,5 +91,7 @@
     <Build Include="dbo\stored_procedures\users\uspGetUsersByUsername.sql" />
     <Build Include="dbo\tables\NotificationAssignments.sql" />
     <Build Include="dbo\tables\BlockedUsers.sql" />
+    <Build Include="dbo\tables\UserBlockedIPs.sql" />
+    <Build Include="dbo\tables\BlockReasons.sql" />
   </ItemGroup>
 </Project>

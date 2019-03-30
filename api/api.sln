@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MailService", "MailService\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PasswordHasherService", "PasswordHasherService\PasswordHasherService.csproj", "{9DC01382-7FFC-40D2-8563-352DB287B8C2}"
 EndProject
-Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "scripts", "scripts\scripts.sqlproj", "{ADC9FF16-A171-4175-82F9-9DC762AF8129}"
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Scripts", "scripts\Scripts.sqlproj", "{ADC9FF16-A171-4175-82F9-9DC762AF8129}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TycheBL", "TycheBL\TycheBL.csproj", "{9CF94458-35C0-4148-A5E6-534A26E7F56B}"
 EndProject
