@@ -25,7 +25,7 @@ using Tyche.TycheDAL.Models;
 
 namespace Tyche.TycheDAL.Configuration
 {
-    internal class BlockReasonConfiguration : IEntityTypeConfiguration<BlockReason>s
+    internal class BlockReasonConfiguration : IEntityTypeConfiguration<BlockReason>
     {
         public void Configure(EntityTypeBuilder<BlockReason> builder)
         {

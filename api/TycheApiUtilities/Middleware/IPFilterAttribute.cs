@@ -18,12 +18,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Tyche.TycheApiUtilities.Middleware
 {
     public class IPFilterAttribute : ActionFilterAttribute
     {
+        public 
 
+        public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
+        {
+
+        }
     }
 }
