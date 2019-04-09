@@ -1,7 +1,8 @@
 ﻿namespace Tyche.AuthAPI.Constant
 {
-    public class Routes
+    public static class Routes
     {
-        public const string Users = "api/users";
+        public const string Users           = "api/users";
+        public const string Verifications   = "api/verifications";
     }
 }

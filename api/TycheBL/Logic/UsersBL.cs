@@ -111,6 +111,44 @@ namespace Tyche.TycheBL.Logic
             return await this.GetUsersPublicInfo(this.Dal.GetUsersByIds(userIds));
         }
 
+        public async Task<Verification> CreateVerificationForUser(Verification verification)
+        {
+            verification.ValidOffset = 30;
+            verification.Created = DateTime.Now;
+
+            var verificationsDal = new VerificationsDal(this.ConnectionString, this.Dal.Db);
+            
+            return await verificationsDal.CreateVerification(verification);
+        }
+
+        public Verification GetVerificationInfo(int userId, string code)
+        {
+            var verifiactionsDal = new VerificationsDal(this.ConnectionString, this.Dal.Db);
+
+            return verifiactionsDal
+                .GetVerificationsByUserId(userId)
+                .FirstOrDefault(v => v.Code == code);
+        }
+
+        public async Task<bool> VerifyUser(Verification verification, User user)
+        {
+            var verifiactionsDal = new VerificationsDal(this.ConnectionString, this.Dal.Db);
+
+            var deleted = await verifiactionsDal.DeleteVerification(verification);
+            if (!deleted)
+                return false;
+
+            user.IsVerified = true;
+            this.Dal.Db.Users.Update(user);
+
+            return await this.Dal.SaveChanges();
+        }
+
+        public bool UserExists(int userId)
+        {
+            return this.Dal.Exists(u => u.Id == userId);
+        }
+
         private async Task<List<User>> GetUsersPublicInfo(IQueryable<User> users)
         {
             var query = users.Select(u => new User

@@ -19,9 +19,14 @@
 **/
 
 using System;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Tyche.TycheDAL.Models;
+using Tyche.TycheBL.Logic;
+using Tyche.TycheBL.Constants;
+using Tyche.TycheApiUtilities;
+using Tyche.AuthAPI.Constant;
 
 namespace Tyche.AuthAPI.Controllers
 {
@@ -29,10 +34,18 @@ namespace Tyche.AuthAPI.Controllers
     /// Controller for verifications
     /// </summary>
     [ApiController]
-    [Route("api/verificatios")]
-    [Produces("application/json")]
-    public class VerificationsController : ControllerBase
+    [Route(Routes.Verifications)]
+    [Produces(Production.Json)]
+    public class VerificationsController : TycheApiController
     {
+        /// <summary>
+        /// Creates new instance of <see cref="VerificationsController"/>
+        /// </summary>
+        /// <param name="logger">logger</param>
+        public VerificationsController() : base(App.Logger)
+        {
+        }
+
         /// <summary>
         /// Posts new verification
         /// </summary>
@@ -41,7 +54,27 @@ namespace Tyche.AuthAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody]Verification verification)
         {
-            throw new NotImplementedException();
+            if (verification == null)
+                return this.ApiErrorResponse(Constants.VerifiactionIsNull);
+            
+            using (var usersBl = new UsersBL(App.ConnectionString))
+            {
+                var response = new Response();
+                var user = await usersBl.GetUserById(verification.UserId);
+                if (user == null)
+                    return this.ApiErrorResponse(HttpStatusCode.BadRequest, ResponseCode.UserNotExist);
+
+                verification.Code = App.CodeGenerator.GenerateKey(32);
+                var v = await usersBl.CreateVerificationForUser(verification);
+
+                if (v == null)
+                    return this.ApiErrorResponse(Messages.DbError);
+
+                if (!await App.Mailer.Send(user.Email, v.Code))
+                    return this.ApiErrorResponse(HttpStatusCode.Conflict, ResponseCode.UnableToSendMail);
+
+                return this.ApiSuccessResponse();
+            }
         }
 
         /// <summary>
@@ -51,7 +84,29 @@ namespace Tyche.AuthAPI.Controllers
         /// <returns>action result</returns>
         public async Task<IActionResult> Put([FromBody]Verification verification)
         {
-            throw new NotImplementedException();
+            if (verification == null)
+                return this.ApiErrorResponse(Constants.VerifiactionIsNull);
+
+            using (var usersBl = new UsersBL(App.ConnectionString))
+            {
+                var user = await usersBl.GetUserById(verification.UserId);
+                var response = new Response();
+                if (user == null)
+                    return this.ApiErrorResponse(HttpStatusCode.BadRequest, ResponseCode.UserNotExist);
+
+                if (user.IsVerified)
+                    return this.ApiErrorResponse(HttpStatusCode.AlreadyReported, ResponseCode.UserAlreadyVerified);
+               
+                var v = usersBl.GetVerificationInfo(verification.UserId, verification.Code);
+
+                if (v.Created.AddMinutes(v.ValidOffset) >= DateTime.Now)
+                    this.ApiErrorResponse(HttpStatusCode.NotAcceptable, ResponseCode.VerificationCodeExpired);
+
+                if (!await usersBl.VerifyUser(v, user))
+                    return this.ApiErrorResponse(HttpStatusCode.Conflict, ResponseCode.DbError);
+                
+                return this.ApiSuccessResponse();             
+            }
         }
     }
 }

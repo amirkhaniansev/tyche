@@ -26,13 +26,15 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using IdentityServer4.Validation;
 using IdentityServer4.Services;
+using IdentityServer4.Stores;
 using Tyche.MailSevice;
 using Tyche.LoggerService;
 using Tyche.PasswordHasherService;
 using Tyche.CodeGeneratorService;
 using Tyche.AuthAPI.Constant;
 using Tyche.AuthAPI.Authentication;
-using Tyche.TycheApiUtilities.Middleware;
+using Tyche.AuthAPI.ErrorHandling;
+using Tyche.AuthAPI.Storage;
 
 namespace Tyche.AuthAPI
 {
@@ -75,7 +77,10 @@ namespace Tyche.AuthAPI
                 .AddProfileService<ProfileService>();
 
             services.AddTransient<IResourceOwnerPasswordValidator, ResourceOwnerPasswordValidator>();
-            services.AddTransient<IProfileService, ProfileService>();            
+            services.AddTransient<IProfileService, ProfileService>();
+            services.AddTransient<IPersistedGrantStore, PersistedGrantStore>();
+            
+            TycheDAL.DalConfig.IsTest = true;
         }
 
         /// <summary>
@@ -85,11 +90,7 @@ namespace Tyche.AuthAPI
         /// <param name="env">environment</param>
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-
+            app.UseMiddleware<ExceptionMiddleware>();
             app.UseMvc();
             app.UseIdentityServer();
         }

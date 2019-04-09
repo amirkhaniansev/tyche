@@ -1,6 +1,6 @@
-/**
+﻿/**
  * GNU General Public License Version 3.0, 29 June 2007
- * IPFilterAttribute
+ * ExceptionMiddleware
  * Copyright (C) <2019>
  *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
  *
@@ -21,35 +21,43 @@
 using System;
 using System.Net;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc.Filters;
-using Tyche.LoggerService;
+using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
+using Tyche.AuthAPI.Constant;
+using Tyche.TycheApiUtilities;
+using Tyche.TycheBL.Constants;
 
-namespace Tyche.TycheApiUtilities.Middleware
+namespace Tyche.AuthAPI.ErrorHandling
 {
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
-    public class IPFilterAttribute : ActionFilterAttribute
+    public class ExceptionMiddleware
     {
-        public bool IsPublic { get; set; }
-        
-        public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
-        {
-            var controller = context.Controller as TycheApiController;
-            var code = HttpStatusCode.Forbidden;
+        private readonly RequestDelegate requestDelegate;
 
+        public ExceptionMiddleware(RequestDelegate requestDelegate)
+        {
+            this.requestDelegate = requestDelegate;
+        }
+
+        public async Task InvokeAsync(HttpContext httpContext)
+        {
             try
             {
-                var ipAddress = context.HttpContext.Connection.RemoteIpAddress;
-
-                var log = LogHelper.CreateLog(LogType.Fail, Messages.UserIPIsBlocked, null);
-                
+                await this.requestDelegate(httpContext);
             }
             catch (Exception ex)
             {
-                context.Result = controller.ApiErrorResponse(ex.Message);
-            }
-            finally
-            {
-                await base.OnActionExecutionAsync(context, next);
+                httpContext.Response.ContentType = Production.Json;
+                httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+
+                App.Logger.Log(ex.Message);
+
+                var response = new Response
+                {
+                    ResponseCode = ResponseCode.UnknownError,
+                    Content = Messages.UnknownError
+                };
+
+                await httpContext.Response.WriteAsync(JsonConvert.SerializeObject(response));
             }
         }
     }

@@ -18,8 +18,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
+using System;
 using System.Net;
 using System.Net.Mail;
+using System.Threading.Tasks;
 
 namespace Tyche.MailSevice
 {
@@ -62,20 +64,29 @@ namespace Tyche.MailSevice
         /// </summary>
         /// <param name="to">Mail address</param>
         /// <param name="verifyKey">Verifiaction key</param>
-        public void Send(string to, string verifyKey)
+        public async Task<bool> Send(string to, string verifyKey)
         {
-            // constructing message
-            var mail = new MailMessage
+            try
             {
-                From = new MailAddress("no-reply.tyche@gmail.com"),
-                Subject = "Tyche Mail Service",
-                Body = verifyKey  
-            };
+                // constructing message
+                var mail = new MailMessage
+                {
+                    From = new MailAddress("no-reply.tyche@gmail.com"),
+                    Subject = "Tyche Mail Service",
+                    Body = verifyKey
+                };
 
-            mail.To.Add(to);
+                mail.To.Add(to);
 
-            // sending message
-            this._smtpClient.Send(mail);
+                // sending message
+                await this._smtpClient.SendMailAsync(mail);
+
+                return true;
+            }
+            catch(Exception ex)
+            {
+                return false;
+            }
         }
     }
 }

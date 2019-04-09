@@ -22,7 +22,6 @@ using Tyche.MailSevice;
 using Tyche.LoggerService;
 using Tyche.PasswordHasherService;
 using Tyche.CodeGeneratorService;
-using Tyche.TycheApiUtilities.Middleware;
 
 namespace Tyche.AuthAPI
 {

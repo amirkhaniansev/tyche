@@ -24,7 +24,6 @@ using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Tyche.TycheApiUtilities;
-using Tyche.TycheApiUtilities.Middleware;
 using Tyche.TycheDAL.Models;
 using Tyche.TycheBL.Logic;
 using Tyche.TycheBL.Constants;
@@ -39,7 +38,6 @@ namespace Tyche.AuthAPI.Controllers
     [ApiController]
     [Route(Routes.Users)]
     [Produces(Production.Json)]
-    [IPFilter(IsPublic = true)]
     public class UsersController : TycheApiController
     {
         /// <summary>
@@ -54,49 +52,43 @@ namespace Tyche.AuthAPI.Controllers
         /// </summary>
         /// <param name="user">user</param>
         /// <returns>action result</returns>
+        [HttpPost]
         public async Task<IActionResult> Post([FromBody]User user)
         {
-            try
+            using (var usersBl = new UsersBL(App.ConnectionString))
             {
-                using (var usersBl = new UsersBL(App.ConnectionString))
+                user.PasswordHash = App.PasswordHasher.HashPassword(user.PasswordHash);
+
+                var result = await usersBl.CreateUser(user);
+
+                var response = new Response();
+                var logInfo = new LogInfo
                 {
-                    user.PasswordHash = App.PasswordHasher.HashPassword(user.PasswordHash);
+                    Time = DateTime.Now
+                };
 
-                    var result = await usersBl.CreateUser(user);
+                if (result.ResponseCode != ResponseCode.Success)
+                {
+                    response.ResponseCode = result.ResponseCode;
+                    response.Content = Messages.Message(result.ResponseCode);
 
-                    var response = new Response();
-                    var logInfo = new LogInfo
-                    {
-                        Time = DateTime.Now
-                    };
+                    logInfo.LogType = LogType.Fail;
+                    logInfo.Message = result.Exception?.Message;
 
-                    if (result.ResponseCode != ResponseCode.Success)
-                    {
-                        response.ResponseCode = (int)result.ResponseCode;
-                        response.Content = Messages.Message(result.ResponseCode);
-
-                        logInfo.LogType = LogType.Fail;
-                        logInfo.Message = result.Exception?.Message;
-
-                        return this.ApiResponse(HttpStatusCode.BadRequest, response, logInfo);
-                    }
-
-                    var u = result.Content;
-                    response.ResponseCode = 0;
-                    response.Content = new
-                    {
-                        u.Id,
-                        u.FirstName,
-                        u.LastName,
-                        u.Username 
-                    };
-
-                    return this.ApiResponse(HttpStatusCode.OK, response);
+                    return this.ApiResponse(HttpStatusCode.BadRequest, response, logInfo);
                 }
-            }
-            catch (Exception ex)
-            {
-                return this.ApiErrorResponse(ex.Message);
+
+                var u = result.Content;
+                response.ResponseCode = 0;
+                response.Content = new
+                {
+                    u.Id,
+                    u.FirstName,
+                    u.LastName,
+                    u.Username
+                };
+
+                return this.ApiResponse(HttpStatusCode.OK, response);
             }
         }
     }

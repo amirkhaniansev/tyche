@@ -15,4 +15,14 @@
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CodeGeneratorService\CodeGeneratorService.csproj" />
+    <ProjectReference Include="..\LoggerService\LoggerService.csproj" />
+    <ProjectReference Include="..\MailService\MailService.csproj" />
+    <ProjectReference Include="..\PasswordHasherService\PasswordHasherService.csproj" />
+    <ProjectReference Include="..\TycheApiUtilities\TycheApiUtilities.csproj" />
+    <ProjectReference Include="..\TycheBL\TycheBL.csproj" />
+    <ProjectReference Include="..\TycheDAL\TycheDAL.csproj" />
+  </ItemGroup>
+
 </Project>

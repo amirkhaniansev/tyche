@@ -15,4 +15,8 @@
     <ProjectReference Include="..\TycheBL\TycheBL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Blocked\" />
+  </ItemGroup>
+
 </Project>

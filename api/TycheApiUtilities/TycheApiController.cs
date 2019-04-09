@@ -24,6 +24,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Tyche.LoggerService;
 using Tyche.TycheBL.Constants;
+using LogicMessage = Tyche.TycheBL.Constants.Messages;
 
 namespace Tyche.TycheApiUtilities
 {
@@ -34,6 +35,18 @@ namespace Tyche.TycheApiUtilities
         public TycheApiController(Logger logger)
         {
             this.logger = logger;
+        }
+
+        [NonAction]
+        public ObjectResult ApiSuccessResponse(string message = Messages.Success)
+        {
+            var response = new Response
+            {
+                ResponseCode = ResponseCode.Success,
+                Content =  message
+            };
+
+            return this.ApiResponse(HttpStatusCode.OK, response);
         }
 
         [NonAction]
@@ -49,10 +62,22 @@ namespace Tyche.TycheApiUtilities
             var response = new Response
             {
                 Content = Messages.InternalError,
-                ResponseCode = (int)ResponseCode.UnknownError
+                ResponseCode = ResponseCode.UnknownError
             };
 
             return this.ApiResponse(HttpStatusCode.InternalServerError, response, log);
+        }
+
+        [NonAction]
+        public ObjectResult ApiErrorResponse(HttpStatusCode httpStatusCode, ResponseCode responseCode, LogInfo logInfo = null)
+        {
+            var response = new Response
+            {
+                ResponseCode = responseCode,
+                Content = LogicMessage.Message(responseCode)
+            };
+
+            return this.ApiResponse(httpStatusCode, response, logInfo);
         }
 
         [NonAction]

@@ -46,5 +46,6 @@ namespace Tyche.AuthAPI.Constant
         public const string UserNotVerified             = "User is not verified.";
         public const string AuthenticationSuccess       = "User is successfully authenticated";
         public const string UsersController             = "UsersController";
+        public const string VerifiactionIsNull          = "Verifications is null";
     }
 }

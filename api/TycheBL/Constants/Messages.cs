@@ -44,7 +44,8 @@ namespace Tyche.TycheBL.Constants
         public const string ChatroomExists              = "Chatroom already exists.";
         public const string MemberIsAlreadyInChatroom   = "Member is already in chatroom.";
         public const string NewMemberIsAddedToChatroom  = "New member is added to chatroom.";
-        public const string NotificationCreationError   = "Unable to creat notification";
+        public const string NotificationCreationError   = "Unable to create notification";
+        public const string UnableToSendMail            = "Unable to send e-mail";
 
         private static Dictionary<ResponseCode, string> messages;
 
@@ -65,7 +66,8 @@ namespace Tyche.TycheBL.Constants
                 [ResponseCode.ChatroomNotExist]             = ChatroomNotExist,
                 [ResponseCode.ChatroomExists]               = ChatroomExists,
                 [ResponseCode.MemberIsAlreadyInChatroom]    = MemberIsAlreadyInChatroom,
-                [ResponseCode.NotificationCreationError]    = NotificationCreationError
+                [ResponseCode.NotificationCreationError]    = NotificationCreationError,
+                [ResponseCode.UnableToSendMail]             = UnableToSendMail
             };
         }
 

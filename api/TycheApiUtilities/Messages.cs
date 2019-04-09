@@ -24,6 +24,7 @@ namespace Tyche.TycheApiUtilities
     {
         internal const string InternalError     = "Internal server error.";
         internal const string UserIPIsBlocked   = "User IP address is blocked.";
-        internal const string IPIsBlocked       = "IP is blocked";
+        internal const string IPIsBlocked       = "IP is blocked.";
+        internal const string Success           = "Operation is successfully done.";
     }
 }

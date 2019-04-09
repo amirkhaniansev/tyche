@@ -39,6 +39,7 @@ namespace Tyche.TycheBL.Constants
         ChatroomExists              = 0xB,
         MemberIsAlreadyInChatroom   = 0xC,
         NotificationCreationError   = 0xD,
-        BlockedIPAddress            = 0xE
+        BlockedIPAddress            = 0xE,
+        UnableToSendMail            = 0xF
     } 
 }
