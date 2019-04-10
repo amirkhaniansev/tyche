@@ -11,7 +11,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CodeGeneratorService\CodeGeneratorService.csproj" />
     <ProjectReference Include="..\LoggerService\LoggerService.csproj" />
+    <ProjectReference Include="..\MailService\MailService.csproj" />
+    <ProjectReference Include="..\PasswordHasherService\PasswordHasherService.csproj" />
     <ProjectReference Include="..\TycheBL\TycheBL.csproj" />
   </ItemGroup>
 

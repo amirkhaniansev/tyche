@@ -1,6 +1,6 @@
 /**
  * GNU General Public License Version 3.0, 29 June 2007
- * ValuesController
+ * GrantsDal
  * Copyright (C) <2019>
  *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
  *
@@ -19,47 +19,39 @@
 **/
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+using Tyche.TycheDAL.Context;
+using Tyche.TycheDAL.Models;
 
-namespace DataAPI.Controllers
+namespace Tyche.TycheDAL.DataAccess
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class ValuesController : ControllerBase
+    public class GrantsDal : BaseDal
     {
-        // GET api/values
-        [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/values
-        [HttpPost]
-        public void Post([FromBody] string value)
+        public GrantsDal(string connectionString, TycheContext context = null)
+            : base(connectionString, context)
         {
         }
 
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async Task<Grant> CreateGrant(Grant grant, bool saveAfterAdding = true)
         {
+            return await this.AddEntity(grant, saveAfterAdding);
         }
 
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IQueryable<Grant> GetGrants()
         {
+            return this.Db.Grants.AsQueryable();
+        }
+
+        public async Task<bool> RemoveGrants(Predicate<Grant> filter)
+        {
+            var deletedGrants = this
+                .GetGrants()
+                .Where(grant => filter.Invoke(grant));
+
+            this.Db.Grants.RemoveRange(deletedGrants);
+
+            return await this.SaveChanges();
         }
     }
 }

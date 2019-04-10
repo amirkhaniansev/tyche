@@ -48,6 +48,8 @@ namespace Tyche.TycheDAL.Context
 
         public DbSet<UserBlockedIP> UserBlockedIPs { get; set; }
 
+        public DbSet<Grant> Grants { get; set; }
+
         public TycheContext(string connectionString)
         {
             this.connectionString = connectionString;

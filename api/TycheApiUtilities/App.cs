@@ -23,7 +23,7 @@ using Tyche.LoggerService;
 using Tyche.PasswordHasherService;
 using Tyche.CodeGeneratorService;
 
-namespace Tyche.AuthAPI
+namespace Tyche.TycheApiUtilities
 {
     /// <summary>
     /// Class for app

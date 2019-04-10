@@ -25,7 +25,6 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Tyche.TycheDAL.DataAccess;
 using Tyche.TycheDAL.Models;
-using Tyche.TycheDAL.Constants;
 using Tyche.TycheDAL.Database;
 using Tyche.TycheBL.Constants;
 
@@ -42,6 +41,8 @@ namespace Tyche.TycheBL.Logic
         {
             if (user == null)
                 throw new ArgumentNullException(BlConstants.UserIsNull);
+
+            user.IsVerified = false;
 
             var predicate = new Predicate<User>(u => u.Username == user.Username || u.Email == user.Email);
             if (this.Dal.Exists(predicate))
@@ -78,9 +79,6 @@ namespace Tyche.TycheBL.Logic
 
         public async Task<User> GetUserById(int userId)
         {
-            if (userId < Restrictions.Id)
-                throw new ArgumentException(BlConstants.InvalidID);
-
             return await this.Dal.GetUserById(userId);
         }
 

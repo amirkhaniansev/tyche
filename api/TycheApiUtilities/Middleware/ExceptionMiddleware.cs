@@ -23,11 +23,9 @@ using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
-using Tyche.AuthAPI.Constant;
-using Tyche.TycheApiUtilities;
 using Tyche.TycheBL.Constants;
 
-namespace Tyche.AuthAPI.ErrorHandling
+namespace Tyche.TycheApiUtilities.Middleware
 {
     public class ExceptionMiddleware
     {
@@ -46,7 +44,7 @@ namespace Tyche.AuthAPI.ErrorHandling
             }
             catch (Exception ex)
             {
-                httpContext.Response.ContentType = Production.Json;
+                httpContext.Response.ContentType = Constants.Json;
                 httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
                 App.Logger.Log(ex.Message);
@@ -54,7 +52,7 @@ namespace Tyche.AuthAPI.ErrorHandling
                 var response = new Response
                 {
                     ResponseCode = ResponseCode.UnknownError,
-                    Content = Messages.UnknownError
+                    Content = Constants.Error
                 };
 
                 await httpContext.Response.WriteAsync(JsonConvert.SerializeObject(response));

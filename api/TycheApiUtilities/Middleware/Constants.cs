@@ -24,5 +24,6 @@ namespace Tyche.TycheApiUtilities.Middleware
     {
         internal const string UserId    = "user_id";
         internal const string Json      = "application/json";
+        internal const string Error     = "Error occured.";
     }
 }

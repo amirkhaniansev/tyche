@@ -21,6 +21,7 @@
 using System.Threading.Tasks;
 using Tyche.TycheBL.Logic;
 using Tyche.TycheDAL.Models;
+using Tyche.TycheApiUtilities;
 
 namespace Tyche.AuthAPI.Authentication
 {

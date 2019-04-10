@@ -31,9 +31,10 @@ using Tyche.MailSevice;
 using Tyche.LoggerService;
 using Tyche.PasswordHasherService;
 using Tyche.CodeGeneratorService;
+using Tyche.TycheApiUtilities;
+using Tyche.TycheApiUtilities.Middleware;
 using Tyche.AuthAPI.Constant;
 using Tyche.AuthAPI.Authentication;
-using Tyche.AuthAPI.ErrorHandling;
 using Tyche.AuthAPI.Storage;
 
 namespace Tyche.AuthAPI
@@ -108,7 +109,7 @@ namespace Tyche.AuthAPI
 
             App.Logger = new Logger(
                 Constants.AuthAPI,
-                Constants.LogPath,
+                Configuration[Constants.LogPath],
                 60);
 
             App.CodeGenerator = new CodeGenerator();
