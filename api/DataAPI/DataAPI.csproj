@@ -1,28 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
-    <RootNamespace>Tyche.DataAPI</RootNamespace>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-    <Folder Include="wwwroot\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\CodeGeneratorService\CodeGeneratorService.csproj" />
-    <ProjectReference Include="..\LoggerService\LoggerService.csproj" />
-    <ProjectReference Include="..\MailService\MailService.csproj" />
-    <ProjectReference Include="..\PasswordHasherService\PasswordHasherService.csproj" />
-    <ProjectReference Include="..\TycheApiUtilities\TycheApiUtilities.csproj" />
-    <ProjectReference Include="..\TycheBL\TycheBL.csproj" />
-    <ProjectReference Include="..\TycheDAL\TycheDAL.csproj" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
   </ItemGroup>
 
 </Project>

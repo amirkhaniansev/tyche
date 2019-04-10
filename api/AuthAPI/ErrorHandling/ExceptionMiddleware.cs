@@ -1,4 +1,4 @@
-﻿/**
+/**
  * GNU General Public License Version 3.0, 29 June 2007
  * ExceptionMiddleware
  * Copyright (C) <2019>

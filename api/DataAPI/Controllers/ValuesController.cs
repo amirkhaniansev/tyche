@@ -1,6 +1,6 @@
 /**
  * GNU General Public License Version 3.0, 29 June 2007
- * PersistedGrantStore
+ * ValuesController
  * Copyright (C) <2019>
  *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
  *
@@ -20,42 +20,46 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-using IdentityServer4.Models;
-using IdentityServer4.Stores;
+using Microsoft.AspNetCore.Mvc;
 
-namespace Tyche.AuthAPI.Storage
+namespace DataAPI.Controllers
 {
-    public class PersistedGrantStore : IPersistedGrantStore
+    [Route("api/[controller]")]
+    [ApiController]
+    public class ValuesController : ControllerBase
     {
-        public Task<IEnumerable<PersistedGrant>> GetAllAsync(string subjectId)
+        // GET api/values
+        [HttpGet]
+        public ActionResult<IEnumerable<string>> Get()
         {
-            throw new NotImplementedException();
+            return new string[] { "value1", "value2" };
         }
 
-        public Task<PersistedGrant> GetAsync(string key)
+        // GET api/values/5
+        [HttpGet("{id}")]
+        public ActionResult<string> Get(int id)
         {
-            throw new NotImplementedException();
+            return "value";
         }
 
-        public Task RemoveAllAsync(string subjectId, string clientId)
+        // POST api/values
+        [HttpPost]
+        public void Post([FromBody] string value)
         {
-            throw new NotImplementedException();
         }
 
-        public Task RemoveAllAsync(string subjectId, string clientId, string type)
+        // PUT api/values/5
+        [HttpPut("{id}")]
+        public void Put(int id, [FromBody] string value)
         {
-            throw new NotImplementedException();
         }
 
-        public Task RemoveAsync(string key)
+        // DELETE api/values/5
+        [HttpDelete("{id}")]
+        public void Delete(int id)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task StoreAsync(PersistedGrant grant)
-        {
-            throw new NotImplementedException();
         }
     }
 }

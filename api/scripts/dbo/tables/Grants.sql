@@ -1,8 +1,9 @@
 /**
  * GNU General Public License Version 3.0, 29 June 2007
- * BlockedIPConfiguration
+ * Grant
  * Copyright (C) <2019>
  *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
+ *               <DavidPetr>       <david.petrosyan11100@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,20 +19,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Tyche.TycheDAL.Constants;
-using Tyche.TycheDAL.Models;
+CREATE TABLE [dbo].[Grants]
+(
+	[Id]				BIGINT			NOT NULL	IDENTITY(1,1),
+	[Key]				VARCHAR(4000)	NULL,
+	[Type]				VARCHAR(4000)	NULL,
+	[SubjectId]			VARCHAR(4000)	NULL,
+	[ClientId]			VARCHAR(4000)	NULL,
+	[CreationTime]		DATETIME		NOT NULL,
+	[ExpirationTime]	DATETIME		NULL,
+	[Data]				VARCHAR(4000)	NULL
 
-namespace Tyche.TycheDAL.Configuration
-{
-    internal class BlockedIPConfiguration : IEntityTypeConfiguration<BlockedIP>
-    {
-        public void Configure(EntityTypeBuilder<BlockedIP> builder)
-        {
-            builder.ToTable(Tables.BlockedIPs);
-
-            builder.HasKey(blockedIp => blockedIp.Id);
-        }
-    }
-}
+	CONSTRAINT [PK_GRANT]	PRIMARY KEY ([Id])
+)

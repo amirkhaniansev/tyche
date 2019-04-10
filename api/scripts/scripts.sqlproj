@@ -94,6 +94,7 @@
     <Build Include="dbo\tables\UserBlockedIPs.sql" />
     <Build Include="dbo\tables\BlockReasons.sql" />
     <Build Include="dbo\tables\BlockedIPs.sql" />
+    <Build Include="dbo\tables\Grants.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Scripts.refactorlog" />

@@ -1,6 +1,6 @@
 /**
  * GNU General Public License Version 3.0, 29 June 2007
- * BlockedIPConfiguration
+ * GrantConfiguration
  * Copyright (C) <2019>
  *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
  *
@@ -25,13 +25,13 @@ using Tyche.TycheDAL.Models;
 
 namespace Tyche.TycheDAL.Configuration
 {
-    internal class BlockedIPConfiguration : IEntityTypeConfiguration<BlockedIP>
+    internal class GrantConfiguration : IEntityTypeConfiguration<Grant>
     {
-        public void Configure(EntityTypeBuilder<BlockedIP> builder)
+        public void Configure(EntityTypeBuilder<Grant> builder)
         {
-            builder.ToTable(Tables.BlockedIPs);
+            builder.ToTable(Tables.Grants);
 
-            builder.HasKey(blockedIp => blockedIp.Id);
+            builder.HasKey(grant => grant.Id);
         }
     }
 }

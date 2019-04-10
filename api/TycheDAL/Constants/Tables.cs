@@ -33,5 +33,6 @@ namespace Tyche.TycheDAL.Constants
         public const string UserBlockedIPs          = "UserBlockedIPs";
         public const string Verifications           = "Verifiacations";
         public const string BlockedIPs              = "BlockedIPs";
+        public const string Grants                  = "Grants";
     }
 }

@@ -1,6 +1,6 @@
 /**
  * GNU General Public License Version 3.0, 29 June 2007
- * BlockedIPConfiguration
+ * Grant
  * Copyright (C) <2019>
  *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
  *
@@ -18,20 +18,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Tyche.TycheDAL.Constants;
-using Tyche.TycheDAL.Models;
+using System;
 
-namespace Tyche.TycheDAL.Configuration
+namespace Tyche.TycheDAL.Models
 {
-    internal class BlockedIPConfiguration : IEntityTypeConfiguration<BlockedIP>
+    public class Grant
     {
-        public void Configure(EntityTypeBuilder<BlockedIP> builder)
-        {
-            builder.ToTable(Tables.BlockedIPs);
+        public int Id { get; set; }
+        
+        public string Key { get; set; }
 
-            builder.HasKey(blockedIp => blockedIp.Id);
-        }
+        public string Type { get; set; }
+
+        public string SubjectId { get; set; }
+
+        public string ClientId { get; set; }
+
+        public DateTime CreationTime { get; set; }
+
+        public DateTime? Expiration { get; set; }
+
+        public string Data { get; set; }
     }
 }
