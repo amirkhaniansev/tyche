@@ -64,7 +64,7 @@ namespace Tyche.AuthAPI.Controllers
                 if (user == null)
                     return this.ApiErrorResponse(HttpStatusCode.BadRequest, ResponseCode.UserNotExist);
 
-                verification.Code = App.CodeGenerator.GenerateKey(32);
+                verification.Code = App.CodeGenerator.GenerateKey(24);
                 var v = await usersBl.CreateVerificationForUser(verification);
 
                 if (v == null)

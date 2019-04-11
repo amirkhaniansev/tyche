@@ -79,9 +79,7 @@ namespace Tyche.AuthAPI
 
             services.AddTransient<IResourceOwnerPasswordValidator, ResourceOwnerPasswordValidator>();
             services.AddTransient<IProfileService, ProfileService>();
-            services.AddTransient<IPersistedGrantStore, PersistedGrantStore>();
-            
-            TycheDAL.DalConfig.IsTest = true;
+            services.AddTransient<IPersistedGrantStore, PersistedGrantStore>();            
         }
 
         /// <summary>

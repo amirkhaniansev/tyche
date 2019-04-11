@@ -56,7 +56,7 @@ namespace Tyche.TycheDAL.DataAccess
                 transaction?.Commit();
                 return true;
             }
-            catch(Exception)
+            catch(Exception ex)
             {
                 transaction?.Rollback();
                 return false;
