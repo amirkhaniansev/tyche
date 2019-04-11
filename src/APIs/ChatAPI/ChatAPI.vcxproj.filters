@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="include">
+      <UniqueIdentifier>{f94e8434-3a34-4365-8d97-fd3de0aed9ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="containers">
+      <UniqueIdentifier>{00df6d34-9164-424f-bd0f-3ee09197838d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="containers\include">
+      <UniqueIdentifier>{8b6191b0-880e-4099-ae7b-a26c5d4a9527}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="containers\internal">
+      <UniqueIdentifier>{487ac781-e24a-4e00-9d23-b05d3a197b39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="containers\src">
+      <UniqueIdentifier>{00e37c30-6cae-4bf3-baf5-c212b97aec1b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="containers\src\concurrent">
+      <UniqueIdentifier>{27b329a7-c0c5-41c9-ae98-46496cde9766}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="containers\src\dictionary">
+      <UniqueIdentifier>{3fca2488-d494-4a5a-b819-6183c8dce99f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{d8efd68a-ed88-4b8a-8faa-6a0a84801e71}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.c" />
+    <ClCompile Include="containers\src\container_helpers.c">
+      <Filter>containers\src</Filter>
+    </ClCompile>
+    <ClCompile Include="containers\src\list.c">
+      <Filter>containers\src</Filter>
+    </ClCompile>
+    <ClCompile Include="containers\src\queue.c">
+      <Filter>containers\src</Filter>
+    </ClCompile>
+    <ClCompile Include="containers\src\rb_tree.c">
+      <Filter>containers\src</Filter>
+    </ClCompile>
+    <ClCompile Include="containers\src\stack.c">
+      <Filter>containers\src</Filter>
+    </ClCompile>
+    <ClCompile Include="containers\src\vector.c">
+      <Filter>containers\src</Filter>
+    </ClCompile>
+    <ClCompile Include="containers\src\concurrent\concurrent_dictionary.c">
+      <Filter>containers\src\concurrent</Filter>
+    </ClCompile>
+    <ClCompile Include="containers\src\concurrent\concurrent_queue.c">
+      <Filter>containers\src\concurrent</Filter>
+    </ClCompile>
+    <ClCompile Include="containers\src\dictionary\dictionary.c">
+      <Filter>containers\src\dictionary</Filter>
+    </ClCompile>
+    <ClCompile Include="src\string_t.c">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="containers\include\concurrent_queue.h">
+      <Filter>containers\include</Filter>
+    </ClInclude>
+    <ClInclude Include="containers\include\container_helpers.h">
+      <Filter>containers\include</Filter>
+    </ClInclude>
+    <ClInclude Include="containers\include\containers_errors.h">
+      <Filter>containers\include</Filter>
+    </ClInclude>
+    <ClInclude Include="containers\include\dictionary.h">
+      <Filter>containers\include</Filter>
+    </ClInclude>
+    <ClInclude Include="containers\include\list.h">
+      <Filter>containers\include</Filter>
+    </ClInclude>
+    <ClInclude Include="containers\include\queue.h">
+      <Filter>containers\include</Filter>
+    </ClInclude>
+    <ClInclude Include="containers\include\rb_tree.h">
+      <Filter>containers\include</Filter>
+    </ClInclude>
+    <ClInclude Include="containers\include\stack.h">
+      <Filter>containers\include</Filter>
+    </ClInclude>
+    <ClInclude Include="containers\include\vector.h">
+      <Filter>containers\include</Filter>
+    </ClInclude>
+    <ClInclude Include="containers\internal\dictionary_types.h">
+      <Filter>containers\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="containers\src\dictionary\dictionary_internal.h">
+      <Filter>containers\src\dictionary</Filter>
+    </ClInclude>
+    <ClInclude Include="include\malloc_utilities.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\string_t.h">
+      <Filter>include</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
