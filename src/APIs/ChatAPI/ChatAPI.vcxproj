@@ -79,6 +79,9 @@
     <IncludePath>D:\repositories\tyche\api\APIs\ChatAPI\include;$(IncludePath)</IncludePath>
     <ProjectPublicIncludePath>${ProjectDir}/include;$(ProjectPublicIncludePath)</ProjectPublicIncludePath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+    <IncludePath>D:\repositories\tyche\src\APIs\ChatAPI\include;$(IncludePath)</IncludePath>
+  </PropertyGroup>
   <ItemGroup>
     <ClCompile Include="containers\src\concurrent\concurrent_dictionary.c" />
     <ClCompile Include="containers\src\concurrent\concurrent_queue.c" />
@@ -91,6 +94,7 @@
     <ClCompile Include="containers\src\vector.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="src\string_t.c" />
+    <ClCompile Include="src\threads\event_loop.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="containers\include\concurrent_queue.h" />
@@ -104,6 +108,7 @@
     <ClInclude Include="containers\include\vector.h" />
     <ClInclude Include="containers\internal\dictionary_types.h" />
     <ClInclude Include="containers\src\dictionary\dictionary_internal.h" />
+    <ClInclude Include="include\event_loop.h" />
     <ClInclude Include="include\malloc_utilities.h" />
     <ClInclude Include="include\string_t.h" />
   </ItemGroup>
