@@ -28,6 +28,9 @@
     <Filter Include="src\threads">
       <UniqueIdentifier>{c34b1f8d-c8a1-427e-becf-bc24b1f9e2fb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="include\generic">
+      <UniqueIdentifier>{80d7ea45-926d-49a4-8db7-31ea6fdd4e70}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.c" />
@@ -107,6 +110,9 @@
     </ClInclude>
     <ClInclude Include="include\event_loop.h">
       <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\generic\vector.h">
+      <Filter>include\generic</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
