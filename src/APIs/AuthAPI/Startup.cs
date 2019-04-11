@@ -108,7 +108,7 @@ namespace Tyche.AuthAPI
             App.Logger = new Logger(
                 Constants.AuthAPI,
                 Configuration[Constants.LogPath],
-                60);
+                2);
 
             App.CodeGenerator = new CodeGenerator();
 

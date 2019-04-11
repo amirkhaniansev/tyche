@@ -158,7 +158,7 @@ namespace Tyche.LoggerService
         /// <param name="appName">App name</param>
         /// <param name="path">Path</param>
         /// <param name="storingInterval">Storing interval</param>
-        public Logger(string appName, string path, int storingInterval = 60)
+        public Logger(string appName, string path, int storingInterval = 2)
         {
             this._appName = appName;
             this._path = path;
@@ -263,7 +263,7 @@ namespace Tyche.LoggerService
         /// <param name="interval">interval</param>
         private void InitializeTimer(int interval)
         {
-            if (interval < 60)
+            if (interval < 2)
                 throw new ArgumentException("Interval");
 
             this._storingInterval = interval;
