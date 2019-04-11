@@ -24,7 +24,7 @@ CREATE TABLE [dbo].[Verifications]
 (
 	[Id]			INT IDENTITY(100000,1)	NOT NULL,
 	[UserId]		INT						NOT NULL,
-	[Code]			VARCHAR(32)			NOT NULL,
+	[Code]			NVARCHAR(32)			NOT NULL,
 	[Created]		DATETIME				NOT NULL,
 	[ValidOffset]	INT						NOT NULL
 
