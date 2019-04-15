@@ -20,7 +20,7 @@
 
 namespace Tyche.TycheDAL.Models
 {
-    public class BlockReason
+    public class BlockReason : DbModel
     {
         public int Id { get; set; }
 

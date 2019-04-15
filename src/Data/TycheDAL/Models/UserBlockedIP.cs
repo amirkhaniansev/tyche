@@ -22,7 +22,7 @@ using System;
 
 namespace Tyche.TycheDAL.Models
 {
-    public class UserBlockedIP
+    public class UserBlockedIP : DbModel
     {
         public int UserID { get; set; }
 

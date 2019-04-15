@@ -23,7 +23,7 @@ namespace Tyche.TycheDAL.Models
     /// <summary>
     /// Model for notification assignment
     /// </summary>
-    public class NotificationAssignment
+    public class NotificationAssignment : DbModel
     {
         /// <summary>
         /// Gets or sets notification ID

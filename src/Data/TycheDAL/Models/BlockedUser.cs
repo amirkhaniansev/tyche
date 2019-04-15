@@ -23,7 +23,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Tyche.TycheDAL.Models
 {
-    public class BlockedUser
+    public class BlockedUser : DbModel
     {
         public int Id { get; set; }
 

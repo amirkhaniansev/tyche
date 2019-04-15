@@ -62,6 +62,7 @@ namespace Tyche.TycheBL.Logic
             {
                 chatroom = await this.Dal.Db.ChatRooms.FindAsync(userChatroomId);  
                 creator = await usersDal.GetUserById(chatroom.CreatorId.GetValueOrDefault());
+                creator.PasswordHash = null;
 
                 if (includeMembers)
                 {

@@ -20,7 +20,7 @@
 
 namespace Tyche.TycheBL.Constants
 {
-    public static class BlConstants
+    internal static class BlConstants
     {
         public const string Notification        = "Notification";
         public const string InvalidID           = "Invalid ID";
@@ -29,5 +29,13 @@ namespace Tyche.TycheBL.Constants
         public const string UserIdsAreEmpty     = "User IDs are empty";
         public const string UserIsNull          = "User is null";
         public const string ConnectionString    = "Connection string";
+        public const string AssemblyName        = "Assembly Name";
+        public const string BaseType            = "Base Type";
+        public const string Types               = "Types";
+        public const string TypesEmpty          = "Types empty";
+        public const string Item                = "Item";
+        public const string ContainsKey         = "ContainsKey";
+        public const string TycheDAL            = "TycheDAL";
+        public const string EqualsMethod        = "Equals";
     }
 }

@@ -25,7 +25,7 @@ namespace Tyche.TycheDAL.Models
     /// <summary>
     /// Model for message
     /// </summary>
-    public class Message
+    public class Message : DbModel
     {
         /// <summary>
         /// Gets or sets ID

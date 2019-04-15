@@ -1,6 +1,6 @@
 /**
  * GNU General Public License Version 3.0, 29 June 2007
- * Grant
+ * BlockInput
  * Copyright (C) <2019>
  *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
  *
@@ -18,26 +18,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-using System;
+using System.Linq.Expressions;
 
-namespace Tyche.TycheDAL.Models
+namespace Tyche.TycheBL.Filtration
 {
-    public class Grant : DbModel
+    internal class BlockInput : Input
     {
-        public int Id { get; set; }
-        
-        public string Key { get; set; }
+        public ParameterExpression ModelVariable { get; set; }
 
-        public string Type { get; set; }
-
-        public string SubjectId { get; set; }
-
-        public string ClientId { get; set; }
-
-        public DateTime CreationTime { get; set; }
-
-        public DateTime? Expiration { get; set; }
-
-        public string Data { get; set; }
+        public ParameterExpression ReturnValue { get; set; }
     }
 }

@@ -1,6 +1,6 @@
 /**
  * GNU General Public License Version 3.0, 29 June 2007
- * MessageFilter
+ * Input
  * Copyright (C) <2019>
  *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
  *
@@ -18,28 +18,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-using System;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Collections.Generic;
 
-namespace Tyche.TycheDAL.Models
+namespace Tyche.TycheBL.Filtration
 {
-    /// <summary>
-    /// Model for filtering messages
-    /// </summary>
-    public class MessageFilter
+    internal class Input
     {
-        /// <summary>
-        /// Gets or sets from date
-        /// </summary>
-        public DateTime FromDate { get; set; }
-
-        /// <summary>
-        /// Gets or sets to date
-        /// </summary>
-        public DateTime ToDate { get; set; }
-
-        /// <summary>
-        /// Gets or sets chatroom ID
-        /// </summary>
-        public int ChatroomId { get; set; }
+        public List<ParameterExpression> ToList()
+        {
+            return this.GetType()
+                .GetProperties()
+                .Select(property => property.GetValue(this))
+                .Cast<ParameterExpression>()
+                .ToList();
+        }
     }
 }

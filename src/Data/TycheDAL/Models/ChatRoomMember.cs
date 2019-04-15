@@ -23,7 +23,7 @@ namespace Tyche.TycheDAL.Models
     /// <summary>
     /// Model for chatroom and members relationship
     /// </summary>
-    public class ChatRoomMember
+    public class ChatRoomMember : DbModel
     {
         /// <summary>
         /// Gets or sets chatroom ID

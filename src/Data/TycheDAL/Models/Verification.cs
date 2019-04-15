@@ -25,7 +25,7 @@ namespace Tyche.TycheDAL.Models
     /// <summary>
     /// Class for describing verification code creation
     /// </summary>
-    public class Verification
+    public class Verification : DbModel
     {
         /// <summary>
         /// Gets or sets Id

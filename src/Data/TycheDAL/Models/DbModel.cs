@@ -1,6 +1,6 @@
 /**
  * GNU General Public License Version 3.0, 29 June 2007
- * Grant
+ * DbModel
  * Copyright (C) <2019>
  *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
  *
@@ -18,26 +18,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-using System;
-
 namespace Tyche.TycheDAL.Models
 {
-    public class Grant : DbModel
+    public class DbModel
     {
-        public int Id { get; set; }
-        
-        public string Key { get; set; }
-
-        public string Type { get; set; }
-
-        public string SubjectId { get; set; }
-
-        public string ClientId { get; set; }
-
-        public DateTime CreationTime { get; set; }
-
-        public DateTime? Expiration { get; set; }
-
-        public string Data { get; set; }
     }
 }

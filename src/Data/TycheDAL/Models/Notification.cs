@@ -28,7 +28,7 @@ namespace Tyche.TycheDAL.Models
     /// <summary>
     /// Model for notification
     /// </summary>
-    public class Notification
+    public class Notification : DbModel
     {
         /// <summary>
         /// Gets or sets ID

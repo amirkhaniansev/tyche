@@ -27,7 +27,7 @@ namespace Tyche.TycheDAL.Models
     /// <summary>
     /// Model for describing chat creation
     /// </summary>
-    public class ChatRoom
+    public class ChatRoom : DbModel
     {
         /// <summary>
         /// Gets or sets ID

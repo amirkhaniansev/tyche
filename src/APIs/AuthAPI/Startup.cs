@@ -24,9 +24,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using IdentityServer4.Validation;
-using IdentityServer4.Services;
 using IdentityServer4.Stores;
+using IdentityServer4.Services;
+using IdentityServer4.Validation;
+using Tyche.TycheBL.Filtration;
 using Tyche.MailSevice;
 using Tyche.LoggerService;
 using Tyche.PasswordHasherService;
@@ -79,7 +80,9 @@ namespace Tyche.AuthAPI
 
             services.AddTransient<IResourceOwnerPasswordValidator, ResourceOwnerPasswordValidator>();
             services.AddTransient<IProfileService, ProfileService>();
-            services.AddTransient<IPersistedGrantStore, PersistedGrantStore>();            
+            services.AddTransient<IPersistedGrantStore, PersistedGrantStore>();
+            
+            FilterCache.Initialize();
         }
 
         /// <summary>

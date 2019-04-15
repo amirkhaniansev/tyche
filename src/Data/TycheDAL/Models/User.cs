@@ -24,7 +24,7 @@ namespace Tyche.TycheDAL.Models
     /// <summary>
     /// Model for user
     /// </summary>
-    public class User 
+    public class User : DbModel
     {
         /// <summary>
         /// Gets or sets Id

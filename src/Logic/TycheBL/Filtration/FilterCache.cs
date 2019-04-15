@@ -1,6 +1,6 @@
 /**
  * GNU General Public License Version 3.0, 29 June 2007
- * Grant
+ * FilterCache
  * Copyright (C) <2019>
  *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
  *
@@ -19,25 +19,26 @@
 **/
 
 using System;
+using System.Collections.ObjectModel;
+using Tyche.TycheDAL.Models;
+using Tyche.TycheBL.Constants;
 
-namespace Tyche.TycheDAL.Models
+using FilterPredicate = System.Func<object, System.Collections.Generic.Dictionary<string, object>, bool>;
+
+namespace Tyche.TycheBL.Filtration
 {
-    public class Grant : DbModel
+    public static class FilterCache
     {
-        public int Id { get; set; }
-        
-        public string Key { get; set; }
+        private static ReadOnlyDictionary<Type, FilterPredicate> filters;
 
-        public string Type { get; set; }
+        public static void Initialize()
+        {
+            filters = new FilterBuilder(BlConstants.TycheDAL, typeof(DbModel)).Build();
+        }
 
-        public string SubjectId { get; set; }
-
-        public string ClientId { get; set; }
-
-        public DateTime CreationTime { get; set; }
-
-        public DateTime? Expiration { get; set; }
-
-        public string Data { get; set; }
+        public static FilterPredicate GetFilter(Type type)
+        {
+            return filters.ContainsKey(type) ? filters[type] : null;
+        }
     }
 }
