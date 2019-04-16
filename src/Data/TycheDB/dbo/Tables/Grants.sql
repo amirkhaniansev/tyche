@@ -27,7 +27,7 @@ CREATE TABLE [dbo].[Grants]
 	[SubjectId]			VARCHAR(4000)	NULL,
 	[ClientId]			VARCHAR(4000)	NULL,
 	[CreationTime]		DATETIME		NOT NULL,
-	[ExpirationTime]	DATETIME		NULL,
+	[Expiration]		DATETIME		NULL,
 	[Data]				VARCHAR(4000)	NULL
 
 	CONSTRAINT [PK_GRANT]	PRIMARY KEY ([Id])

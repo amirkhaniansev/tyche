@@ -352,24 +352,6 @@ CREATE TABLE [dbo].[ChatRoomMembers] (
 
 
 GO
-PRINT N'Creating [dbo].[Grants]...';
-
-
-GO
-CREATE TABLE [dbo].[Grants] (
-    [Id]             BIGINT         IDENTITY (1, 1) NOT NULL,
-    [Key]            VARCHAR (4000) NULL,
-    [Type]           VARCHAR (4000) NULL,
-    [SubjectId]      VARCHAR (4000) NULL,
-    [ClientId]       VARCHAR (4000) NULL,
-    [CreationTime]   DATETIME       NOT NULL,
-    [ExpirationTime] DATETIME       NULL,
-    [Data]           VARCHAR (4000) NULL,
-    CONSTRAINT [PK_GRANT] PRIMARY KEY CLUSTERED ([Id] ASC)
-);
-
-
-GO
 PRINT N'Creating [dbo].[BlockedIPs]...';
 
 
@@ -423,6 +405,24 @@ CREATE TABLE [dbo].[BlockedUsers] (
     [BlockExpires] DATETIME NULL,
     [ReasonId]     INT      NULL,
     CONSTRAINT [PK_BLOCKED_USER_ID] PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+
+
+GO
+PRINT N'Creating [dbo].[Grants]...';
+
+
+GO
+CREATE TABLE [dbo].[Grants] (
+    [Id]           BIGINT         IDENTITY (1, 1) NOT NULL,
+    [Key]          VARCHAR (4000) NULL,
+    [Type]         VARCHAR (4000) NULL,
+    [SubjectId]    VARCHAR (4000) NULL,
+    [ClientId]     VARCHAR (4000) NULL,
+    [CreationTime] DATETIME       NOT NULL,
+    [Expiration]   DATETIME       NULL,
+    [Data]         VARCHAR (4000) NULL,
+    CONSTRAINT [PK_GRANT] PRIMARY KEY CLUSTERED ([Id] ASC)
 );
 
 
@@ -1221,6 +1221,8 @@ END
 GO
 IF NOT EXISTS (SELECT OperationKey FROM [dbo].[__RefactorLog] WHERE OperationKey = 'cd287906-f9fc-4a84-b9af-179e0e7190a9')
 INSERT INTO [dbo].[__RefactorLog] (OperationKey) values ('cd287906-f9fc-4a84-b9af-179e0e7190a9')
+IF NOT EXISTS (SELECT OperationKey FROM [dbo].[__RefactorLog] WHERE OperationKey = 'e8650bcb-158f-4a37-95ee-507390b5416a')
+INSERT INTO [dbo].[__RefactorLog] (OperationKey) values ('e8650bcb-158f-4a37-95ee-507390b5416a')
 
 GO
 
