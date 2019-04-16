@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <Name>scripts</Name>
+    <Name>TycheDB</Name>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>4.1</ProjectVersion>
     <ProjectGuid>{adc9ff16-a171-4175-82f9-9dc762af8129}</ProjectGuid>
@@ -23,6 +23,8 @@
     <SqlServerVerification>False</SqlServerVerification>
     <IncludeCompositeObjects>True</IncludeCompositeObjects>
     <TargetDatabaseSet>True</TargetDatabaseSet>
+    <GenerateCreateScript>True</GenerateCreateScript>
+    <DacApplicationName>TycheDB</DacApplicationName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>
@@ -58,45 +60,49 @@
   <ItemGroup>
     <Folder Include="Properties" />
     <Folder Include="dbo" />
-    <Folder Include="dbo\tables" />
-    <Folder Include="dbo\stored_procedures" />
-    <Folder Include="dbo\stored_procedures\users" />
-    <Folder Include="dbo\stored_procedures\verifications" />
-    <Folder Include="dbo\stored_procedures\chatrooms" />
-    <Folder Include="dbo\stored_procedures\notifications" />
-    <Folder Include="dbo\stored_procedures\messages" />
-    <Folder Include="dbo\queries" />
+    <Folder Include="dbo\Tables" />
+    <Folder Include="dbo\StoredProcedures" />
+    <Folder Include="dbo\StoredProcedures\Users" />
+    <Folder Include="dbo\StoredProcedures\Verifications" />
+    <Folder Include="dbo\StoredProcedures\Chatrooms" />
+    <Folder Include="dbo\StoredProcedures\Notifications" />
+    <Folder Include="dbo\StoredProcedures\Messages" />
+    <Folder Include="dbo\Queries" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="dbo\tables\ChatRoomMembers.sql" />
-    <Build Include="dbo\tables\ChatRooms.sql" />
-    <Build Include="dbo\tables\Messages.sql" />
-    <Build Include="dbo\tables\MessagesSeenUsers.sql" />
-    <Build Include="dbo\tables\Notifications.sql" />
-    <Build Include="dbo\tables\Users.sql" />
-    <Build Include="dbo\tables\Verifications.sql" />
-    <Build Include="dbo\stored_procedures\users\uspCreateUser.sql" />
-    <Build Include="dbo\stored_procedures\verifications\uspCreateVerificationCode.sql" />
-    <Build Include="dbo\stored_procedures\chatrooms\uspCreateChatRoom.sql" />
-    <Build Include="dbo\stored_procedures\notifications\uspCreateNotification.sql" />
-    <Build Include="dbo\stored_procedures\users\uspVerifyUser.sql" />
-    <Build Include="dbo\stored_procedures\messages\uspCreateMessage.sql" />
-    <Build Include="dbo\stored_procedures\chatrooms\uspGetChatroomById.sql" />
-    <Build Include="dbo\stored_procedures\chatrooms\uspGetChatroomMembersByChatroomId.sql" />
-    <Build Include="dbo\stored_procedures\chatrooms\uspGetChatroomsByMemberId.sql" />
-    <Build Include="dbo\stored_procedures\messages\uspGetMessagesByChatroomId.sql" />
-    <Build Include="dbo\stored_procedures\messages\uspGetMessagesByChatroomIdAndDate.sql" />
-    <Build Include="dbo\stored_procedures\notifications\uspAssignNotificationToUser.sql" />
-    <Build Include="dbo\stored_procedures\users\uspGetUserById.sql" />
-    <Build Include="dbo\stored_procedures\users\uspGetUsersByUsername.sql" />
-    <Build Include="dbo\tables\NotificationAssignments.sql" />
-    <Build Include="dbo\tables\BlockedUsers.sql" />
-    <Build Include="dbo\tables\UserBlockedIPs.sql" />
-    <Build Include="dbo\tables\BlockReasons.sql" />
-    <Build Include="dbo\tables\BlockedIPs.sql" />
-    <Build Include="dbo\tables\Grants.sql" />
+    <Build Include="dbo\Tables\ChatRoomMembers.sql" />
+    <Build Include="dbo\Tables\ChatRooms.sql" />
+    <Build Include="dbo\Tables\Messages.sql" />
+    <Build Include="dbo\Tables\MessagesSeenUsers.sql" />
+    <Build Include="dbo\Tables\Notifications.sql" />
+    <Build Include="dbo\Tables\Users.sql" />
+    <Build Include="dbo\Tables\Verifications.sql" />
+    <Build Include="dbo\StoredProcedures\users\uspCreateUser.sql" />
+    <Build Include="dbo\StoredProcedures\verifications\uspCreateVerificationCode.sql" />
+    <Build Include="dbo\StoredProcedures\chatrooms\uspCreateChatRoom.sql" />
+    <Build Include="dbo\StoredProcedures\notifications\uspCreateNotification.sql" />
+    <Build Include="dbo\StoredProcedures\users\uspVerifyUser.sql" />
+    <Build Include="dbo\StoredProcedures\messages\uspCreateMessage.sql" />
+    <Build Include="dbo\StoredProcedures\chatrooms\uspGetChatroomById.sql" />
+    <Build Include="dbo\StoredProcedures\chatrooms\uspGetChatroomMembersByChatroomId.sql" />
+    <Build Include="dbo\StoredProcedures\chatrooms\uspGetChatroomsByMemberId.sql" />
+    <Build Include="dbo\StoredProcedures\messages\uspGetMessagesByChatroomId.sql" />
+    <Build Include="dbo\StoredProcedures\messages\uspGetMessagesByChatroomIdAndDate.sql" />
+    <Build Include="dbo\StoredProcedures\notifications\uspAssignNotificationToUser.sql" />
+    <Build Include="dbo\StoredProcedures\users\uspGetUserById.sql" />
+    <Build Include="dbo\StoredProcedures\users\uspGetUsersByUsername.sql" />
+    <Build Include="dbo\Tables\NotificationAssignments.sql" />
+    <Build Include="dbo\Tables\BlockedUsers.sql" />
+    <Build Include="dbo\Tables\UserBlockedIPs.sql" />
+    <Build Include="dbo\Tables\BlockReasons.sql" />
+    <Build Include="dbo\Tables\BlockedIPs.sql" />
+    <Build Include="dbo\Tables\Grants.sql" />
+    <None Include="dbo\Queries\TycheDB_Create.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Scripts.refactorlog" />
   </ItemGroup>
+  <PropertyGroup>
+    <PostBuildEvent>XCOPY "$(ProjectDir)bin\Debug\TycheDB_Create.sql" "$(ProjectDir)dbo\Queries" /Y</PostBuildEvent>
+  </PropertyGroup>
 </Project>
