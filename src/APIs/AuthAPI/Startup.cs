@@ -27,7 +27,6 @@ using Microsoft.Extensions.DependencyInjection;
 using IdentityServer4.Stores;
 using IdentityServer4.Services;
 using IdentityServer4.Validation;
-using Tyche.TycheBL.Filtration;
 using Tyche.MailSevice;
 using Tyche.LoggerService;
 using Tyche.PasswordHasherService;
@@ -37,6 +36,8 @@ using Tyche.TycheApiUtilities.Middleware;
 using Tyche.AuthAPI.Constant;
 using Tyche.AuthAPI.Authentication;
 using Tyche.AuthAPI.Storage;
+using Tyche.TycheBL.Filtration;
+using Tyche.TycheDAL.Models;
 
 namespace Tyche.AuthAPI
 {
@@ -81,8 +82,6 @@ namespace Tyche.AuthAPI
             services.AddTransient<IResourceOwnerPasswordValidator, ResourceOwnerPasswordValidator>();
             services.AddTransient<IProfileService, ProfileService>();
             services.AddTransient<IPersistedGrantStore, PersistedGrantStore>();
-            
-            FilterCache.Initialize();
         }
 
         /// <summary>
@@ -102,6 +101,8 @@ namespace Tyche.AuthAPI
         /// </summary>
         public void ConfigureApp()
         {
+            new Filter<User>();
+
             App.PasswordHasher = new PasswordHasher();
 
             App.Mailer = new Mailer(new NetworkCredential(

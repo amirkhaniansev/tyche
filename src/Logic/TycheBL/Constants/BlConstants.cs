@@ -37,5 +37,7 @@ namespace Tyche.TycheBL.Constants
         public const string ContainsKey         = "ContainsKey";
         public const string TycheDAL            = "TycheDAL";
         public const string EqualsMethod        = "Equals";
+        public const string Filter              = "Filter";
+        public const string FilterAmount        = "FilterAmount";
     }
 }
