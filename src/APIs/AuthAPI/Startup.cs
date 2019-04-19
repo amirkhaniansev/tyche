@@ -36,7 +36,6 @@ using Tyche.TycheApiUtilities.Middleware;
 using Tyche.AuthAPI.Constant;
 using Tyche.AuthAPI.Authentication;
 using Tyche.AuthAPI.Storage;
-using Tyche.TycheBL.Filtration;
 using Tyche.TycheDAL.Models;
 
 namespace Tyche.AuthAPI
@@ -101,8 +100,6 @@ namespace Tyche.AuthAPI
         /// </summary>
         public void ConfigureApp()
         {
-            new Filter<User>();
-
             App.PasswordHasher = new PasswordHasher();
 
             App.Mailer = new Mailer(new NetworkCredential(
