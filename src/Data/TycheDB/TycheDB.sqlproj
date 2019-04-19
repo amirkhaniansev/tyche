@@ -105,4 +105,9 @@
   <PropertyGroup>
     <PostBuildEvent>XCOPY "$(ProjectDir)bin\Debug\TycheDB_Create.sql" "$(ProjectDir)dbo\Queries" /Y</PostBuildEvent>
   </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>dotnet build "$(SolutionDir)/../tools/licensegen/licensegen.csproj"
+
+dotnet "$(SolutionDir)/../tools/licensegen/bin/Debug/netcoreapp2.1/licensegen.dll" "$(SolutionDir)/../" "$(SolutionDir)/license_ds.txt" .sql</PreBuildEvent>
+  </PropertyGroup>
 </Project>

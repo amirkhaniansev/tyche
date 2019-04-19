@@ -21,4 +21,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="dotnet build &quot;$(SolutionDir)/../tools/licensegen/licensegen.csproj&quot;&#xD;&#xA;&#xD;&#xA;dotnet &quot;$(SolutionDir)/../tools/licensegen/bin/Debug/netcoreapp2.1/licensegen.dll&quot; &quot;$(SolutionDir)/../&quot; &quot;$(SolutionDir)/license_s.txt&quot; .cs" />
+  </Target>
+
 </Project>

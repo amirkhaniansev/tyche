@@ -33,6 +33,12 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ChatAPI", "APIs\ChatAPI\Cha
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "TycheDB", "Data\TycheDB\TycheDB.sqlproj", "{ADC9FF16-A171-4175-82F9-9DC762AF8129}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FB48A10B-8F16-4869-9815-ADFF5BC4990A}"
+	ProjectSection(SolutionItems) = preProject
+		license_ds.txt = license_ds.txt
+		license_s.txt = license_s.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
