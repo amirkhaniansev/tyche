@@ -39,7 +39,7 @@
 			return NULL;								\
 												\
 		stack->_size = STACK_DEFAULT_SIZE;						\
-		stack->_type_size = sizeof(TYPE);					\
+		stack->_type_size = sizeof(TYPE);						\
 		stack->_count = 0x0;								\
 												\
 		stack->_base = malloc(stack->_size * stack->_type_size);			\
