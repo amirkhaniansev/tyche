@@ -109,6 +109,7 @@
     <ClInclude Include="containers\internal\dictionary_types.h" />
     <ClInclude Include="containers\src\dictionary\dictionary_internal.h" />
     <ClInclude Include="include\event_loop.h" />
+    <ClInclude Include="include\generic\stack.h" />
     <ClInclude Include="include\generic\vector.h" />
     <ClInclude Include="include\malloc_utilities.h" />
     <ClInclude Include="include\string_t.h" />

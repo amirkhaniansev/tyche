@@ -114,5 +114,8 @@
     <ClInclude Include="include\generic\vector.h">
       <Filter>include\generic</Filter>
     </ClInclude>
+    <ClInclude Include="include\generic\stack.h">
+      <Filter>include\generic</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

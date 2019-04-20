@@ -21,8 +21,7 @@
 
 #include <stdio.h>
 
-int main()
+int main(int argc, char** argv)
 {
-    printf("hello from ChatAPI!\n");
-    return 0;
+	return 0;
 }
