@@ -39,7 +39,7 @@
 			return NULL;								\
 												\
 		stack->_size = STACK_DEFAULT_SIZE;						\
-		stack->_type_size = sizeof(stack_##TYPE);					\
+		stack->_type_size = sizeof(TYPE);					\
 		stack->_count = 0x0;								\
 												\
 		stack->_base = malloc(stack->_size * stack->_type_size);			\
@@ -56,6 +56,9 @@
 	{											\
 		STACK_NULL_CHECK(stack);							\
 		STACK_BASE_NULL_CHECK(stack);							\
+												\
+		if(stack -> _count == 0)							\
+		    return STACK_SUCCESS;							\
 												\
 		if(finalizer != NULL)								\
 			for(size_t i = 0; i < stack->_count; i++)				\
@@ -114,7 +117,7 @@
 			return STACK_IS_EMPTY;							\
 												\
 		stack->_count--;								\
-		return STACK_SUCCES;	    							\
+		return STACK_SUCCESS;	    							\
 	}
 
 #define DEFINE_GENERIC_STACK_TOP(TYPE)								\
