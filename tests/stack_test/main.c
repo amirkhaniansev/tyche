@@ -23,24 +23,28 @@
 #include <assert.h>
 #include <limits.h>
 
-#include "stack.h"
+#include "../../src/APIs/ChatAPI/include/generic/stack.h"
+
+__DEFINE_GENERIC_STACK__(int);
 
 int main(int argc, char** argv)
 {
-	stack* stack = stack_create_p();
-	int i = 0, element = 0, limit = INT_MAX / 1000;
+	stack_int* stack = stack_create_int();
+	assert(stack != NULL);
 
-	while(i <= limit)
-		stack_push(stack, i++);
+	int limit = INT_MAX / 100;
+	for(int i = 0; i < limit; i++)
+		assert(stack_push_int(stack, &i) == STACK_SUCCESS);
 
-	for(i = 0; i <= limit; i++) {
-		element = stack_top(stack);
-		stack_pop(stack);
-		printf("stack element %d : %d\n", i, element);
+	for(int i = 0; i < limit; i++)
+	{
+		int value = *stack_top_int(stack);
+		printf("%d\n", value);
+		assert(stack_pop_int(stack) == STACK_SUCCESS);
 	}
 
-	assert(stack_is_empty(stack) == true);
-	assert(stack_destroy(stack) == 0);
+	assert(stack_clear_int(stack, NULL) == STACK_SUCCESS);
+	assert(stack_destroy_int(stack, NULL) == STACK_SUCCESS);
 
 	return 0;
 }

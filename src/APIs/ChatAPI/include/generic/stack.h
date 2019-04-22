@@ -125,7 +125,7 @@
 	{											\
 		if(stack == NULL || stack->_base == NULL || stack->_count == 0)			\
 			return NULL;								\
-		return stack->_base[stack->_count - 1];						\
+		return &stack->_base[stack->_count - 1];						\
 	}
 
 #define __DEFINE_GENERIC_STACK__(TYPE)								\
@@ -137,9 +137,5 @@
 	DEFINE_GENERIC_STACK_PUSH(TYPE);							\
 	DEFINE_GENERIC_STACK_POP(TYPE);								\
 	DEFINE_GENERIC_STACK_TOP(TYPE);	
-
-__DEFINE_GENERIC_STACK__(int);
-__DEFINE_GENERIC_STACK__(double);
-__DEFINE_GENERIC_STACK__(float);
 
 #endif
