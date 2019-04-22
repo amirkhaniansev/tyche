@@ -22,14 +22,11 @@
     <Filter Include="containers\src\dictionary">
       <UniqueIdentifier>{3fca2488-d494-4a5a-b819-6183c8dce99f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src">
-      <UniqueIdentifier>{d8efd68a-ed88-4b8a-8faa-6a0a84801e71}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\threads">
-      <UniqueIdentifier>{c34b1f8d-c8a1-427e-becf-bc24b1f9e2fb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="include\generic">
       <UniqueIdentifier>{80d7ea45-926d-49a4-8db7-31ea6fdd4e70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="threads">
+      <UniqueIdentifier>{c34b1f8d-c8a1-427e-becf-bc24b1f9e2fb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -61,12 +58,10 @@
     <ClCompile Include="containers\src\dictionary\dictionary.c">
       <Filter>containers\src\dictionary</Filter>
     </ClCompile>
-    <ClCompile Include="src\string_t.c">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="src\threads\event_loop.c">
-      <Filter>src\threads</Filter>
+      <Filter>threads</Filter>
     </ClCompile>
+    <ClCompile Include="string_t.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="containers\include\concurrent_queue.h">

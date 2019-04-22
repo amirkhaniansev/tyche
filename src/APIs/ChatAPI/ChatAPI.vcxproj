@@ -93,8 +93,8 @@
     <ClCompile Include="containers\src\stack.c" />
     <ClCompile Include="containers\src\vector.c" />
     <ClCompile Include="main.c" />
-    <ClCompile Include="src\string_t.c" />
     <ClCompile Include="src\threads\event_loop.c" />
+    <ClCompile Include="string_t.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="containers\include\concurrent_queue.h" />
