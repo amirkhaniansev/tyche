@@ -28,6 +28,7 @@ using Tyche.TycheDAL.Models;
 using Tyche.TycheBL.Logic;
 using Tyche.TycheBL.Constants;
 using Tyche.LoggerService;
+using Tyche.AuthAPI.Api;
 using Tyche.AuthAPI.Constant;
 
 namespace Tyche.AuthAPI.Controllers
@@ -38,7 +39,7 @@ namespace Tyche.AuthAPI.Controllers
     [ApiController]
     [Route(Routes.Users)]
     [Produces(Production.Json)]
-    public class UsersController : TycheApiController
+    public class UsersController : TycheApiController, IUsersController
     {
         /// <summary>
         /// Creates new instance of <see cref="UsersController"/>

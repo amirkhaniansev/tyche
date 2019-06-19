@@ -15,4 +15,8 @@
     <ProjectReference Include="..\..\Data\TycheDAL\TycheDAL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Api\" />
+  </ItemGroup>
+
 </Project>

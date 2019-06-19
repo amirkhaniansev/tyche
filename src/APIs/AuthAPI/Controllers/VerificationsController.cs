@@ -26,6 +26,7 @@ using Tyche.TycheDAL.Models;
 using Tyche.TycheBL.Logic;
 using Tyche.TycheBL.Constants;
 using Tyche.TycheApiUtilities;
+using Tyche.AuthAPI.Api;
 using Tyche.AuthAPI.Constant;
 
 namespace Tyche.AuthAPI.Controllers
@@ -36,7 +37,7 @@ namespace Tyche.AuthAPI.Controllers
     [ApiController]
     [Route(Routes.Verifications)]
     [Produces(Production.Json)]
-    public class VerificationsController : TycheApiController
+    public class VerificationsController : TycheApiController, IVerificationsController
     {
         /// <summary>
         /// Creates new instance of <see cref="VerificationsController"/>

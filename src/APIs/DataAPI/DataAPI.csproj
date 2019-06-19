@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <Folder Include="Controllers\" />
+    <Folder Include="Api\" />
   </ItemGroup>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
