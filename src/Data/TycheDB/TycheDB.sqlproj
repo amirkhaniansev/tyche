@@ -95,6 +95,7 @@
     <Build Include="dbo\Tables\NotificationAssignments.sql" />
     <Build Include="dbo\Tables\Grants.sql" />
     <None Include="dbo\Queries\TycheDB_Create.sql" />
+    <Build Include="dbo\Functions\FnGetChatroomUsers.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Scripts.refactorlog" />
