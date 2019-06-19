@@ -41,13 +41,7 @@ namespace Tyche.TycheDAL.Context
         public DbSet<NotificationAssignment> NotificationAssignments { get; set; }
         
         public DbSet<ChatRoomMember> ChatroomMembers { get; set; }
-
-        public DbSet<BlockedUser> BlockedUsers { get; set; }
-
-        public DbSet<BlockReason> BlockReasons { get; set; }
-
-        public DbSet<UserBlockedIP> UserBlockedIPs { get; set; }
-
+        
         public DbSet<Grant> Grants { get; set; }
 
         public TycheContext(string connectionString)
@@ -64,17 +58,13 @@ namespace Tyche.TycheDAL.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfiguration(new BlockReasonConfiguration())
-                .ApplyConfiguration(new ChatRoomConfiguration())
+            modelBuilder.ApplyConfiguration(new ChatRoomConfiguration())
                 .ApplyConfiguration(new ChatRoomMemberConfiguration())
                 .ApplyConfiguration(new MessageConfiguration())
                 .ApplyConfiguration(new NotificationAssignmentConfiguration())
                 .ApplyConfiguration(new NotificationConfiguration())
-                .ApplyConfiguration(new UserBlockedIPConfiguration())
                 .ApplyConfiguration(new UserConfiguration())
                 .ApplyConfiguration(new VerificationConfiguration())
-                .ApplyConfiguration(new BlockedUserConfiguration())
-                .ApplyConfiguration(new BlockedIPConfiguration())
                 .ApplyConfiguration(new GrantConfiguration());
         }
     }

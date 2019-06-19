@@ -68,6 +68,7 @@
     <Folder Include="dbo\StoredProcedures\Notifications" />
     <Folder Include="dbo\StoredProcedures\Messages" />
     <Folder Include="dbo\Queries" />
+    <Folder Include="dbo\Functions" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\ChatRoomMembers.sql" />
@@ -92,10 +93,6 @@
     <Build Include="dbo\StoredProcedures\users\uspGetUserById.sql" />
     <Build Include="dbo\StoredProcedures\users\uspGetUsersByUsername.sql" />
     <Build Include="dbo\Tables\NotificationAssignments.sql" />
-    <Build Include="dbo\Tables\BlockedUsers.sql" />
-    <Build Include="dbo\Tables\UserBlockedIPs.sql" />
-    <Build Include="dbo\Tables\BlockReasons.sql" />
-    <Build Include="dbo\Tables\BlockedIPs.sql" />
     <Build Include="dbo\Tables\Grants.sql" />
     <None Include="dbo\Queries\TycheDB_Create.sql" />
   </ItemGroup>
