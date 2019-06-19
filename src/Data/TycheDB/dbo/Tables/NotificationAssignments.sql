@@ -22,10 +22,10 @@
 CREATE TABLE [dbo].[NotificationAssignments]
 (
 	[UserId]			INT			NOT NULL,
-	[NotificationId]	BIGINT		NOT NULL,
+	[NotificationId]		BIGINT			NOT NULL,
 	[IsSeen]			BIT			NULL
 
-	CONSTRAINT	[PK_NOTIFICATION_ASSIGNMENT] PRIMARY KEY([NotificationId], [UserId]),
+	CONSTRAINT	[PK_NOTIFICATION_ASSIGNMENT]	PRIMARY KEY([NotificationId], [UserId]),
 	CONSTRAINT	[FK_NOTIFICATION_USER_ID]	FOREIGN KEY ([UserId]) REFERENCES [Users]([Id])
 		ON DELETE CASCADE,
 	CONSTRAINT	[FK_NOTIFICATION_ID]		FOREIGN KEY ([NotificationId]) REFERENCES [Notifications]([Id])

@@ -84,14 +84,7 @@
     <Build Include="dbo\StoredProcedures\notifications\uspCreateNotification.sql" />
     <Build Include="dbo\StoredProcedures\users\uspVerifyUser.sql" />
     <Build Include="dbo\StoredProcedures\messages\uspCreateMessage.sql" />
-    <Build Include="dbo\StoredProcedures\chatrooms\uspGetChatroomById.sql" />
-    <Build Include="dbo\StoredProcedures\chatrooms\uspGetChatroomMembersByChatroomId.sql" />
-    <Build Include="dbo\StoredProcedures\chatrooms\uspGetChatroomsByMemberId.sql" />
-    <Build Include="dbo\StoredProcedures\messages\uspGetMessagesByChatroomId.sql" />
-    <Build Include="dbo\StoredProcedures\messages\uspGetMessagesByChatroomIdAndDate.sql" />
     <Build Include="dbo\StoredProcedures\notifications\uspAssignNotificationToUser.sql" />
-    <Build Include="dbo\StoredProcedures\users\uspGetUserById.sql" />
-    <Build Include="dbo\StoredProcedures\users\uspGetUsersByUsername.sql" />
     <Build Include="dbo\Tables\NotificationAssignments.sql" />
     <Build Include="dbo\Tables\Grants.sql" />
     <None Include="dbo\Queries\TycheDB_Create.sql" />

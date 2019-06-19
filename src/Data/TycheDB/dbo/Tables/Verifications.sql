@@ -19,15 +19,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-
 CREATE TABLE [dbo].[Verifications]
 (
 	[Id]			INT IDENTITY(100000,1)	NOT NULL,
-	[UserId]		INT						NOT NULL,
-	[Code]			NVARCHAR(32)			NOT NULL,
-	[Created]		DATETIME				NOT NULL,
-	[ValidOffset]	INT						NOT NULL
+	[UserId]		INT			NOT NULL,
+	[Code]			NVARCHAR(32)		NOT NULL,
+	[Created]		DATETIME		NOT NULL,
+	[ValidOffset]		INT			NOT NULL
 
 	CONSTRAINT [PK_VERIFICATION]		  PRIMARY KEY ([Id]),
-	CONSTRAINT [FK_VERIFICATIONS_USER_ID] FOREIGN KEY ([UserId]) REFERENCES [Users]([Id])
+	CONSTRAINT [FK_VERIFICATIONS_USER_ID]	  FOREIGN KEY ([UserId]) REFERENCES [Users]([Id])
 )

@@ -22,13 +22,13 @@
 CREATE TABLE [dbo].[Grants]
 (
 	[Id]				BIGINT			NOT NULL	IDENTITY(1,1),
-	[Key]				VARCHAR(4000)	NULL,
-	[Type]				VARCHAR(4000)	NULL,
-	[SubjectId]			VARCHAR(4000)	NULL,
-	[ClientId]			VARCHAR(4000)	NULL,
-	[CreationTime]		DATETIME		NOT NULL,
-	[Expiration]		DATETIME		NULL,
-	[Data]				VARCHAR(4000)	NULL
+	[Key]				VARCHAR(4000)		NULL,
+	[Type]				VARCHAR(4000)		NULL,
+	[SubjectId]			VARCHAR(4000)		NULL,
+	[ClientId]			VARCHAR(4000)		NULL,
+	[CreationTime]			DATETIME		NOT NULL,
+	[Expiration]			DATETIME		NULL,
+	[Data]				VARCHAR(4000)		NULL
 
 	CONSTRAINT [PK_GRANT]	PRIMARY KEY ([Id])
 )

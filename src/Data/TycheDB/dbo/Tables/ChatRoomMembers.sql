@@ -19,15 +19,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-
 CREATE TABLE [dbo].[ChatRoomMembers]
 (
 	[ChatRoomId]	INT				NOT NULL,
-	[UserId]		INT				NOT NULL,
-	[FixedHeader]	NVARCHAR(MAX)	NULL
+	[UserId]	INT				NOT NULL,
+	[FixedHeader]	NVARCHAR(MAX)		    	NULL
 
 	CONSTRAINT [PK_CHATROOM_MEMBER]	PRIMARY KEY ([ChatRoomId], [UserId]),
-	CONSTRAINT [FK_CHATROOM_ID] FOREIGN KEY ([ChatRoomId]) REFERENCES [ChatRooms]([Id])
+	CONSTRAINT [FK_CHATROOM_ID]	FOREIGN KEY ([ChatRoomId]) REFERENCES [ChatRooms]([Id])
 		ON DELETE CASCADE,
 	CONSTRAINT [FK_USER_ID]		FOREIGN KEY ([UserId])	REFERENCES [Users]([Id])	
 		ON DELETE CASCADE	

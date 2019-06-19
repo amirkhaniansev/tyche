@@ -23,13 +23,13 @@
 CREATE TABLE [dbo].[ChatRooms]
 (
 	[Id]			INT			IDENTITY(100000,1)	NOT NULL,
-	[CreatorId]		INT								NULL,
+	[CreatorId]		INT						NULL,
 	[Name]			NVARCHAR(100)					NULL,
-	[Created]		DATETIME						NOT NULL,
-	[IsGroup]		BIT			DEFAULT(0)			NOT NULL,
-	[IsKeyFixed]	BIT			DEFAULT(0)			NOT NULL,
-	[PictureUrl]	VARCHAR(MAX)					NULL
+	[Created]		DATETIME					NOT NULL,
+	[IsGroup]		BIT			DEFAULT(0)		NOT NULL,
+	[IsKeyFixed]		BIT			DEFAULT(0)		NOT NULL,
+	[PictureUrl]		VARCHAR(MAX)					NULL
 	
-	CONSTRAINT [PK_CHATROOM_ID] PRIMARY KEY ([Id])
+	CONSTRAINT [PK_CHATROOM_ID]	    PRIMARY KEY ([Id])
 	CONSTRAINT [FK_CHATROOM_CREATOR_ID] FOREIGN KEY([CreatorId]) REFERENCES [Users]([Id])
 )

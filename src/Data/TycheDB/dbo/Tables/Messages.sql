@@ -23,10 +23,10 @@
 CREATE TABLE [dbo].[Messages]
 (
 	[Id]			BIGINT			NOT NULL IDENTITY(100000,1),
-	[From]			INT				NULL,
-	[To]			INT				NULL,
-	[Header]		NVARCHAR(MAX)	NULL,
-	[Text]			NVARCHAR(4000)	NOT NULL,
+	[From]			INT			NULL,
+	[To]			INT			NULL,
+	[Header]		NVARCHAR(MAX)		NULL,
+	[Text]			NVARCHAR(4000)		NOT NULL,
 	[Created]		DATETIME		NULL
 
 	CONSTRAINT [PK_MESSAGE_ID]		PRIMARY KEY ([Id]),
