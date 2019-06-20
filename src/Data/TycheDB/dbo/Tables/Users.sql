@@ -30,7 +30,8 @@ CREATE TABLE [dbo].[Users]
 	[ProfilePictureUrl]		VARCHAR(MAX)	NULL,
 	[PasswordHash]			VARCHAR(MAX)	NOT NULL,
 	[IsVerified]			BIT		NOT NULL DEFAULT(0),
-	[IsActive]			BIT		NOT NULL DEFAULT(0)
+	[IsActive]			BIT		NOT NULL DEFAULT(0),
+	[Created]			DATETIME	NOT NULL DEFAULT(SYSDATETIME())
 
 	CONSTRAINT	[PK_USER_ID]		PRIMARY KEY ([Id])
 )

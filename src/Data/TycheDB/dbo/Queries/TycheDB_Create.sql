@@ -284,30 +284,6 @@ CREATE TABLE [dbo].[ChatRooms] (
 
 
 GO
-PRINT N'Creating [dbo].[ChatRoomMembers]...';
-
-
-GO
-CREATE TABLE [dbo].[ChatRoomMembers] (
-    [ChatRoomId]  INT            NOT NULL,
-    [UserId]      INT            NOT NULL,
-    [FixedHeader] NVARCHAR (MAX) NULL,
-    CONSTRAINT [PK_CHATROOM_MEMBER] PRIMARY KEY CLUSTERED ([ChatRoomId] ASC, [UserId] ASC)
-);
-
-
-GO
-PRINT N'Creating [dbo].[MessagesSeenUsers]...';
-
-
-GO
-CREATE TABLE [dbo].[MessagesSeenUsers] (
-    [MessageId] BIGINT NOT NULL,
-    [UserId]    INT    NOT NULL
-);
-
-
-GO
 PRINT N'Creating [dbo].[NotificationAssignments]...';
 
 
@@ -336,6 +312,21 @@ CREATE TABLE [dbo].[Notifications] (
 
 
 GO
+PRINT N'Creating [dbo].[Verifications]...';
+
+
+GO
+CREATE TABLE [dbo].[Verifications] (
+    [Id]          INT           IDENTITY (100000, 1) NOT NULL,
+    [UserId]      INT           NOT NULL,
+    [Code]        NVARCHAR (32) NOT NULL,
+    [Created]     DATETIME      NOT NULL,
+    [ValidOffset] INT           NOT NULL,
+    CONSTRAINT [PK_VERIFICATION] PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+
+
+GO
 PRINT N'Creating [dbo].[Users]...';
 
 
@@ -350,22 +341,34 @@ CREATE TABLE [dbo].[Users] (
     [PasswordHash]      VARCHAR (MAX) NOT NULL,
     [IsVerified]        BIT           NOT NULL,
     [IsActive]          BIT           NOT NULL,
+    [Created]           DATETIME      NOT NULL,
     CONSTRAINT [PK_USER_ID] PRIMARY KEY CLUSTERED ([Id] ASC)
 );
 
 
 GO
-PRINT N'Creating [dbo].[Verifications]...';
+PRINT N'Creating [dbo].[ChatRoomMembers]...';
 
 
 GO
-CREATE TABLE [dbo].[Verifications] (
-    [Id]          INT           IDENTITY (100000, 1) NOT NULL,
-    [UserId]      INT           NOT NULL,
-    [Code]        NVARCHAR (32) NOT NULL,
-    [Created]     DATETIME      NOT NULL,
-    [ValidOffset] INT           NOT NULL,
-    CONSTRAINT [PK_VERIFICATION] PRIMARY KEY CLUSTERED ([Id] ASC)
+CREATE TABLE [dbo].[ChatRoomMembers] (
+    [ChatRoomId]  INT            NOT NULL,
+    [UserId]      INT            NOT NULL,
+    [FixedHeader] NVARCHAR (MAX) NULL,
+    [JoinedDate]  DATETIME       NOT NULL,
+    CONSTRAINT [PK_CHATROOM_MEMBER] PRIMARY KEY CLUSTERED ([ChatRoomId] ASC, [UserId] ASC)
+);
+
+
+GO
+PRINT N'Creating [dbo].[MessagesSeenUsers]...';
+
+
+GO
+CREATE TABLE [dbo].[MessagesSeenUsers] (
+    [MessageId] BIGINT   NOT NULL,
+    [UserId]    INT      NOT NULL,
+    [Seen]      DATETIME NOT NULL
 );
 
 
@@ -406,6 +409,33 @@ ALTER TABLE [dbo].[Users]
 
 
 GO
+PRINT N'Creating unnamed constraint on [dbo].[Users]...';
+
+
+GO
+ALTER TABLE [dbo].[Users]
+    ADD DEFAULT (SYSDATETIME()) FOR [Created];
+
+
+GO
+PRINT N'Creating unnamed constraint on [dbo].[ChatRoomMembers]...';
+
+
+GO
+ALTER TABLE [dbo].[ChatRoomMembers]
+    ADD DEFAULT (SYSDATETIME()) FOR [JoinedDate];
+
+
+GO
+PRINT N'Creating unnamed constraint on [dbo].[MessagesSeenUsers]...';
+
+
+GO
+ALTER TABLE [dbo].[MessagesSeenUsers]
+    ADD DEFAULT (SYSDATETIME()) FOR [Seen];
+
+
+GO
 PRINT N'Creating [dbo].[FK_MESSAGE_FROM]...';
 
 
@@ -430,42 +460,6 @@ PRINT N'Creating [dbo].[FK_CHATROOM_CREATOR_ID]...';
 GO
 ALTER TABLE [dbo].[ChatRooms]
     ADD CONSTRAINT [FK_CHATROOM_CREATOR_ID] FOREIGN KEY ([CreatorId]) REFERENCES [dbo].[Users] ([Id]);
-
-
-GO
-PRINT N'Creating [dbo].[FK_CHATROOM_ID]...';
-
-
-GO
-ALTER TABLE [dbo].[ChatRoomMembers]
-    ADD CONSTRAINT [FK_CHATROOM_ID] FOREIGN KEY ([ChatRoomId]) REFERENCES [dbo].[ChatRooms] ([Id]) ON DELETE CASCADE;
-
-
-GO
-PRINT N'Creating [dbo].[FK_USER_ID]...';
-
-
-GO
-ALTER TABLE [dbo].[ChatRoomMembers]
-    ADD CONSTRAINT [FK_USER_ID] FOREIGN KEY ([UserId]) REFERENCES [dbo].[Users] ([Id]) ON DELETE CASCADE;
-
-
-GO
-PRINT N'Creating [dbo].[FK_MESSAGE_SEEN_MESSAGE_ID]...';
-
-
-GO
-ALTER TABLE [dbo].[MessagesSeenUsers]
-    ADD CONSTRAINT [FK_MESSAGE_SEEN_MESSAGE_ID] FOREIGN KEY ([MessageId]) REFERENCES [dbo].[Messages] ([Id]) ON DELETE CASCADE;
-
-
-GO
-PRINT N'Creating [dbo].[FK_MESSAGE_SEEN_USER_ID]...';
-
-
-GO
-ALTER TABLE [dbo].[MessagesSeenUsers]
-    ADD CONSTRAINT [FK_MESSAGE_SEEN_USER_ID] FOREIGN KEY ([UserId]) REFERENCES [dbo].[Users] ([Id]) ON DELETE CASCADE;
 
 
 GO
@@ -502,6 +496,42 @@ PRINT N'Creating [dbo].[FK_VERIFICATIONS_USER_ID]...';
 GO
 ALTER TABLE [dbo].[Verifications]
     ADD CONSTRAINT [FK_VERIFICATIONS_USER_ID] FOREIGN KEY ([UserId]) REFERENCES [dbo].[Users] ([Id]);
+
+
+GO
+PRINT N'Creating [dbo].[FK_CHATROOM_ID]...';
+
+
+GO
+ALTER TABLE [dbo].[ChatRoomMembers]
+    ADD CONSTRAINT [FK_CHATROOM_ID] FOREIGN KEY ([ChatRoomId]) REFERENCES [dbo].[ChatRooms] ([Id]) ON DELETE CASCADE;
+
+
+GO
+PRINT N'Creating [dbo].[FK_USER_ID]...';
+
+
+GO
+ALTER TABLE [dbo].[ChatRoomMembers]
+    ADD CONSTRAINT [FK_USER_ID] FOREIGN KEY ([UserId]) REFERENCES [dbo].[Users] ([Id]) ON DELETE CASCADE;
+
+
+GO
+PRINT N'Creating [dbo].[FK_MESSAGE_SEEN_MESSAGE_ID]...';
+
+
+GO
+ALTER TABLE [dbo].[MessagesSeenUsers]
+    ADD CONSTRAINT [FK_MESSAGE_SEEN_MESSAGE_ID] FOREIGN KEY ([MessageId]) REFERENCES [dbo].[Messages] ([Id]) ON DELETE CASCADE;
+
+
+GO
+PRINT N'Creating [dbo].[FK_MESSAGE_SEEN_USER_ID]...';
+
+
+GO
+ALTER TABLE [dbo].[MessagesSeenUsers]
+    ADD CONSTRAINT [FK_MESSAGE_SEEN_USER_ID] FOREIGN KEY ([UserId]) REFERENCES [dbo].[Users] ([Id]) ON DELETE CASCADE;
 
 
 GO
@@ -870,8 +900,9 @@ CREATE PROCEDURE [dbo].[uspCreateUser]
 	@lastName			NVARCHAR(50),
 	@username			VARCHAR(55),
 	@email				VARCHAR(100),
-	@profilePictureUrl	VARCHAR(MAX),
-	@passwordHash		VARCHAR(MAX)
+	@profilePictureUrl		VARCHAR(MAX),
+	@passwordHash			VARCHAR(MAX),
+	@created			DATETIME
 AS
 	BEGIN
 		IF EXISTS (SELECT * FROM [Users] WHERE Username = @username OR Email = @email)
@@ -886,7 +917,8 @@ AS
 					@profilePictureUrl,
 					@passwordHash,
 					0,
-					0)
+					0,
+					@created)
 			COMMIT TRANSACTION CREATE_USER
 			RETURN SCOPE_IDENTITY()
 		END TRY

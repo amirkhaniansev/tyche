@@ -25,8 +25,9 @@ CREATE PROCEDURE [dbo].[uspCreateUser]
 	@lastName			NVARCHAR(50),
 	@username			VARCHAR(55),
 	@email				VARCHAR(100),
-	@profilePictureUrl	VARCHAR(MAX),
-	@passwordHash		VARCHAR(MAX)
+	@profilePictureUrl		VARCHAR(MAX),
+	@passwordHash			VARCHAR(MAX),
+	@created			DATETIME
 AS
 	BEGIN
 		IF EXISTS (SELECT * FROM [Users] WHERE Username = @username OR Email = @email)
@@ -41,7 +42,8 @@ AS
 					@profilePictureUrl,
 					@passwordHash,
 					0,
-					0)
+					0,
+					@created)
 			COMMIT TRANSACTION CREATE_USER
 			RETURN SCOPE_IDENTITY()
 		END TRY

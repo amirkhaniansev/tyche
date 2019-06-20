@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <Folder Include="Api\" />
+    <Folder Include="Models\FunctionModels\" />
   </ItemGroup>
 
 </Project>
