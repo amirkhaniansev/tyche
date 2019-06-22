@@ -1,4 +1,4 @@
-﻿namespace modelgen
+﻿namespace ModelGen.Models
 {
     class ProcedureParameter : Parameter
     {

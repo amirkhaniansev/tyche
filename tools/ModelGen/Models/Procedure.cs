@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace modelgen
+namespace ModelGen.Models
 {
     internal class Procedure : BaseModel
     {

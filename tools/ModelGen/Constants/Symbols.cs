@@ -1,4 +1,4 @@
-﻿namespace modelgen
+﻿namespace ModelGen.Constants
 {
     internal static class Symbols
     {

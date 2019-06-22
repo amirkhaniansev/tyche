@@ -1,7 +1,8 @@
 ﻿using System.Linq;
 using System.Text;
+using ModelGen.Constants;
 
-namespace modelgen
+namespace ModelGen.Builder
 {
     internal class FileBuilder
     {

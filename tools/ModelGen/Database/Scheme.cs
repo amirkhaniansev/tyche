@@ -4,8 +4,9 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using Dapper;
+using ModelGen.Models;
 
-namespace modelgen
+namespace ModelGen.Database
 {
     internal sealed class Scheme
     {

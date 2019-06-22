@@ -1,4 +1,6 @@
-﻿namespace modelgen
+﻿using ModelGen.Database;
+
+namespace ModelGen.Models
 {
     internal class Column : BaseModel
     {

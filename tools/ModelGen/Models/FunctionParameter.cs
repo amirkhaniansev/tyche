@@ -1,4 +1,4 @@
-﻿namespace modelgen
+﻿namespace ModelGen.Models
 {
     internal class FunctionParameter : Parameter
     {
