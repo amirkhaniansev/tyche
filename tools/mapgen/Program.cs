@@ -29,7 +29,7 @@ using System.Collections.Generic;
  * It is not optimized or the best solution for tasks like this.
  */
 
-namespace mapgen
+namespace MapGen
 {
     class Program
     {
