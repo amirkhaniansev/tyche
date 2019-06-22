@@ -2,9 +2,8 @@
 using System.IO;
 using System.Collections.Generic;
 using Newtonsoft.Json;
-using ModelGen.Database;
 
-namespace ModelGen
+namespace ModelGen.Database
 {
     internal class Configuration
     {
