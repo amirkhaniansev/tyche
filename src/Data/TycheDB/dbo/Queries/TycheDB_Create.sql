@@ -347,6 +347,18 @@ CREATE TABLE [dbo].[Users] (
 
 
 GO
+PRINT N'Creating [dbo].[MessagesSeenUsers]...';
+
+
+GO
+CREATE TABLE [dbo].[MessagesSeenUsers] (
+    [MessageId] BIGINT   NOT NULL,
+    [UserId]    INT      NOT NULL,
+    [Seen]      DATETIME NOT NULL
+);
+
+
+GO
 PRINT N'Creating [dbo].[ChatRoomMembers]...';
 
 
@@ -357,18 +369,6 @@ CREATE TABLE [dbo].[ChatRoomMembers] (
     [FixedHeader] NVARCHAR (MAX) NULL,
     [JoinedDate]  DATETIME       NOT NULL,
     CONSTRAINT [PK_CHATROOM_MEMBER] PRIMARY KEY CLUSTERED ([ChatRoomId] ASC, [UserId] ASC)
-);
-
-
-GO
-PRINT N'Creating [dbo].[MessagesSeenUsers]...';
-
-
-GO
-CREATE TABLE [dbo].[MessagesSeenUsers] (
-    [MessageId] BIGINT   NOT NULL,
-    [UserId]    INT      NOT NULL,
-    [Seen]      DATETIME NOT NULL
 );
 
 
@@ -415,15 +415,6 @@ PRINT N'Creating unnamed constraint on [dbo].[Users]...';
 GO
 ALTER TABLE [dbo].[Users]
     ADD DEFAULT (SYSDATETIME()) FOR [Created];
-
-
-GO
-PRINT N'Creating unnamed constraint on [dbo].[ChatRoomMembers]...';
-
-
-GO
-ALTER TABLE [dbo].[ChatRoomMembers]
-    ADD DEFAULT (SYSDATETIME()) FOR [JoinedDate];
 
 
 GO
@@ -499,24 +490,6 @@ ALTER TABLE [dbo].[Verifications]
 
 
 GO
-PRINT N'Creating [dbo].[FK_CHATROOM_ID]...';
-
-
-GO
-ALTER TABLE [dbo].[ChatRoomMembers]
-    ADD CONSTRAINT [FK_CHATROOM_ID] FOREIGN KEY ([ChatRoomId]) REFERENCES [dbo].[ChatRooms] ([Id]) ON DELETE CASCADE;
-
-
-GO
-PRINT N'Creating [dbo].[FK_USER_ID]...';
-
-
-GO
-ALTER TABLE [dbo].[ChatRoomMembers]
-    ADD CONSTRAINT [FK_USER_ID] FOREIGN KEY ([UserId]) REFERENCES [dbo].[Users] ([Id]) ON DELETE CASCADE;
-
-
-GO
 PRINT N'Creating [dbo].[FK_MESSAGE_SEEN_MESSAGE_ID]...';
 
 
@@ -532,6 +505,24 @@ PRINT N'Creating [dbo].[FK_MESSAGE_SEEN_USER_ID]...';
 GO
 ALTER TABLE [dbo].[MessagesSeenUsers]
     ADD CONSTRAINT [FK_MESSAGE_SEEN_USER_ID] FOREIGN KEY ([UserId]) REFERENCES [dbo].[Users] ([Id]) ON DELETE CASCADE;
+
+
+GO
+PRINT N'Creating [dbo].[FK_CHATROOM_ID]...';
+
+
+GO
+ALTER TABLE [dbo].[ChatRoomMembers]
+    ADD CONSTRAINT [FK_CHATROOM_ID] FOREIGN KEY ([ChatRoomId]) REFERENCES [dbo].[ChatRooms] ([Id]) ON DELETE CASCADE;
+
+
+GO
+PRINT N'Creating [dbo].[FK_USER_ID]...';
+
+
+GO
+ALTER TABLE [dbo].[ChatRoomMembers]
+    ADD CONSTRAINT [FK_USER_ID] FOREIGN KEY ([UserId]) REFERENCES [dbo].[Users] ([Id]) ON DELETE CASCADE;
 
 
 GO
