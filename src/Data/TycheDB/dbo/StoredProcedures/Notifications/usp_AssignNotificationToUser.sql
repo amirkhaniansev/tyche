@@ -1,6 +1,6 @@
 /**
  * GNU General Public License Version 3.0, 29 June 2007
- * uspCreateMessage
+ * usp_AssignNotificationToUser
  * Copyright (C) <2019>
  *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
  *               <DavidPetr>       <david.petrosyan11100@gmail.com>
@@ -20,30 +20,19 @@
 **/
 
 /***Type : NoReturnValue***/
-CREATE PROCEDURE [dbo].[uspCreateMessage]
-	@from	INT,
-	@to		INT,
-	@header	NVARCHAR(MAX),
-	@text	NVARCHAR(4000)
+CREATE PROCEDURE [dbo].[usp_AssignNotificationToUser]
+	@userId			INT,
+	@notificationId	BIGINT
 AS
 	BEGIN
 		BEGIN TRY
-			BEGIN TRANSACTION CREATE_MESSAGE
-				
-				--creating message
-				INSERT INTO [Messages] VALUES (
-					@from,
-					@to,
-					@header,
-					@text,
-					GETDATE()
-				)
-		
-			COMMIT TRANSACTION CREATE_MESSAGE
+			BEGIN TRANSACTION ASSIGN_NOTIFICATION_TO_USER
+				INSERT INTO [NotificationAssignments] VALUES (@userId, @notificationId, 0)
+			COMMIT TRANSACTION ASSIGN_NOTIFICATION_TO_USER
 			RETURN 0x0
 		END TRY
 		BEGIN CATCH
-			ROLLBACK TRANSACTION CREATE_MESSAGE
+			ROLLBACK TRANSACTION ASSIGN_NOTIFICATION_TO_USER
 			RETURN 0x4
-		END CATCH
+		END CATCH		
 	END

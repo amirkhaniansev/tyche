@@ -1,6 +1,6 @@
 /**
  * GNU General Public License Version 3.0, 29 June 2007
- * FnGetChatroomUsers
+ * usp_CreateMessage
  * Copyright (C) <2019>
  *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
  *               <DavidPetr>       <david.petrosyan11100@gmail.com>
@@ -19,18 +19,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-CREATE FUNCTION [dbo].[FnGetChatroomUsers]
-(
-    @chatRoomId INT
-)
-RETURNS TABLE AS RETURN
-(
-    SELECT  u.[Id],
-	    u.[FirstName],
-	    u.[LastName],
-	    u.[Username],
-	    u.[ProfilePictureUrl]
-	FROM [dbo].[Users] u 
-	INNER JOIN [dbo].[ChatRoomMembers] crm ON crm.[UserId] = u.[Id]
-	WHERE crm.[ChatRoomId] = @chatRoomId
-)
+/***Type : NoReturnValue***/
+CREATE PROCEDURE [dbo].[usp_CreateMessage]
+	@from	INT,
+	@to		INT,
+	@header	NVARCHAR(MAX),
+	@text	NVARCHAR(4000)
+AS
+	BEGIN
+		BEGIN TRY
+			BEGIN TRANSACTION CREATE_MESSAGE
+				
+				--creating message
+				INSERT INTO [Messages] VALUES (
+					@from,
+					@to,
+					@header,
+					@text,
+					GETDATE()
+				)
+		
+			COMMIT TRANSACTION CREATE_MESSAGE
+			RETURN 0x0
+		END TRY
+		BEGIN CATCH
+			ROLLBACK TRANSACTION CREATE_MESSAGE
+			RETURN 0x4
+		END CATCH
+	END

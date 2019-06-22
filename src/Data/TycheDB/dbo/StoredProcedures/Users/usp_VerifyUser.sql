@@ -1,6 +1,6 @@
 /**
  * GNU General Public License Version 3.0, 29 June 2007
- * uspCreateNotification
+ * usp_VerifyUser
  * Copyright (C) <2019>
  *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
  *               <DavidPetr>       <david.petrosyan11100@gmail.com>
@@ -20,24 +20,32 @@
 **/
 
 /***Type : NoReturnValue***/
-CREATE PROCEDURE [dbo].[uspCreateNotification]
-	@type		INT,
-	@info		NVARCHAR(MAX),
-	@chatRoomId	INT
-AS
-	BEGIN
+CREATE PROCEDURE [dbo].[usp_VerifyUser]
+	@userId		INT,
+	@code		NVARCHAR(32)
+AS	
+	BEGIN		
+		DECLARE @isVerified BIT
+		SELECT @isVerified = IsVerified FROM [Users] WHERE Id = @userId
+		IF @isVerified IS NULL
+			RETURN 0x7
+		if @isVerified = 1
+			RETURN 0x8
 		BEGIN TRY
-			BEGIN TRANSACTION CREATE_NOTIFICATION
-				INSERT INTO [Notifications] VALUES (
-					@type,
-					@info,
-					@chatRoomId,
-					GETDATE())
-			COMMIT TRANSACTION CREATE_NOTIFICATION
-			RETURN SCOPE_IDENTITY()
-		END TRY
+			BEGIN TRANSACTION VERIFY
+				DECLARE @created		DATETIME
+				DECLARE @validOffSet	INT
+				SELECT @created = Created, @validOffset = ValidOffset FROM [Verifications]
+					WHERE UserId = @userId AND Code = @code
+				IF @created + @validOffset > GETDATE()
+					RETURN 0x6
+				DELETE FROM [Verifications] WHERE UserId = @userId AND Code = @code
+				UPDATE [Users] SET IsVerified = 1 WHERE Id = @userId
+				RETURN 0x0
+			COMMIT TRANSACTION VERIFIY	
+		END TRY	
 		BEGIN CATCH
-			ROLLBACK TRANSACTION CREATE_NOTIFICATION
+			ROLLBACK TRANSACTION VERIFIY
 			RETURN 0x4
-		END CATCH
-	END	
+		END CATCH		 
+	END

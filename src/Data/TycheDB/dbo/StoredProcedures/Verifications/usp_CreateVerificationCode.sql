@@ -1,6 +1,6 @@
 /**
  * GNU General Public License Version 3.0, 29 June 2007
- * uspAssignNotificationToUser
+ * usp_CreateVerificationCode
  * Copyright (C) <2019>
  *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
  *               <DavidPetr>       <david.petrosyan11100@gmail.com>
@@ -20,19 +20,16 @@
 **/
 
 /***Type : NoReturnValue***/
-CREATE PROCEDURE [dbo].[uspAssignNotificationToUser]
+CREATE PROCEDURE [dbo].[usp_CreateVerificationCode]
 	@userId			INT,
-	@notificationId	BIGINT
+	@code			NVARCHAR(32),
+	@validOffset	INT
 AS
 	BEGIN
-		BEGIN TRY
-			BEGIN TRANSACTION ASSIGN_NOTIFICATION_TO_USER
-				INSERT INTO [NotificationAssignments] VALUES (@userId, @notificationId, 0)
-			COMMIT TRANSACTION ASSIGN_NOTIFICATION_TO_USER
-			RETURN 0x0
-		END TRY
-		BEGIN CATCH
-			ROLLBACK TRANSACTION ASSIGN_NOTIFICATION_TO_USER
-			RETURN 0x4
-		END CATCH		
+		INSERT INTO [Verifications] VALUES (
+			@userId,
+			@code,
+			GETDATE(),
+			@validOffset)
+		RETURN 0x0
 	END

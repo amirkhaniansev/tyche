@@ -526,13 +526,13 @@ ALTER TABLE [dbo].[ChatRoomMembers]
 
 
 GO
-PRINT N'Creating [dbo].[FnGetChatroomUsers]...';
+PRINT N'Creating [dbo].[ufn_ChatroomUsers]...';
 
 
 GO
 /**
  * GNU General Public License Version 3.0, 29 June 2007
- * FnGetChatroomUsers
+ * ufn_ChatroomUsers
  * Copyright (C) <2019>
  *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
  *               <DavidPetr>       <david.petrosyan11100@gmail.com>
@@ -551,7 +551,7 @@ GO
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-CREATE FUNCTION [dbo].[FnGetChatroomUsers]
+CREATE FUNCTION [dbo].[ufn_ChatroomUsers]
 (
     @chatRoomId INT
 )
@@ -567,13 +567,13 @@ RETURNS TABLE AS RETURN
 	WHERE crm.[ChatRoomId] = @chatRoomId
 )
 GO
-PRINT N'Creating [dbo].[uspAssignNotificationToUser]...';
+PRINT N'Creating [dbo].[usp_CreateVerificationCode]...';
 
 
 GO
 /**
  * GNU General Public License Version 3.0, 29 June 2007
- * uspAssignNotificationToUser
+ * usp_CreateVerificationCode
  * Copyright (C) <2019>
  *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
  *               <DavidPetr>       <david.petrosyan11100@gmail.com>
@@ -593,7 +593,47 @@ GO
 **/
 
 /***Type : NoReturnValue***/
-CREATE PROCEDURE [dbo].[uspAssignNotificationToUser]
+CREATE PROCEDURE [dbo].[usp_CreateVerificationCode]
+	@userId			INT,
+	@code			NVARCHAR(32),
+	@validOffset	INT
+AS
+	BEGIN
+		INSERT INTO [Verifications] VALUES (
+			@userId,
+			@code,
+			GETDATE(),
+			@validOffset)
+		RETURN 0x0
+	END
+GO
+PRINT N'Creating [dbo].[usp_AssignNotificationToUser]...';
+
+
+GO
+/**
+ * GNU General Public License Version 3.0, 29 June 2007
+ * usp_AssignNotificationToUser
+ * Copyright (C) <2019>
+ *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
+ *               <DavidPetr>       <david.petrosyan11100@gmail.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * Full notice : https://github.com/amirkhaniansev/tyche/tree/master/LICENSE
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+**/
+
+/***Type : NoReturnValue***/
+CREATE PROCEDURE [dbo].[usp_AssignNotificationToUser]
 	@userId			INT,
 	@notificationId	BIGINT
 AS
@@ -610,13 +650,13 @@ AS
 		END CATCH		
 	END
 GO
-PRINT N'Creating [dbo].[uspCreateMessage]...';
+PRINT N'Creating [dbo].[usp_CreateMessage]...';
 
 
 GO
 /**
  * GNU General Public License Version 3.0, 29 June 2007
- * uspCreateMessage
+ * usp_CreateMessage
  * Copyright (C) <2019>
  *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
  *               <DavidPetr>       <david.petrosyan11100@gmail.com>
@@ -636,7 +676,7 @@ GO
 **/
 
 /***Type : NoReturnValue***/
-CREATE PROCEDURE [dbo].[uspCreateMessage]
+CREATE PROCEDURE [dbo].[usp_CreateMessage]
 	@from	INT,
 	@to		INT,
 	@header	NVARCHAR(MAX),
@@ -664,13 +704,13 @@ AS
 		END CATCH
 	END
 GO
-PRINT N'Creating [dbo].[uspVerifyUser]...';
+PRINT N'Creating [dbo].[usp_VerifyUser]...';
 
 
 GO
 /**
  * GNU General Public License Version 3.0, 29 June 2007
- * uspVerifyUser
+ * usp_VerifyUser
  * Copyright (C) <2019>
  *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
  *               <DavidPetr>       <david.petrosyan11100@gmail.com>
@@ -690,7 +730,7 @@ GO
 **/
 
 /***Type : NoReturnValue***/
-CREATE PROCEDURE [dbo].[uspVerifyUser]
+CREATE PROCEDURE [dbo].[usp_VerifyUser]
 	@userId		INT,
 	@code		NVARCHAR(32)
 AS	
@@ -720,13 +760,13 @@ AS
 		END CATCH		 
 	END
 GO
-PRINT N'Creating [dbo].[uspCreateNotification]...';
+PRINT N'Creating [dbo].[usp_CreateChatRoom]...';
 
 
 GO
 /**
  * GNU General Public License Version 3.0, 29 June 2007
- * uspCreateNotification
+ * usp_CreateChatRoom
  * Copyright (C) <2019>
  *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
  *               <DavidPetr>       <david.petrosyan11100@gmail.com>
@@ -746,55 +786,7 @@ GO
 **/
 
 /***Type : NoReturnValue***/
-CREATE PROCEDURE [dbo].[uspCreateNotification]
-	@type		INT,
-	@info		NVARCHAR(MAX),
-	@chatRoomId	INT
-AS
-	BEGIN
-		BEGIN TRY
-			BEGIN TRANSACTION CREATE_NOTIFICATION
-				INSERT INTO [Notifications] VALUES (
-					@type,
-					@info,
-					@chatRoomId,
-					GETDATE())
-			COMMIT TRANSACTION CREATE_NOTIFICATION
-			RETURN SCOPE_IDENTITY()
-		END TRY
-		BEGIN CATCH
-			ROLLBACK TRANSACTION CREATE_NOTIFICATION
-			RETURN 0x4
-		END CATCH
-	END
-GO
-PRINT N'Creating [dbo].[uspCreateChatRoom]...';
-
-
-GO
-/**
- * GNU General Public License Version 3.0, 29 June 2007
- * uspCreateChatRoom
- * Copyright (C) <2019>
- *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
- *               <DavidPetr>       <david.petrosyan11100@gmail.com>
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * Full notice : https://github.com/amirkhaniansev/tyche/tree/master/LICENSE
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
-**/
-
-/***Type : NoReturnValue***/
-CREATE PROCEDURE [dbo].[uspCreateChatRoom]
+CREATE PROCEDURE [dbo].[usp_CreateChatRoom]
 	@name			NVARCHAR(100),
 	@creatorId		INT,
 	@isGroup		BIT,
@@ -820,13 +812,13 @@ AS
 		END CATCH
 	END
 GO
-PRINT N'Creating [dbo].[uspCreateVerificationCode]...';
+PRINT N'Creating [dbo].[usp_CreateUser]...';
 
 
 GO
 /**
  * GNU General Public License Version 3.0, 29 June 2007
- * uspCreateVerificationCode
+ * usp_CreateUser
  * Copyright (C) <2019>
  *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
  *               <DavidPetr>       <david.petrosyan11100@gmail.com>
@@ -846,47 +838,7 @@ GO
 **/
 
 /***Type : NoReturnValue***/
-CREATE PROCEDURE [dbo].[uspCreateVerificationCode]
-	@userId			INT,
-	@code			NVARCHAR(32),
-	@validOffset	INT
-AS
-	BEGIN
-		INSERT INTO [Verifications] VALUES (
-			@userId,
-			@code,
-			GETDATE(),
-			@validOffset)
-		RETURN 0x0
-	END
-GO
-PRINT N'Creating [dbo].[uspCreateUser]...';
-
-
-GO
-/**
- * GNU General Public License Version 3.0, 29 June 2007
- * uspCreateUser
- * Copyright (C) <2019>
- *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
- *               <DavidPetr>       <david.petrosyan11100@gmail.com>
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * Full notice : https://github.com/amirkhaniansev/tyche/tree/master/LICENSE
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
-**/
-
-/***Type : NoReturnValue***/
-CREATE PROCEDURE [dbo].[uspCreateUser]
+CREATE PROCEDURE [dbo].[usp_CreateUser]
 	@firstName			NVARCHAR(20),
 	@lastName			NVARCHAR(50),
 	@username			VARCHAR(55),
@@ -917,6 +869,54 @@ AS
 			ROLLBACK TRANSACTION CREATE_USER
 			RETURN 0x4
 		END CATCH	
+	END
+GO
+PRINT N'Creating [dbo].[usp_CreateNotification]...';
+
+
+GO
+/**
+ * GNU General Public License Version 3.0, 29 June 2007
+ * usp_CreateNotification
+ * Copyright (C) <2019>
+ *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
+ *               <DavidPetr>       <david.petrosyan11100@gmail.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * Full notice : https://github.com/amirkhaniansev/tyche/tree/master/LICENSE
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+**/
+
+/***Type : NoReturnValue***/
+CREATE PROCEDURE [dbo].[usp_CreateNotification]
+	@type		INT,
+	@info		NVARCHAR(MAX),
+	@chatRoomId	INT
+AS
+	BEGIN
+		BEGIN TRY
+			BEGIN TRANSACTION CREATE_NOTIFICATION
+				INSERT INTO [Notifications] VALUES (
+					@type,
+					@info,
+					@chatRoomId,
+					GETDATE())
+			COMMIT TRANSACTION CREATE_NOTIFICATION
+			RETURN SCOPE_IDENTITY()
+		END TRY
+		BEGIN CATCH
+			ROLLBACK TRANSACTION CREATE_NOTIFICATION
+			RETURN 0x4
+		END CATCH
 	END
 GO
 -- Refactoring step to update target server with deployed transaction logs

@@ -1,6 +1,6 @@
 /**
  * GNU General Public License Version 3.0, 29 June 2007
- * uspCreateChatRoom
+ * ufn_ChatroomUsers
  * Copyright (C) <2019>
  *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
  *               <DavidPetr>       <david.petrosyan11100@gmail.com>
@@ -19,29 +19,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-/***Type : NoReturnValue***/
-CREATE PROCEDURE [dbo].[uspCreateChatRoom]
-	@name			NVARCHAR(100),
-	@creatorId		INT,
-	@isGroup		BIT,
-	@isKeyFixed		BIT,
-	@pictureUrl		VARCHAR(MAX)
-AS
-	BEGIN
-		BEGIN TRY
-			BEGIN TRANSACTION CREATE_CHAT_ROOM
-				INSERT INTO [ChatRooms] VALUES (
-					@creatorId,
-					@name,
-					GETDATE(),
-					@isGroup,
-					@isKeyFixed,
-					@pictureUrl)
-			COMMIT TRANSACTION CREATE_CHAT_ROOM
-			RETURN SCOPE_IDENTITY()
-		END TRY
-		BEGIN CATCH
-			ROLLBACK TRANSACTION CREATE_CHAT_ROOM
-			RETURN 0x4
-		END CATCH
-	END
+CREATE FUNCTION [dbo].[ufn_ChatroomUsers]
+(
+    @chatRoomId INT
+)
+RETURNS TABLE AS RETURN
+(
+    SELECT  u.[Id],
+	    u.[FirstName],
+	    u.[LastName],
+	    u.[Username],
+	    u.[ProfilePictureUrl]
+	FROM [dbo].[Users] u 
+	INNER JOIN [dbo].[ChatRoomMembers] crm ON crm.[UserId] = u.[Id]
+	WHERE crm.[ChatRoomId] = @chatRoomId
+)

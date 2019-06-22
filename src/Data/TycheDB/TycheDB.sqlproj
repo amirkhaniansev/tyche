@@ -69,6 +69,7 @@
     <Folder Include="dbo\StoredProcedures\Messages" />
     <Folder Include="dbo\Queries" />
     <Folder Include="dbo\Functions" />
+    <Folder Include="dbo\Functions\Chatrooms" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\ChatRoomMembers.sql" />
@@ -78,17 +79,17 @@
     <Build Include="dbo\Tables\Notifications.sql" />
     <Build Include="dbo\Tables\Users.sql" />
     <Build Include="dbo\Tables\Verifications.sql" />
-    <Build Include="dbo\StoredProcedures\users\uspCreateUser.sql" />
-    <Build Include="dbo\StoredProcedures\verifications\uspCreateVerificationCode.sql" />
-    <Build Include="dbo\StoredProcedures\chatrooms\uspCreateChatRoom.sql" />
-    <Build Include="dbo\StoredProcedures\notifications\uspCreateNotification.sql" />
-    <Build Include="dbo\StoredProcedures\users\uspVerifyUser.sql" />
-    <Build Include="dbo\StoredProcedures\messages\uspCreateMessage.sql" />
-    <Build Include="dbo\StoredProcedures\notifications\uspAssignNotificationToUser.sql" />
+    <Build Include="dbo\StoredProcedures\Users\usp_CreateUser.sql" />
+    <Build Include="dbo\StoredProcedures\Verifications\usp_CreateVerificationCode.sql" />
+    <Build Include="dbo\StoredProcedures\Chatrooms\usp_CreateChatRoom.sql" />
+    <Build Include="dbo\StoredProcedures\Notifications\usp_CreateNotification.sql" />
+    <Build Include="dbo\StoredProcedures\Users\usp_VerifyUser.sql" />
+    <Build Include="dbo\StoredProcedures\Messages\usp_CreateMessage.sql" />
+    <Build Include="dbo\StoredProcedures\Notifications\usp_AssignNotificationToUser.sql" />
     <Build Include="dbo\Tables\NotificationAssignments.sql" />
     <Build Include="dbo\Tables\Grants.sql" />
     <None Include="dbo\Queries\TycheDB_Create.sql" />
-    <Build Include="dbo\Functions\FnGetChatroomUsers.sql" />
+    <Build Include="dbo\Functions\Chatrooms\ufn_ChatroomUsers.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Scripts.refactorlog" />

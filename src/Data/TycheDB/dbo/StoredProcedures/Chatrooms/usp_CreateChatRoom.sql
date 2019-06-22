@@ -1,6 +1,6 @@
 /**
  * GNU General Public License Version 3.0, 29 June 2007
- * uspCreateUser
+ * usp_CreateChatRoom
  * Copyright (C) <2019>
  *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
  *               <DavidPetr>       <david.petrosyan11100@gmail.com>
@@ -20,35 +20,28 @@
 **/
 
 /***Type : NoReturnValue***/
-CREATE PROCEDURE [dbo].[uspCreateUser]
-	@firstName			NVARCHAR(20),
-	@lastName			NVARCHAR(50),
-	@username			VARCHAR(55),
-	@email				VARCHAR(100),
-	@profilePictureUrl		VARCHAR(MAX),
-	@passwordHash			VARCHAR(MAX),
-	@created			DATETIME
+CREATE PROCEDURE [dbo].[usp_CreateChatRoom]
+	@name			NVARCHAR(100),
+	@creatorId		INT,
+	@isGroup		BIT,
+	@isKeyFixed		BIT,
+	@pictureUrl		VARCHAR(MAX)
 AS
 	BEGIN
-		IF EXISTS (SELECT * FROM [Users] WHERE Username = @username OR Email = @email)
-			RETURN 0x3
 		BEGIN TRY
-			BEGIN TRANSACTION CREATE_USER
-				INSERT INTO Users VALUES(
-					@firstName,
-					@lastName,
-					@username,
-					@email,
-					@profilePictureUrl,
-					@passwordHash,
-					0,
-					0,
-					@created)
-			COMMIT TRANSACTION CREATE_USER
+			BEGIN TRANSACTION CREATE_CHAT_ROOM
+				INSERT INTO [ChatRooms] VALUES (
+					@creatorId,
+					@name,
+					GETDATE(),
+					@isGroup,
+					@isKeyFixed,
+					@pictureUrl)
+			COMMIT TRANSACTION CREATE_CHAT_ROOM
 			RETURN SCOPE_IDENTITY()
 		END TRY
 		BEGIN CATCH
-			ROLLBACK TRANSACTION CREATE_USER
+			ROLLBACK TRANSACTION CREATE_CHAT_ROOM
 			RETURN 0x4
-		END CATCH	
+		END CATCH
 	END
