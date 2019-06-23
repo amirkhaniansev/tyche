@@ -1,0 +1,11 @@
+{
+  "Server": "(local)",
+  "Database": "TycheDB",
+  "UseIntegratedSecurity": "True",
+  "UseFriendlyTypeNames": "True",
+  "Username": "",
+  "Password": "",
+  "ProjectPath": "../../src/Data/TycheDAL",
+  "ContextPath": "../../src/Data/TycheDAL/Context",
+  "ModelsPath": "../../src/Data/TycheDAL/Models"
+}
