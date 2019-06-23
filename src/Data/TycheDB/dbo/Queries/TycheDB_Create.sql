@@ -251,39 +251,6 @@ CREATE TABLE [dbo].[Grants] (
 
 
 GO
-PRINT N'Creating [dbo].[Messages]...';
-
-
-GO
-CREATE TABLE [dbo].[Messages] (
-    [Id]      BIGINT          IDENTITY (100000, 1) NOT NULL,
-    [From]    INT             NULL,
-    [To]      INT             NULL,
-    [Header]  NVARCHAR (MAX)  NULL,
-    [Text]    NVARCHAR (4000) NOT NULL,
-    [Created] DATETIME        NULL,
-    CONSTRAINT [PK_MESSAGE_ID] PRIMARY KEY CLUSTERED ([Id] ASC)
-);
-
-
-GO
-PRINT N'Creating [dbo].[ChatRooms]...';
-
-
-GO
-CREATE TABLE [dbo].[ChatRooms] (
-    [Id]         INT            IDENTITY (100000, 1) NOT NULL,
-    [CreatorId]  INT            NULL,
-    [Name]       NVARCHAR (100) NULL,
-    [Created]    DATETIME       NOT NULL,
-    [IsGroup]    BIT            NOT NULL,
-    [IsKeyFixed] BIT            NOT NULL,
-    [PictureUrl] VARCHAR (MAX)  NULL,
-    CONSTRAINT [PK_CHATROOM_ID] PRIMARY KEY CLUSTERED ([Id] ASC)
-);
-
-
-GO
 PRINT N'Creating [dbo].[NotificationAssignments]...';
 
 
@@ -293,21 +260,6 @@ CREATE TABLE [dbo].[NotificationAssignments] (
     [NotificationId] BIGINT NOT NULL,
     [IsSeen]         BIT    NULL,
     CONSTRAINT [PK_NOTIFICATION_ASSIGNMENT] PRIMARY KEY CLUSTERED ([NotificationId] ASC, [UserId] ASC)
-);
-
-
-GO
-PRINT N'Creating [dbo].[Notifications]...';
-
-
-GO
-CREATE TABLE [dbo].[Notifications] (
-    [Id]         BIGINT         IDENTITY (100000, 1) NOT NULL,
-    [Type]       INT            NULL,
-    [Info]       NVARCHAR (MAX) NULL,
-    [ChatRoomId] INT            NULL,
-    [Created]    DATETIME       NULL,
-    CONSTRAINT [PK_NOTIFICATION_ID] PRIMARY KEY CLUSTERED ([Id] ASC)
 );
 
 
@@ -347,6 +299,21 @@ CREATE TABLE [dbo].[Users] (
 
 
 GO
+PRINT N'Creating [dbo].[Notifications]...';
+
+
+GO
+CREATE TABLE [dbo].[Notifications] (
+    [Id]         BIGINT         IDENTITY (100000, 1) NOT NULL,
+    [Type]       INT            NULL,
+    [Info]       NVARCHAR (MAX) NULL,
+    [ChatRoomId] INT            NULL,
+    [Created]    DATETIME       NULL,
+    CONSTRAINT [PK_NOTIFICATION_ID] PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+
+
+GO
 PRINT N'Creating [dbo].[MessagesSeenUsers]...';
 
 
@@ -355,6 +322,39 @@ CREATE TABLE [dbo].[MessagesSeenUsers] (
     [MessageId] BIGINT   NOT NULL,
     [UserId]    INT      NOT NULL,
     [Seen]      DATETIME NOT NULL
+);
+
+
+GO
+PRINT N'Creating [dbo].[Messages]...';
+
+
+GO
+CREATE TABLE [dbo].[Messages] (
+    [Id]      BIGINT          IDENTITY (100000, 1) NOT NULL,
+    [From]    INT             NULL,
+    [To]      INT             NULL,
+    [Header]  NVARCHAR (MAX)  NULL,
+    [Text]    NVARCHAR (4000) NOT NULL,
+    [Created] DATETIME        NULL,
+    CONSTRAINT [PK_MESSAGE_ID] PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+
+
+GO
+PRINT N'Creating [dbo].[ChatRooms]...';
+
+
+GO
+CREATE TABLE [dbo].[ChatRooms] (
+    [Id]         INT            IDENTITY (100000, 1) NOT NULL,
+    [CreatorId]  INT            NULL,
+    [Name]       NVARCHAR (100) NULL,
+    [Created]    DATETIME       NOT NULL,
+    [IsGroup]    BIT            NOT NULL,
+    [IsKeyFixed] BIT            NOT NULL,
+    [PictureUrl] VARCHAR (MAX)  NULL,
+    CONSTRAINT [PK_CHATROOM_ID] PRIMARY KEY CLUSTERED ([Id] ASC)
 );
 
 
@@ -370,24 +370,6 @@ CREATE TABLE [dbo].[ChatRoomMembers] (
     [JoinedDate]  DATETIME       NOT NULL,
     CONSTRAINT [PK_CHATROOM_MEMBER] PRIMARY KEY CLUSTERED ([ChatRoomId] ASC, [UserId] ASC)
 );
-
-
-GO
-PRINT N'Creating unnamed constraint on [dbo].[ChatRooms]...';
-
-
-GO
-ALTER TABLE [dbo].[ChatRooms]
-    ADD DEFAULT (0) FOR [IsGroup];
-
-
-GO
-PRINT N'Creating unnamed constraint on [dbo].[ChatRooms]...';
-
-
-GO
-ALTER TABLE [dbo].[ChatRooms]
-    ADD DEFAULT (0) FOR [IsKeyFixed];
 
 
 GO
@@ -427,6 +409,78 @@ ALTER TABLE [dbo].[MessagesSeenUsers]
 
 
 GO
+PRINT N'Creating unnamed constraint on [dbo].[ChatRooms]...';
+
+
+GO
+ALTER TABLE [dbo].[ChatRooms]
+    ADD DEFAULT (0) FOR [IsGroup];
+
+
+GO
+PRINT N'Creating unnamed constraint on [dbo].[ChatRooms]...';
+
+
+GO
+ALTER TABLE [dbo].[ChatRooms]
+    ADD DEFAULT (0) FOR [IsKeyFixed];
+
+
+GO
+PRINT N'Creating [dbo].[FK_NOTIFICATION_USER_ID]...';
+
+
+GO
+ALTER TABLE [dbo].[NotificationAssignments]
+    ADD CONSTRAINT [FK_NOTIFICATION_USER_ID] FOREIGN KEY ([UserId]) REFERENCES [dbo].[Users] ([Id]) ON DELETE CASCADE;
+
+
+GO
+PRINT N'Creating [dbo].[FK_NOTIFICATION_ID]...';
+
+
+GO
+ALTER TABLE [dbo].[NotificationAssignments]
+    ADD CONSTRAINT [FK_NOTIFICATION_ID] FOREIGN KEY ([NotificationId]) REFERENCES [dbo].[Notifications] ([Id]) ON DELETE CASCADE;
+
+
+GO
+PRINT N'Creating [dbo].[FK_VERIFICATIONS_USER_ID]...';
+
+
+GO
+ALTER TABLE [dbo].[Verifications]
+    ADD CONSTRAINT [FK_VERIFICATIONS_USER_ID] FOREIGN KEY ([UserId]) REFERENCES [dbo].[Users] ([Id]);
+
+
+GO
+PRINT N'Creating [dbo].[FK_NOTIFICATION_CHAT_ROOM_ID]...';
+
+
+GO
+ALTER TABLE [dbo].[Notifications]
+    ADD CONSTRAINT [FK_NOTIFICATION_CHAT_ROOM_ID] FOREIGN KEY ([ChatRoomId]) REFERENCES [dbo].[ChatRooms] ([Id]) ON DELETE CASCADE;
+
+
+GO
+PRINT N'Creating [dbo].[FK_MESSAGE_SEEN_MESSAGE_ID]...';
+
+
+GO
+ALTER TABLE [dbo].[MessagesSeenUsers]
+    ADD CONSTRAINT [FK_MESSAGE_SEEN_MESSAGE_ID] FOREIGN KEY ([MessageId]) REFERENCES [dbo].[Messages] ([Id]) ON DELETE CASCADE;
+
+
+GO
+PRINT N'Creating [dbo].[FK_MESSAGE_SEEN_USER_ID]...';
+
+
+GO
+ALTER TABLE [dbo].[MessagesSeenUsers]
+    ADD CONSTRAINT [FK_MESSAGE_SEEN_USER_ID] FOREIGN KEY ([UserId]) REFERENCES [dbo].[Users] ([Id]) ON DELETE CASCADE;
+
+
+GO
 PRINT N'Creating [dbo].[FK_MESSAGE_FROM]...';
 
 
@@ -451,60 +505,6 @@ PRINT N'Creating [dbo].[FK_CHATROOM_CREATOR_ID]...';
 GO
 ALTER TABLE [dbo].[ChatRooms]
     ADD CONSTRAINT [FK_CHATROOM_CREATOR_ID] FOREIGN KEY ([CreatorId]) REFERENCES [dbo].[Users] ([Id]);
-
-
-GO
-PRINT N'Creating [dbo].[FK_NOTIFICATION_USER_ID]...';
-
-
-GO
-ALTER TABLE [dbo].[NotificationAssignments]
-    ADD CONSTRAINT [FK_NOTIFICATION_USER_ID] FOREIGN KEY ([UserId]) REFERENCES [dbo].[Users] ([Id]) ON DELETE CASCADE;
-
-
-GO
-PRINT N'Creating [dbo].[FK_NOTIFICATION_ID]...';
-
-
-GO
-ALTER TABLE [dbo].[NotificationAssignments]
-    ADD CONSTRAINT [FK_NOTIFICATION_ID] FOREIGN KEY ([NotificationId]) REFERENCES [dbo].[Notifications] ([Id]) ON DELETE CASCADE;
-
-
-GO
-PRINT N'Creating [dbo].[FK_NOTIFICATION_CHAT_ROOM_ID]...';
-
-
-GO
-ALTER TABLE [dbo].[Notifications]
-    ADD CONSTRAINT [FK_NOTIFICATION_CHAT_ROOM_ID] FOREIGN KEY ([ChatRoomId]) REFERENCES [dbo].[ChatRooms] ([Id]) ON DELETE CASCADE;
-
-
-GO
-PRINT N'Creating [dbo].[FK_VERIFICATIONS_USER_ID]...';
-
-
-GO
-ALTER TABLE [dbo].[Verifications]
-    ADD CONSTRAINT [FK_VERIFICATIONS_USER_ID] FOREIGN KEY ([UserId]) REFERENCES [dbo].[Users] ([Id]);
-
-
-GO
-PRINT N'Creating [dbo].[FK_MESSAGE_SEEN_MESSAGE_ID]...';
-
-
-GO
-ALTER TABLE [dbo].[MessagesSeenUsers]
-    ADD CONSTRAINT [FK_MESSAGE_SEEN_MESSAGE_ID] FOREIGN KEY ([MessageId]) REFERENCES [dbo].[Messages] ([Id]) ON DELETE CASCADE;
-
-
-GO
-PRINT N'Creating [dbo].[FK_MESSAGE_SEEN_USER_ID]...';
-
-
-GO
-ALTER TABLE [dbo].[MessagesSeenUsers]
-    ADD CONSTRAINT [FK_MESSAGE_SEEN_USER_ID] FOREIGN KEY ([UserId]) REFERENCES [dbo].[Users] ([Id]) ON DELETE CASCADE;
 
 
 GO
@@ -566,46 +566,6 @@ RETURNS TABLE AS RETURN
 	INNER JOIN [dbo].[ChatRoomMembers] crm ON crm.[UserId] = u.[Id]
 	WHERE crm.[ChatRoomId] = @chatRoomId
 )
-GO
-PRINT N'Creating [dbo].[usp_CreateVerificationCode]...';
-
-
-GO
-/**
- * GNU General Public License Version 3.0, 29 June 2007
- * usp_CreateVerificationCode
- * Copyright (C) <2019>
- *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
- *               <DavidPetr>       <david.petrosyan11100@gmail.com>
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * Full notice : https://github.com/amirkhaniansev/tyche/tree/master/LICENSE
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
-**/
-
-/***Type : NoReturnValue***/
-CREATE PROCEDURE [dbo].[usp_CreateVerificationCode]
-	@userId			INT,
-	@code			NVARCHAR(32),
-	@validOffset	INT
-AS
-	BEGIN
-		INSERT INTO [Verifications] VALUES (
-			@userId,
-			@code,
-			GETDATE(),
-			@validOffset)
-		RETURN 0x0
-	END
 GO
 PRINT N'Creating [dbo].[usp_AssignNotificationToUser]...';
 
@@ -760,6 +720,54 @@ AS
 		END CATCH		 
 	END
 GO
+PRINT N'Creating [dbo].[usp_CreateNotification]...';
+
+
+GO
+/**
+ * GNU General Public License Version 3.0, 29 June 2007
+ * usp_CreateNotification
+ * Copyright (C) <2019>
+ *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
+ *               <DavidPetr>       <david.petrosyan11100@gmail.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * Full notice : https://github.com/amirkhaniansev/tyche/tree/master/LICENSE
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+**/
+
+/***Type : NoReturnValue***/
+CREATE PROCEDURE [dbo].[usp_CreateNotification]
+	@type		INT,
+	@info		NVARCHAR(MAX),
+	@chatRoomId	INT
+AS
+	BEGIN
+		BEGIN TRY
+			BEGIN TRANSACTION CREATE_NOTIFICATION
+				INSERT INTO [Notifications] VALUES (
+					@type,
+					@info,
+					@chatRoomId,
+					GETDATE())
+			COMMIT TRANSACTION CREATE_NOTIFICATION
+			RETURN SCOPE_IDENTITY()
+		END TRY
+		BEGIN CATCH
+			ROLLBACK TRANSACTION CREATE_NOTIFICATION
+			RETURN 0x4
+		END CATCH
+	END
+GO
 PRINT N'Creating [dbo].[usp_CreateChatRoom]...';
 
 
@@ -810,6 +818,46 @@ AS
 			ROLLBACK TRANSACTION CREATE_CHAT_ROOM
 			RETURN 0x4
 		END CATCH
+	END
+GO
+PRINT N'Creating [dbo].[usp_CreateVerificationCode]...';
+
+
+GO
+/**
+ * GNU General Public License Version 3.0, 29 June 2007
+ * usp_CreateVerificationCode
+ * Copyright (C) <2019>
+ *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
+ *               <DavidPetr>       <david.petrosyan11100@gmail.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * Full notice : https://github.com/amirkhaniansev/tyche/tree/master/LICENSE
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+**/
+
+/***Type : NoReturnValue***/
+CREATE PROCEDURE [dbo].[usp_CreateVerificationCode]
+	@userId			INT,
+	@code			NVARCHAR(32),
+	@validOffset	INT
+AS
+	BEGIN
+		INSERT INTO [Verifications] VALUES (
+			@userId,
+			@code,
+			GETDATE(),
+			@validOffset)
+		RETURN 0x0
 	END
 GO
 PRINT N'Creating [dbo].[usp_CreateUser]...';
@@ -869,54 +917,6 @@ AS
 			ROLLBACK TRANSACTION CREATE_USER
 			RETURN 0x4
 		END CATCH	
-	END
-GO
-PRINT N'Creating [dbo].[usp_CreateNotification]...';
-
-
-GO
-/**
- * GNU General Public License Version 3.0, 29 June 2007
- * usp_CreateNotification
- * Copyright (C) <2019>
- *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
- *               <DavidPetr>       <david.petrosyan11100@gmail.com>
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * Full notice : https://github.com/amirkhaniansev/tyche/tree/master/LICENSE
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
-**/
-
-/***Type : NoReturnValue***/
-CREATE PROCEDURE [dbo].[usp_CreateNotification]
-	@type		INT,
-	@info		NVARCHAR(MAX),
-	@chatRoomId	INT
-AS
-	BEGIN
-		BEGIN TRY
-			BEGIN TRANSACTION CREATE_NOTIFICATION
-				INSERT INTO [Notifications] VALUES (
-					@type,
-					@info,
-					@chatRoomId,
-					GETDATE())
-			COMMIT TRANSACTION CREATE_NOTIFICATION
-			RETURN SCOPE_IDENTITY()
-		END TRY
-		BEGIN CATCH
-			ROLLBACK TRANSACTION CREATE_NOTIFICATION
-			RETURN 0x4
-		END CATCH
 	END
 GO
 -- Refactoring step to update target server with deployed transaction logs
