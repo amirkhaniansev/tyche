@@ -70,7 +70,6 @@
     <Folder Include="dbo\Queries" />
     <Folder Include="dbo\Functions" />
     <Folder Include="dbo\Functions\Chatrooms" />
-    <Folder Include="Queries" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\ChatRoomMembers.sql" />
@@ -91,37 +90,12 @@
     <Build Include="dbo\Tables\Grants.sql" />
     <None Include="dbo\Queries\TycheDB_Create.sql" />
     <Build Include="dbo\Functions\Chatrooms\ufn_ChatroomUsers.sql" />
-    <None Include="Queries\FunctionColumns.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Queries\Functions.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Queries\FunctionsParameters.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Queries\Procedures.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Queries\ProceduresParameters.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Queries\Tables.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Queries\TablesColumns.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Scripts.refactorlog" />
   </ItemGroup>
   <PropertyGroup>
-    <PostBuildEvent>XCOPY "$(ProjectDir)bin\Debug\TycheDB_Create.sql" "$(ProjectDir)dbo\Queries" /Y
-
-dotnet "$(SolutionDir)/../tools/modelgen/bin/Debug/netcoreapp2.2/modelgen.dll" "$(SolutionDir)/../src/Data/TycheDAL/ModelConfig.json"
-
-dotnet "$(SolutionDir)/../tools/licensegen/bin/Debug/netcoreapp2.1/licensegen.dll" "$(SolutionDir)/../src/Data/TycheDAL/Models" "$(SolutionDir)/license_s.txt" .cs</PostBuildEvent>
+    <PostBuildEvent>XCOPY "$(ProjectDir)bin\Debug\TycheDB_Create.sql" "$(ProjectDir)dbo\Queries" /Y</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>dotnet build "$(SolutionDir)/../tools/licensegen/licensegen.csproj"
