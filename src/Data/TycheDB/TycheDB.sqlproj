@@ -97,7 +97,7 @@
   <PropertyGroup>
     <PostBuildEvent>XCOPY "$(ProjectDir)bin\Debug\TycheDB_Create.sql" "$(ProjectDir)dbo\Queries" /Y
 
-dotnet "$(SolutionDir)/../tools/modelgen/bin/Debug/netcoreapp2.2/modelgen.dll"
+dotnet "$(SolutionDir)/../tools/modelgen/bin/Debug/netcoreapp2.2/modelgen.dll" "$(SolutionDir)/../src/Data/TycheDAL/ModelConfig.json"
 </PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
