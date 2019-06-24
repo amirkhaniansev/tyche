@@ -18,26 +18,33 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
+using System;
+
 namespace Tyche.TycheDAL.Models
 {
-    /// <summary>
-    /// Model for chatroom and members relationship
-    /// </summary>
-    public class ChatRoomMember : DbModel
-    {
-        /// <summary>
-        /// Gets or sets chatroom ID
-        /// </summary>
-        public int ChatRoomId { get; set; }
+	/// <summary>
+	/// Class for modelling ChatRoomMember entity.
+	/// </summary>
+	public partial class ChatRoomMember : DbModel
+	{
+		/// <summary>
+		/// Gets or sets ChatRoomId.
+		/// </summary>
+		public int ChatRoomId { get; set; }
 
-        /// <summary>
-        /// Gets or sets user ID
-        /// </summary>
-        public int UserId { get; set; }
+		/// <summary>
+		/// Gets or sets UserId.
+		/// </summary>
+		public int UserId { get; set; }
 
-        /// <summary>
-        /// Gets or sets fixed header
-        /// </summary>
-        public string FixedHeader { get; set; }
-    }
+		/// <summary>
+		/// Gets or sets FixedHeader.
+		/// </summary>
+		public string FixedHeader { get; set; }
+
+		/// <summary>
+		/// Gets or sets JoinedDate.
+		/// </summary>
+		public DateTime JoinedDate { get; set; }
+	}
 }

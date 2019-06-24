@@ -19,55 +19,47 @@
 **/
 
 using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Tyche.TycheDAL.Models
 {
-    /// <summary>
-    /// Model for describing chat creation
-    /// </summary>
-    public class ChatRoom : DbModel
-    {
-        /// <summary>
-        /// Gets or sets ID
-        /// </summary>
-        public int Id { get; set; }
+	/// <summary>
+	/// Class for modelling ChatRoom entity.
+	/// </summary>
+	public partial class ChatRoom : DbModel
+	{
+		/// <summary>
+		/// Gets or sets Id.
+		/// </summary>
+		public int Id { get; set; }
 
-        /// <summary>
-        /// Gets or sets name
-        /// </summary>
-        public string Name { get; set; }
+		/// <summary>
+		/// Gets or sets CreatorId.
+		/// </summary>
+		public int? CreatorId { get; set; }
 
-        /// <summary>
-        /// Gets or sets info if chat is group chat
-        /// </summary>
-        public bool IsGroup { get; set; }
+		/// <summary>
+		/// Gets or sets Name.
+		/// </summary>
+		public string Name { get; set; }
 
-        /// <summary>
-        /// Gets or sets info if chat encryption key is fixed
-        /// </summary>
-        public bool IsKeyFixed { get; set; }
+		/// <summary>
+		/// Gets or sets Created.
+		/// </summary>
+		public DateTime Created { get; set; }
 
-        /// <summary>
-        /// Gets or sets picture url
-        /// </summary>
-        public string PictureUrl { get; set; }
+		/// <summary>
+		/// Gets or sets IsGroup.
+		/// </summary>
+		public bool IsGroup { get; set; }
 
-        /// <summary>
-        /// Gets or sets creator ID
-        /// </summary>
-        public int? CreatorId { get; set; }
+		/// <summary>
+		/// Gets or sets IsKeyFixed.
+		/// </summary>
+		public bool IsKeyFixed { get; set; }
 
-        /// <summary>
-        /// Gets or sets date and time when chatroom is created
-        /// </summary>
-        public DateTime Created { get; set; }
-
-        /// <summary>
-        /// Gets or setes chatroom members
-        /// </summary>
-        [NotMapped]
-        public List<User> Members { get; set; }
-    }
+		/// <summary>
+		/// Gets or sets PictureUrl.
+		/// </summary>
+		public string PictureUrl { get; set; }
+	}
 }

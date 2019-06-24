@@ -18,26 +18,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
+using System;
+
 namespace Tyche.TycheDAL.Models
 {
-    /// <summary>
-    /// Model for notification assignment
-    /// </summary>
-    public class NotificationAssignment : DbModel
-    {
-        /// <summary>
-        /// Gets or sets notification ID
-        /// </summary>
-        public long NotificationId { get; set; }
+	/// <summary>
+	/// Class for modelling NotificationAssignment entity.
+	/// </summary>
+	public partial class NotificationAssignment : DbModel
+	{
+		/// <summary>
+		/// Gets or sets UserId.
+		/// </summary>
+		public int UserId { get; set; }
 
-        /// <summary>
-        /// Gets or sets User ID
-        /// </summary>
-        public int UserId { get; set; }
+		/// <summary>
+		/// Gets or sets NotificationId.
+		/// </summary>
+		public long NotificationId { get; set; }
 
-        /// <summary>
-        /// Gets or sets is seen boolean value which indicate if the user saw the notification
-        /// </summary>
-        public bool IsSeen { get; set; }
-    }
+		/// <summary>
+		/// Gets or sets IsSeen.
+		/// </summary>
+		public bool? IsSeen { get; set; }
+	}
 }

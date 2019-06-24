@@ -19,46 +19,37 @@
 **/
 
 using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using Tyche.TycheDAL.Database;
 
 namespace Tyche.TycheDAL.Models
 {
-    /// <summary>
-    /// Model for notification
-    /// </summary>
-    public class Notification : DbModel
-    {
-        /// <summary>
-        /// Gets or sets ID
-        /// </summary>
-        public long Id { get; set; }
+	/// <summary>
+	/// Class for modelling Notification entity.
+	/// </summary>
+	public partial class Notification : DbModel
+	{
+		/// <summary>
+		/// Gets or sets Id.
+		/// </summary>
+		public long Id { get; set; }
 
-        /// <summary>
-        /// Gets or sets notification type
-        /// </summary>
-        public NotificationType Type { get; set; }
+		/// <summary>
+		/// Gets or sets Type.
+		/// </summary>
+		public int? Type { get; set; }
 
-        /// <summary>
-        /// Gets or sets Info
-        /// </summary>
-        public string Info { get; set; }
+		/// <summary>
+		/// Gets or sets Info.
+		/// </summary>
+		public string Info { get; set; }
 
-        /// <summary>
-        /// Gets or sets Chatroom ID
-        /// </summary>
-        public int? ChatRoomId { get; set; }
+		/// <summary>
+		/// Gets or sets ChatRoomId.
+		/// </summary>
+		public int? ChatRoomId { get; set; }
 
-        /// <summary>
-        /// Gets or sets creation time of notification
-        /// </summary>
-        public DateTime? Created { get; set; }
-
-        /// <summary>
-        /// Gets or sest user ID
-        /// </summary>
-        [NotMapped]
-        public List<int> UserIds { get; set; }
-    }
+		/// <summary>
+		/// Gets or sets Created.
+		/// </summary>
+		public DateTime? Created { get; set; }
+	}
 }

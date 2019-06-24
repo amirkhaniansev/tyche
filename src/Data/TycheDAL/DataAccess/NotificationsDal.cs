@@ -53,7 +53,7 @@ namespace Tyche.TycheDAL.DataAccess
             var notifications = this.Db.Notifications.AsQueryable();
             var assignments = this.Db.NotificationAssignments.AsQueryable();
 
-            var notSeen = assignments.Where(na => !na.IsSeen);
+            var notSeen = assignments.Where(na => na.IsSeen.HasValue && !na.IsSeen.Value);
 
             var query = notSeen
                 .Where(assignment => assignment.UserId == userId)

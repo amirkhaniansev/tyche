@@ -1,6 +1,6 @@
 /**
  * GNU General Public License Version 3.0, 29 June 2007
- * IColumnObject
+ * MessagesSeenUser
  * Copyright (C) <2019>
  *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
  *
@@ -18,14 +18,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-using System.Collections.Generic;
+using System;
 
-namespace ModelGen.Models
+namespace Tyche.TycheDAL.Models
 {
-    internal interface IColumnObject
-    {
-        string Name { get; set; }
+	/// <summary>
+	/// Class for modelling MessagesSeenUser entity.
+	/// </summary>
+	public partial class MessagesSeenUser : DbModel
+	{
+		/// <summary>
+		/// Gets or sets MessageId.
+		/// </summary>
+		public long MessageId { get; set; }
 
-        IEnumerable<IColumn> Columns { get; set; }
-    }
+		/// <summary>
+		/// Gets or sets UserId.
+		/// </summary>
+		public int UserId { get; set; }
+
+		/// <summary>
+		/// Gets or sets Seen.
+		/// </summary>
+		public DateTime Seen { get; set; }
+	}
 }

@@ -22,22 +22,49 @@ using System;
 
 namespace Tyche.TycheDAL.Models
 {
-    public class Grant : DbModel
-    {
-        public long Id { get; set; }
-        
-        public string Key { get; set; }
+	/// <summary>
+	/// Class for modelling Grant entity.
+	/// </summary>
+	public partial class Grant : DbModel
+	{
+		/// <summary>
+		/// Gets or sets Id.
+		/// </summary>
+		public long Id { get; set; }
 
-        public string Type { get; set; }
+		/// <summary>
+		/// Gets or sets Key.
+		/// </summary>
+		public string Key { get; set; }
 
-        public string SubjectId { get; set; }
+		/// <summary>
+		/// Gets or sets Type.
+		/// </summary>
+		public string Type { get; set; }
 
-        public string ClientId { get; set; }
+		/// <summary>
+		/// Gets or sets SubjectId.
+		/// </summary>
+		public string SubjectId { get; set; }
 
-        public DateTime CreationTime { get; set; }
+		/// <summary>
+		/// Gets or sets ClientId.
+		/// </summary>
+		public string ClientId { get; set; }
 
-        public DateTime? Expiration { get; set; }
+		/// <summary>
+		/// Gets or sets CreationTime.
+		/// </summary>
+		public DateTime CreationTime { get; set; }
 
-        public string Data { get; set; }
-    }
+		/// <summary>
+		/// Gets or sets Expiration.
+		/// </summary>
+		public DateTime? Expiration { get; set; }
+
+		/// <summary>
+		/// Gets or sets Data.
+		/// </summary>
+		public string Data { get; set; }
+	}
 }

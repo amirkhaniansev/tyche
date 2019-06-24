@@ -22,39 +22,39 @@ using System;
 
 namespace Tyche.TycheDAL.Models
 {
-    /// <summary>
-    /// Model for message
-    /// </summary>
-    public class Message : DbModel
-    {
-        /// <summary>
-        /// Gets or sets ID
-        /// </summary>
-        public long Id { get; set; }
+	/// <summary>
+	/// Class for modelling Message entity.
+	/// </summary>
+	public partial class Message : DbModel
+	{
+		/// <summary>
+		/// Gets or sets Id.
+		/// </summary>
+		public long Id { get; set; }
 
-        /// <summary>
-        /// Gets or sets user ID, who sent this message.
-        /// </summary>
-        public int From { get; set; }
+		/// <summary>
+		/// Gets or sets From.
+		/// </summary>
+		public int? From { get; set; }
 
-        /// <summary>
-        /// Gets or sets Chatroom ID, which this message is sent to.
-        /// </summary>
-        public int To { get; set; }
+		/// <summary>
+		/// Gets or sets To.
+		/// </summary>
+		public int? To { get; set; }
 
-        /// <summary>
-        /// Gets or sets header
-        /// </summary>
-        public string Header { get; set; }
+		/// <summary>
+		/// Gets or sets Header.
+		/// </summary>
+		public string Header { get; set; }
 
-        /// <summary>
-        /// Gets or sets message text.
-        /// </summary>
-        public string Text { get; set; }
+		/// <summary>
+		/// Gets or sets Text.
+		/// </summary>
+		public string Text { get; set; }
 
-        /// <summary>
-        /// Gets or sets date and time of message creation.
-        /// </summary>
-        public DateTime Created { get; set; }
-    }
+		/// <summary>
+		/// Gets or sets Created.
+		/// </summary>
+		public DateTime? Created { get; set; }
+	}
 }

@@ -18,6 +18,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
+using System.Collections.Generic;
 using Tyche.TycheDAL.Models;
 
 namespace Tyche.TycheBL.Models
@@ -25,5 +26,7 @@ namespace Tyche.TycheBL.Models
     public class Chat : ChatRoom
     {
         public User Creator { get; set; }
+
+        public List<User> Members { get; set; }
     }
 }

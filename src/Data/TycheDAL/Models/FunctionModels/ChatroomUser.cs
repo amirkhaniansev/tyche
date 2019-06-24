@@ -1,6 +1,6 @@
 /**
  * GNU General Public License Version 3.0, 29 June 2007
- * IColumnObject
+ * ChatroomUser
  * Copyright (C) <2019>
  *      Authors: <amirkhaniansev>  <amirkhanyan.sevak@gmail.com>
  *
@@ -18,14 +18,38 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-using System.Collections.Generic;
+using System;
 
-namespace ModelGen.Models
+namespace Tyche.TycheDAL.Models.FunctionModels
 {
-    internal interface IColumnObject
-    {
-        string Name { get; set; }
+	/// <summary>
+	/// Class for modelling ChatroomUser entity.
+	/// </summary>
+	public partial class ChatroomUser : DbModel
+	{
+		/// <summary>
+		/// Gets or sets Id.
+		/// </summary>
+		public int Id { get; set; }
 
-        IEnumerable<IColumn> Columns { get; set; }
-    }
+		/// <summary>
+		/// Gets or sets FirstName.
+		/// </summary>
+		public string FirstName { get; set; }
+
+		/// <summary>
+		/// Gets or sets LastName.
+		/// </summary>
+		public string LastName { get; set; }
+
+		/// <summary>
+		/// Gets or sets Username.
+		/// </summary>
+		public string Username { get; set; }
+
+		/// <summary>
+		/// Gets or sets ProfilePictureUrl.
+		/// </summary>
+		public string ProfilePictureUrl { get; set; }
+	}
 }

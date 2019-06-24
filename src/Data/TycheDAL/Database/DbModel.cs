@@ -20,6 +20,9 @@
 
 namespace Tyche.TycheDAL.Models
 {
+    /// <summary>
+    /// Base model for database entities
+    /// </summary>
     public class DbModel
     {
     }

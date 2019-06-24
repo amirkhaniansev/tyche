@@ -58,7 +58,7 @@ namespace Tyche.TycheBL.Logic
 
                 var notification = new Notification
                 {
-                    Type = NotificationType.Welcome,
+                    Type = (int)NotificationType.Welcome,
                     Info = Messages.Welcome,
                     Created = DateTime.Now
                 };
