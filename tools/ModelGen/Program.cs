@@ -23,6 +23,7 @@ using System.Threading.Tasks;
 using ModelGen.Builder;
 using ModelGen.Constants;
 using ModelGen.Database;
+using Newtonsoft.Json;
 
 namespace ModelGen
 {
@@ -30,6 +31,12 @@ namespace ModelGen
     {
         static async Task Main(string[] args)
         {
+            if (args.Length != 1 || !File.Exists(args[0]))
+                return;
+
+            var configContent = await File.ReadAllTextAsync(args[0]);
+            Configuration.Default = JsonConvert.DeserializeObject<Configuration>(configContent);
+
             var scheme = new Scheme();
 
             await scheme.InitializeQueries();

@@ -19,7 +19,6 @@
 **/
 
 using System;
-using System.IO;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
@@ -31,46 +30,45 @@ namespace ModelGen.Database
 
         public static Configuration Default
         {
-            get
-            {
-                if (configuration == null)
-                {
-                    configuration = JsonConvert.DeserializeObject<Configuration>(
-                        File.ReadAllText("./Configuration.json"));
+            get => configuration;
 
-                    configuration.Types = new Dictionary<SqlType, Type>
-                    {
-                        [SqlType.BigInt] = typeof(long),
-                        [SqlType.Binary] = typeof(byte[]),
-                        [SqlType.Bit] = typeof(bool),
-                        [SqlType.Char] = typeof(string),
-                        [SqlType.Date] = typeof(DateTime),
-                        [SqlType.DateTime] = typeof(DateTime),
-                        [SqlType.DateTime2] = typeof(DateTimeOffset),
-                        [SqlType.DateTimeOffset] = typeof(DateTimeOffset),
-                        [SqlType.Decimal] = typeof(decimal),
-                        [SqlType.Float] = typeof(double),
-                        [SqlType.Image] = typeof(byte[]),
-                        [SqlType.Int] = typeof(int),
-                        [SqlType.Money] = typeof(decimal),
-                        [SqlType.NChar] = typeof(string),
-                        [SqlType.NText] = typeof(string),
-                        [SqlType.Numeric] = typeof(decimal),
-                        [SqlType.NVarChar] = typeof(string),
-                        [SqlType.Real] = typeof(float),
-                        [SqlType.SmallDateTime] = typeof(DateTime),
-                        [SqlType.SmallInt] = typeof(short),
-                        [SqlType.SmallMoney] = typeof(decimal),
-                        [SqlType.SqlVariant] = typeof(object),
-                        [SqlType.Text] = typeof(string),
-                        [SqlType.Time] = typeof(TimeSpan),
-                        [SqlType.TimeStamp] = typeof(byte[]),
-                        [SqlType.TinyInt] = typeof(byte),
-                        [SqlType.UniqueIdentifier] = typeof(Guid),
-                        [SqlType.VarBinary] = typeof(byte[]),
-                        [SqlType.VarChar] = typeof(string)
-                    };
-                }
+            set
+            {
+                configuration = value;
+
+                configuration.Types = new Dictionary<SqlType, Type>
+                {
+                    [SqlType.BigInt] = typeof(long),
+                    [SqlType.Binary] = typeof(byte[]),
+                    [SqlType.Bit] = typeof(bool),
+                    [SqlType.Char] = typeof(string),
+                    [SqlType.Date] = typeof(DateTime),
+                    [SqlType.DateTime] = typeof(DateTime),
+                    [SqlType.DateTime2] = typeof(DateTimeOffset),
+                    [SqlType.DateTimeOffset] = typeof(DateTimeOffset),
+                    [SqlType.Decimal] = typeof(decimal),
+                    [SqlType.Float] = typeof(double),
+                    [SqlType.Image] = typeof(byte[]),
+                    [SqlType.Int] = typeof(int),
+                    [SqlType.Money] = typeof(decimal),
+                    [SqlType.NChar] = typeof(string),
+                    [SqlType.NText] = typeof(string),
+                    [SqlType.Numeric] = typeof(decimal),
+                    [SqlType.NVarChar] = typeof(string),
+                    [SqlType.Real] = typeof(float),
+                    [SqlType.SmallDateTime] = typeof(DateTime),
+                    [SqlType.SmallInt] = typeof(short),
+                    [SqlType.SmallMoney] = typeof(decimal),
+                    [SqlType.SqlVariant] = typeof(object),
+                    [SqlType.Text] = typeof(string),
+                    [SqlType.Time] = typeof(TimeSpan),
+                    [SqlType.TimeStamp] = typeof(byte[]),
+                    [SqlType.TinyInt] = typeof(byte),
+                    [SqlType.UniqueIdentifier] = typeof(Guid),
+                    [SqlType.VarBinary] = typeof(byte[]),
+                    [SqlType.VarChar] = typeof(string)
+                };
+
 
                 configuration.FriendlyTypeNames = new Dictionary<Type, string>
                 {
@@ -86,8 +84,6 @@ namespace ModelGen.Database
                     [typeof(decimal)] = "decimal",
                     [typeof(object)] = "object"
                 };
-
-                return configuration;
             }
         }
 
