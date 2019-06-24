@@ -2,7 +2,7 @@
   "Server": "(local)",
   "Database": "TycheDB",
   "TableModelNamespace": "Tyche.TycheDAL.Models",
-  "FunctionModelNamespace": "Tyche.TycheDAL.Models.FunctionModels.",
+  "FunctionModelNamespace": "Tyche.TycheDAL.Models.FunctionModels",
   "UseIntegratedSecurity": "True",
   "UseFriendlyTypeNames": "True",
   "Username": "",
