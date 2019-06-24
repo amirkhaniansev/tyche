@@ -95,7 +95,10 @@
     <RefactorLog Include="Scripts.refactorlog" />
   </ItemGroup>
   <PropertyGroup>
-    <PostBuildEvent>XCOPY "$(ProjectDir)bin\Debug\TycheDB_Create.sql" "$(ProjectDir)dbo\Queries" /Y</PostBuildEvent>
+    <PostBuildEvent>XCOPY "$(ProjectDir)bin\Debug\TycheDB_Create.sql" "$(ProjectDir)dbo\Queries" /Y
+
+dotnet "$(SolutionDir)/../tools/modelgen/bin/Debug/netcoreapp2.2/modelgen.dll"
+</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>dotnet build "$(SolutionDir)/../tools/licensegen/licensegen.csproj"
