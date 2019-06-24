@@ -22,8 +22,8 @@ using System.Collections.Generic;
 
 namespace ModelGen.Models
 {
-    internal class Table : BaseModel
+    internal class Table : BaseModel, IColumnObject
     {
-        public IEnumerable<TableColumn> Columns { get; set; }
+        public IEnumerable<IColumn> Columns { get; set; }
     }
 }

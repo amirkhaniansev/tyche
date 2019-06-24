@@ -18,10 +18,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
+using System.IO;
 using System.Threading.Tasks;
+using ModelGen.Builder;
+using ModelGen.Constants;
 using ModelGen.Database;
 
-namespace modelgen
+namespace ModelGen
 {
     class Program
     {
@@ -33,8 +36,35 @@ namespace modelgen
             await scheme.InitializeTables();
             await scheme.InitializeFunctions();
             await scheme.InitializeProcedures();
-            
 
+            if (!Directory.Exists(Configuration.Default.ProjectPath))
+                return;
+
+            var modelsPath = $@"{Configuration.Default.ProjectPath}/{Paths.Models}";
+            var functionModelsPath = $@"
+                {Configuration.Default.ProjectPath}/
+                {Paths.Models}/
+                {Paths.FunctionModels}";
+
+            if (Directory.Exists(modelsPath))
+                Directory.Delete(modelsPath, true);
+
+            Directory.CreateDirectory(modelsPath);
+            Directory.CreateDirectory(functionModelsPath);
+
+            await FileBuilder.CreateModels(
+                Configuration.Default.TableModelNamespace,
+                Configuration.Default.BaseModel,
+                modelsPath,
+                model => model.Name.Substring(0, model.Name.Length - 1),
+                scheme.Tables);
+
+            await FileBuilder.CreateModels(
+                Configuration.Default.FunctionModelNamespace,
+                Configuration.Default.BaseModel,
+                functionModelsPath,
+                model => model.Name.Substring(4, model.Name.Length - 5),
+                scheme.Functions);
         }
     }
 }

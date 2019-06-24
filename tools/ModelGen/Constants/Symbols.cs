@@ -37,5 +37,6 @@ namespace ModelGen.Constants
         public const string SummaryComment = "///";
         public const string SummaryOpen = "/// <summary>";
         public const string SummaryClose = "/// </summary>";
+        public const string QuestionMark = "?";
     }
 }

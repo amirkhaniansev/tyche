@@ -95,6 +95,10 @@ namespace ModelGen.Database
 
         public string Database { get; set; }
 
+        public string TableModelNamespace { get; set; }
+
+        public string FunctionModelNamespace { get; set; }
+        
         public bool UseIntegratedSecurity { get; set; }
 
         public bool UseFriendlyTypeNames { get; set; }
@@ -106,8 +110,10 @@ namespace ModelGen.Database
         public string ContextPath { get; set; }
 
         public string ProjectPath { get; set; }
+        
+        public string BaseModel { get; set; }
 
-        public string ModelsPath { get; set; }
+        public string BaseModelNamespace { get; set; }
 
         [JsonIgnore]
         public Dictionary<SqlType, Type> Types { get; set; }

@@ -22,7 +22,7 @@ using ModelGen.Database;
 
 namespace ModelGen.Models
 {
-    internal class Column : BaseModel
+    internal class Column : BaseModel, IColumn
     {
         public SqlType Type { get; set; }
 

@@ -22,10 +22,10 @@ using System.Collections.Generic;
 
 namespace ModelGen.Models
 {
-    internal class Function : BaseModel
+    internal class Function : BaseModel, IColumnObject
     {
         public IEnumerable<FunctionParameter> Parameters { get; set; }
 
-        public IEnumerable<FunctionColumn> Columns { get; set; }
+        public IEnumerable<IColumn> Columns { get; set; }
     }
 }
