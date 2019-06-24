@@ -41,10 +41,7 @@ namespace ModelGen
                 return;
 
             var modelsPath = $@"{Configuration.Default.ProjectPath}/{Paths.Models}";
-            var functionModelsPath = $@"
-                {Configuration.Default.ProjectPath}/
-                {Paths.Models}/
-                {Paths.FunctionModels}";
+            var functionModelsPath = $@"{Configuration.Default.ProjectPath}/{Paths.Models}/{Paths.FunctionModels}";
 
             if (Directory.Exists(modelsPath))
                 Directory.Delete(modelsPath, true);
