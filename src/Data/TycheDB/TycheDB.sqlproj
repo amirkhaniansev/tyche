@@ -121,7 +121,7 @@
 
 dotnet "$(SolutionDir)/../tools/modelgen/bin/Debug/netcoreapp2.2/modelgen.dll" "$(SolutionDir)/../src/Data/TycheDAL/ModelConfig.json"
 
-dotnet "$(SolutionDir)/../tools/licensegen/bin/Debug/netcoreapp2.1/licensegen.dll" "$(SolutionDir)/../src/Data/TycheDAL" "$(SolutionDir)/license_s.txt" .cs</PostBuildEvent>
+dotnet "$(SolutionDir)/../tools/licensegen/bin/Debug/netcoreapp2.1/licensegen.dll" "$(SolutionDir)/../src/Data/TycheDAL/Models" "$(SolutionDir)/license_s.txt" .cs</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>dotnet build "$(SolutionDir)/../tools/licensegen/licensegen.csproj"
