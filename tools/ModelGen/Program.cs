@@ -51,7 +51,7 @@ namespace ModelGen
 
             Directory.CreateDirectory(modelsPath);
             Directory.CreateDirectory(functionModelsPath);
-
+            
             await FileBuilder.CreateModels(
                 Configuration.Default.TableModelNamespace,
                 Configuration.Default.BaseModel,

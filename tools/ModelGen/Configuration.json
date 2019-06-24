@@ -7,8 +7,8 @@
   "UseFriendlyTypeNames": "True",
   "Username": "",
   "Password": "",
-  "ProjectPath": "../../src/Data/TycheDAL",
-  "ContextPath": "../../src/Data/TycheDAL/Context",
+  "ProjectPath": "../../../../../src/Data/TycheDAL",
+  "ContextPath": "../../../../../src/Data/TycheDAL/Context",
   "BaseModel": "DbModel",
   "BaseModelNamespace": "Tyche.TycheDAL.Models"
 }
