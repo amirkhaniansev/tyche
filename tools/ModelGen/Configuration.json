@@ -11,5 +11,5 @@
   "ContextPath": "../../../../../src/Data/TycheDAL/Context",
   "BaseModel": "DbModel",
   "BaseModelNamespace": "Tyche.TycheDAL.Models",
-  "QueriesPath": "../../../../../tools/ModelGen/Queries"
+  "QueriesPath": "../../../tools/ModelGen/Queries"
 }
