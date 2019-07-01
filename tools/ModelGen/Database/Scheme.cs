@@ -66,13 +66,13 @@ namespace ModelGen.Database
         {
             this.queries = new Dictionary<string, string>
             {
-                ["FunctionColumns"]         = await File.ReadAllTextAsync($"./Queries/FunctionColumns.sql"),
-                ["Functions"]               = await File.ReadAllTextAsync($"./Queries/Functions.sql"),
-                ["FunctionsParameters"]     = await File.ReadAllTextAsync($"./Queries/FunctionsParameters.sql"),
-                ["Procedures"]              = await File.ReadAllTextAsync($"./Queries/Procedures.sql"),
-                ["ProceduresParameters"]    = await File.ReadAllTextAsync($"./Queries/ProceduresParameters.sql"),
-                ["Tables"]                  = await File.ReadAllTextAsync($"./Queries/Tables.sql"),
-                ["TablesColumns"]           = await File.ReadAllTextAsync($"./Queries/TablesColumns.sql")
+                ["FunctionColumns"]         = await File.ReadAllTextAsync($"{Configuration.Default.QueriesPath}/FunctionColumns.sql"),
+                ["Functions"]               = await File.ReadAllTextAsync($"{Configuration.Default.QueriesPath}/Functions.sql"),
+                ["FunctionsParameters"]     = await File.ReadAllTextAsync($"{Configuration.Default.QueriesPath}/FunctionsParameters.sql"),
+                ["Procedures"]              = await File.ReadAllTextAsync($"{Configuration.Default.QueriesPath}/Procedures.sql"),
+                ["ProceduresParameters"]    = await File.ReadAllTextAsync($"{Configuration.Default.QueriesPath}/ProceduresParameters.sql"),
+                ["Tables"]                  = await File.ReadAllTextAsync($"{Configuration.Default.QueriesPath}/Tables.sql"),
+                ["TablesColumns"]           = await File.ReadAllTextAsync($"{Configuration.Default.QueriesPath}/TablesColumns.sql")
             };
         }
 

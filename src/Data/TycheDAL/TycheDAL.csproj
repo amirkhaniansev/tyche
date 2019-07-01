@@ -26,4 +26,8 @@
     <Folder Include="Models\FunctionModels\" />
   </ItemGroup>
 
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="dotnet &quot;$(SolutionDir)/../tools/ModelGen/bin/Debug/netcoreapp2.2/ModelGen.dll&quot; &#xD;&#xA;             &quot;$(SolutionDir)/../tools/ModelGen/bin/Debug/netcoreapp2.2/Configuration.json&quot;" />
+  </Target>
+
 </Project>

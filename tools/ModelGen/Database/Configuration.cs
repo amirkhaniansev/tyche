@@ -111,6 +111,8 @@ namespace ModelGen.Database
 
         public string BaseModelNamespace { get; set; }
 
+        public string QueriesPath { get; set; }
+
         [JsonIgnore]
         public Dictionary<SqlType, Type> Types { get; set; }
 
