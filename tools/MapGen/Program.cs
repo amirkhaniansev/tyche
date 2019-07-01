@@ -35,6 +35,8 @@ namespace MapGen
     {
         static void Main(string[] args)
         {
+            Console.Title = "MapGen";
+
             if (args.Length != 2)
             {
                 Console.WriteLine("Invalid amount of arguments");

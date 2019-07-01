@@ -26,7 +26,7 @@
   </ItemGroup>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="dotnet build &quot;$(SolutionDir)/../tools/ModelGen/ModelGen.csproj&quot;&#xD;&#xA;&#xD;&#xA;dotnet &quot;$(SolutionDir)/../tools/ModelGen/bin/Debug/netcoreapp2.2/ModelGen.dll&quot; &quot;$(SolutionDir)/../tools/ModelGen/Configuration.json&quot;" />
+    <Exec Command="dotnet build &quot;$(SolutionDir)/../tools/ModelGen/ModelGen.csproj&quot;&#xD;&#xA;dotnet &quot;$(SolutionDir)/../tools/ModelGen/bin/Debug/netcoreapp2.2/ModelGen.dll&quot; &quot;$(SolutionDir)/../tools/ModelGen/Queries&quot;" />
   </Target>
 
 </Project>

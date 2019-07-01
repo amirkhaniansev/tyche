@@ -29,6 +29,8 @@ namespace NamespaceGen
     {
         static void Main(string[] args)
         {
+            Console.Title = "NamespaceGen";
+
             const string invaliAmountOfArguments = "Invalid amount of arguments.";
             const string directoryNotExist = "Directory does not exist.";
             

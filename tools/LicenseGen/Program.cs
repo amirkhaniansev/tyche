@@ -29,6 +29,8 @@ namespace LicenseGen
     {
         static void Main(string[] args)
         {
+            Console.Title = "LicenseGen";
+
             if (args.Length < 3)
             {
                 Console.WriteLine("Invalid amount of arguments.");

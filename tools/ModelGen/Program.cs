@@ -18,6 +18,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
+using System;
 using System.IO;
 using System.Threading.Tasks;
 using ModelGen.Builder;
@@ -31,44 +32,57 @@ namespace ModelGen
     {
         static async Task Main(string[] args)
         {
-            if (args.Length != 1 || !File.Exists(args[0]))
-                return;
+            try
+            {
+                Console.Title = "ModelGen";
 
-            var configContent = await File.ReadAllTextAsync(args[0]);
-            Configuration.Default = JsonConvert.DeserializeObject<Configuration>(configContent);
+                if (args.Length != 2 || !File.Exists(args[0]))
+                    return;
 
-            var scheme = new Scheme();
+                var configPath = args[0];
+                var queriesPath = args[1];
+                var configContent = await File.ReadAllTextAsync(configPath);
 
-            await scheme.InitializeQueries();
-            await scheme.InitializeTables();
-            await scheme.InitializeFunctions();
-            await scheme.InitializeProcedures();
+                Configuration.Default = JsonConvert.DeserializeObject<Configuration>(configContent);
+                Configuration.Default.QueriesPath = queriesPath;
 
-            if (!Directory.Exists(Configuration.Default.ProjectPath))
-                return;
+                var scheme = new Scheme();
 
-            var modelsPath = $@"{Configuration.Default.ProjectPath}/{Paths.Models}";
-            var functionModelsPath = $@"{Configuration.Default.ProjectPath}/{Paths.Models}/{Paths.FunctionModels}";
+                await scheme.InitializeQueries();
+                await scheme.InitializeTables();
+                await scheme.InitializeFunctions();
+                await scheme.InitializeProcedures();
 
-            if (Directory.Exists(modelsPath))
-                Directory.Delete(modelsPath, true);
+                if (!Directory.Exists(Configuration.Default.ProjectPath))
+                    return;
 
-            Directory.CreateDirectory(modelsPath);
-            Directory.CreateDirectory(functionModelsPath);
-            
-            await FileBuilder.CreateModels(
-                Configuration.Default.TableModelNamespace,
-                Configuration.Default.BaseModel,
-                modelsPath,
-                model => model.Name.Substring(0, model.Name.Length - 1),
-                scheme.Tables);
+                var modelsPath = $@"{Configuration.Default.ProjectPath}/{Paths.Models}";
+                var functionModelsPath = $@"{Configuration.Default.ProjectPath}/{Paths.Models}/{Paths.FunctionModels}";
 
-            await FileBuilder.CreateModels(
-                Configuration.Default.FunctionModelNamespace,
-                Configuration.Default.BaseModel,
-                functionModelsPath,
-                model => model.Name.Substring(4, model.Name.Length - 5),
-                scheme.Functions);
+                if (Directory.Exists(modelsPath))
+                    Directory.Delete(modelsPath, true);
+
+                Directory.CreateDirectory(modelsPath);
+                Directory.CreateDirectory(functionModelsPath);
+
+                await FileBuilder.CreateModels(
+                    Configuration.Default.TableModelNamespace,
+                    Configuration.Default.BaseModel,
+                    modelsPath,
+                    model => model.Name.Substring(0, model.Name.Length - 1),
+                    scheme.Tables);
+
+                await FileBuilder.CreateModels(
+                    Configuration.Default.FunctionModelNamespace,
+                    Configuration.Default.BaseModel,
+                    functionModelsPath,
+                    model => model.Name.Substring(4, model.Name.Length - 5),
+                    scheme.Functions);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
     }
 }
