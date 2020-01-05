@@ -8,4 +8,7 @@
 
 
 # Tyche
-Tyche is a TCP chat system with availability of message encryption.
+Tyche is a TCP chat system with availability of message encryption 
+
+## ATTENTION
+Unfortunately, _**Tyche**_ is temporarily archived. There is no information, when the development will be continued.
